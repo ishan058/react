@@ -7,9 +7,11 @@ export default function App() {
   const [count,setCount] = useState(0);
 
   async function getAdvice() {
+    //fetching Data
     const res = await fetch("https://api.adviceslip.com/advice");
     const data = await res.json();
     setAdvice(data.slip.advice);
+    //count numbers
     setCount((c) => c + 1);
   }
 
