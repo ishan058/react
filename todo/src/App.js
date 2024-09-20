@@ -5,7 +5,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
-  // Add new todo
+  // Add new todo app
   const addTodo = () => {
     if (inputValue.trim() !== '') {
       setTodos([...todos, inputValue]);
@@ -13,7 +13,7 @@ function App() {
     }
   };
 
-  // Remove todo
+  // Remove todo app
   const removeTodo = (index) => {
     const newTodos = todos.filter((_, i) => i !== index);
     setTodos(newTodos);
