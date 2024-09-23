@@ -37,7 +37,7 @@ function ToDoApp() {
   const handleDueDateChange = (e) => setDueDate(e.target.value);
 
   const addTask = () => {
-    if (!task.trim()) return; // Prevent empty task
+    if (!task.trim()) return;
     const newTask = {
       text: task,
       completed: false,
@@ -56,6 +56,10 @@ function ToDoApp() {
     } else {
       setTasks([...tasks, newTask]);
     }
+    resetInputFields();
+  };
+
+  const resetInputFields = () => {
     setTask('');
     setPriority('Medium');
     setCategory('General');
@@ -106,7 +110,7 @@ function ToDoApp() {
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
-    const reorderedTasks = Array.from(filteredTasks);
+    const reorderedTasks = Array.from(tasks);
     const [movedTask] = reorderedTasks.splice(result.source.index, 1);
     reorderedTasks.splice(result.destination.index, 0, movedTask);
     setTasks(reorderedTasks);
@@ -119,7 +123,6 @@ function ToDoApp() {
         Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
       </button>
 
-      {/* Search Bar */}
       <input
         type="text"
         placeholder="Search tasks"
@@ -128,7 +131,6 @@ function ToDoApp() {
         className="search-bar"
       />
 
-      {/* Filter and Sort Options */}
       <div className="filter-sort-options">
         <select onChange={(e) => setFilter(e.target.value)}>
           <option value="All">All</option>
@@ -152,7 +154,6 @@ function ToDoApp() {
         </select>
       </div>
 
-      {/* Task Input */}
       <div className="task-input">
         <input
           type="text"
@@ -185,7 +186,6 @@ function ToDoApp() {
         </button>
       </div>
 
-      {/* Task List */}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="tasks">
           {(provided) => (

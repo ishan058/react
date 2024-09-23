@@ -1,10 +1,9 @@
 import React from 'react';
-import ToDoApp from './ToDoApp';
-import './App.css';
+import ToDoApp from './ToDoApp'; // Make sure this path matches your file structure
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <ToDoApp />
     </div>
   );
