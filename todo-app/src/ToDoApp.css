@@ -1,3 +1,13 @@
+body.light {
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+body.dark {
+  background-color: #333;
+  color: #f4f4f9;
+}
+
 .todo-app {
   font-family: sans-serif;
   text-align: center;
@@ -7,16 +17,12 @@
   margin-right: auto;
 }
 
-.task-input {
-  margin-bottom: 20px;
-}
-
-input {
+.task-input input, .due-date {
   padding: 10px;
   font-size: 18px;
   border: 2px solid #ddd;
   border-radius: 5px;
-  width: 40%;
+  margin-right: 10px;
 }
 
 select {
@@ -41,15 +47,6 @@ button {
 
 button:hover {
   background-color: #218838;
-}
-
-.search-bar {
-  padding: 10px;
-  margin-bottom: 20px;
-  width: 70%;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  font-size: 18px;
 }
 
 ul.task-list {
@@ -81,6 +78,17 @@ li.completed span {
 
 .clear-btn:hover {
   background-color: #c82333;
+}
+
+.theme-toggle {
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+}
+
+.theme-toggle:hover {
+  background-color: #0056b3;
 }
 
 p {
