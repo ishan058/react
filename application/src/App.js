@@ -1,5 +1,10 @@
 import React from 'react';
 import './global.css';
+import './Navbar.css';
+import './ProductCard.css';
+import './Checkout.css';
+import './Responsive.css';
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';  // Import Routes and Route
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
