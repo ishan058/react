@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';  // Add useState
+import React, { useContext, useState } from 'react';
 import { CartContext } from '../context/CartContext';
 
 const Checkout = () => {
@@ -31,4 +31,5 @@ const Checkout = () => {
   );
 };
 
+// Ensure this line is at the bottom of your file
 export default Checkout;
