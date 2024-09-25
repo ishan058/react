@@ -4,6 +4,10 @@ import './Navbar.css';
 import './ProductCard.css';
 import './Checkout.css';
 import './Responsive.css';
+import './FilterBar.css';
+import './Wishlist.css';
+import './Profile.css';
+import './ProductReview.css';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
