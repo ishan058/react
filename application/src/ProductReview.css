@@ -1,0 +1,17 @@
+/* ProductReview.css */
+.product-detail h3 {
+    margin-top: 30px;
+  }
+  
+  .product-detail textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+  }
+  
+  .product-detail button {
+    margin-top: 10px;
+  }
+  
