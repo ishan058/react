@@ -1,0 +1,13 @@
+/* src/styles/Profile.css */
+.profile-page {
+  padding: 20px;
+  text-align: center;
+}
+
+.profile-page h2 {
+  margin-bottom: 20px;
+}
+
+.profile-page p {
+  font-size: 18px;
+}

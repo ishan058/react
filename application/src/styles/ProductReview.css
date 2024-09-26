@@ -1,0 +1,19 @@
+/* ProductReview.css */
+.review-container {
+  margin: 20px auto;
+  width: 60%;
+}
+
+.review-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.review-author {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.review-content {
+  font-size: 14px;
+}

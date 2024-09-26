@@ -1,28 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import ProductCard from '../components/ProductCard';
-import SearchBar from '../components/SearchBar';
+import React from 'react';
+import '../styles/Home.css'; // Corrected import path
 
-const Home = ({ products }) => {
-  const [filteredProducts, setFilteredProducts] = useState(products);
-
-  const handleSearch = (query) => {
-    setFilteredProducts(
-      products.filter((product) =>
-        product.name.toLowerCase().includes(query.toLowerCase())
-      )
-    );
-  };
-
+function Home() {
   return (
     <div className="home-container">
-      <SearchBar onSearch={handleSearch} />
+      <h1>Welcome to Siyodhago</h1>
       <div className="product-grid">
-        {filteredProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {/* Add Product Cards Here */}
       </div>
     </div>
   );
-};
+}
 
 export default Home;

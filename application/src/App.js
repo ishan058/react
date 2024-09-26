@@ -1,42 +1,41 @@
 import React from 'react';
-import './global.css';
-import './Navbar.css';
-import './ProductCard.css';
-import './Checkout.css';
-import './Responsive.css';
-import './FilterBar.css';
-import './Wishlist.css';
-import './Profile.css';
-import './ProductReview.css';
-
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom'; // Import Routes and Route
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
-import Wishlist from './components/Wishlist';
-import Profile from './components/Profile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Profile from './pages/Profile'; // Ensure this file exists in the `pages` folder
+import PrivateRoute from './PrivateRoute'; // Correct import for PrivateRoute
+
+// Stylesheets
+import './styles/Navbar.css';
+import './styles/ProductCard.css';
+import './styles/Checkout.css';
+import './styles/FilterBar.css';
+import './styles/Profile.css';
+import './styles/ProductReview.css';
+import './styles/Home.css';
+import './styles/Cart.css';
 
 function App() {
   return (
-    <Router>
-      <div>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="App">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/profile" element={<PrivateRoute />}>
+          <Route path="" element={<Profile />} />
+        </Route>
+      </Routes>
+    </div>
   );
 }
 
