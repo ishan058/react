@@ -1,59 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../api';
+import { setProducts } from '../actions/productActions';
+import { Link } from 'react-router-dom';
 
-const ProductList = ({ products }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [category, setCategory] = useState('');
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1000);
+const ProductList = () => {
+    const dispatch = useDispatch();
+    const products = useSelector((state) => state.products.items);
 
-  const filteredProducts = products.filter((product) => {
+    useEffect(() => {
+        const getProducts = async () => {
+            const data = await fetchProducts();
+            dispatch(setProducts(data)); // Update Redux store
+        };
+
+        getProducts();
+    }, [dispatch]);
+
     return (
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (category ? product.category === category : true) &&
-      product.price >= minPrice &&
-      product.price <= maxPrice
+        <div>
+            <h1>Product List</h1>
+            <ul>
+                {products.map((product) => (
+                    <li key={product.id}>
+                        <Link to={`/products/${product.id}`}>{product.name}</Link>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
-  });
-
-  return (
-    <div>
-      <input
-        type="text"
-        placeholder="Search products"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <select onChange={(e) => setCategory(e.target.value)}>
-        <option value="">All Categories</option>
-        <option value="electronics">Electronics</option>
-        <option value="clothing">Clothing</option>
-        <option value="books">Books</option>
-      </select>
-      <input
-        type="number"
-        placeholder="Min Price"
-        value={minPrice}
-        onChange={(e) => setMinPrice(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Max Price"
-        value={maxPrice}
-        onChange={(e) => setMaxPrice(e.target.value)}
-      />
-
-      <div className="product-list">
-        {filteredProducts.map((product) => (
-          <div key={product.id} className="product-card">
-            <img src={product.image} alt={product.name} />
-            <h2>{product.name}</h2>
-            <p>${product.price}</p>
-            <button>Add to Cart</button>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
 };
 
 export default ProductList;

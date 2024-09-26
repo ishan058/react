@@ -1,32 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const ProductDetail = ({ product }) => {
-  const [review, setReview] = useState('');
-  const [reviews, setReviews] = useState(product.reviews || []);
+const ProductDetail = () => {
+    const { productId } = useParams();
+    const products = useSelector((state) => state.products.items);
+    const product = products.find((p) => p.id === Number(productId));
 
-  const handleReviewSubmit = () => {
-    setReviews([...reviews, { text: review }]);
-    setReview('');
-  };
+    if (!product) return <div>Product not found.</div>;
 
-  return (
-    <div className="product-detail">
-      <h1>{product.name}</h1>
-      <p>{product.description}</p>
-      <h3>Reviews</h3>
-      <ul>
-        {reviews.map((review, index) => (
-          <li key={index}>{review.text}</li>
-        ))}
-      </ul>
-      <textarea
-        value={review}
-        onChange={(e) => setReview(e.target.value)}
-        placeholder="Write a review"
-      ></textarea>
-      <button onClick={handleReviewSubmit}>Submit Review</button>
-    </div>
-  );
+    return (
+        <div>
+            <h1>{product.name}</h1>
+            <p>{product.description}</p>
+            <p>Price: ${product.price}</p>
+        </div>
+    );
 };
 
 export default ProductDetail;
