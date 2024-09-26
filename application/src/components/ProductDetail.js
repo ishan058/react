@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart } from '../actions/cartActions'; // Action to add product to cart
-import './ProductDetail.css'; // Import CSS for styling
+import '../styles/ProductDetail.css';
 
 const ProductDetail = () => {
     const { productId } = useParams();
