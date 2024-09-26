@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile'; // Ensure this file exists in the `pages` folder
 import PrivateRoute from './PrivateRoute'; // Correct import for PrivateRoute
+import NotFound from './pages/NotFound'; // Import NotFound component
 
 // Stylesheets
 import './styles/Navbar.css';
@@ -32,6 +33,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<PrivateRoute />}>
+        <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
           <Route path="" element={<Profile />} />
         </Route>
       </Routes>

@@ -1,28 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useAuth } from '../AuthContext'; // Import useAuth hook
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+    const { login } = useAuth(); // Get login function
+    const navigate = useNavigate(); // Get navigate function
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const handleLogin = () => {
+        login(); // Call login function
+        navigate('/profile'); // Redirect to profile after login
+    };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle login logic
-  };
-
-  return (
-    <div className="login">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-        <button type="submit">Login</button>
-      </form>
-    </div>
-  );
+    return (
+        <div>
+            <h1>Login Page</h1>
+            <button onClick={handleLogin}>Login</button>
+        </div>
+    );
 };
 
 export default Login;
