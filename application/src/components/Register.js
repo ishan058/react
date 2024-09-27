@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { register } from '../actions/authActions';
-import './Auth.css';
+import '../styles/Auth.css';
 
 const Register = () => {
     const dispatch = useDispatch();

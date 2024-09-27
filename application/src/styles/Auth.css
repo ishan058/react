@@ -1,39 +1,26 @@
-/* src/components/Auth.css */
-.auth-form {
-    max-width: 400px;
-    margin: 20px auto;
+.auth-container {
+    width: 300px;
+    margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.auth-form h2 {
-    text-align: center;
-}
-
-.auth-form label {
-    display: block;
-    margin: 10px 0 5px;
-}
-
-.auth-form input {
+.auth-container input {
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin: 10px 0;
 }
 
-.auth-form button {
+.auth-container button {
     width: 100%;
     padding: 10px;
-    background-color: #4caf50;
-    color: white;
+    background-color: #333;
+    color: #fff;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
 }
 
-.auth-form button:hover {
-    background-color: #45a049;
+.auth-container button:hover {
+    background-color: #555;
 }
