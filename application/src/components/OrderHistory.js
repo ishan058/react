@@ -3,16 +3,26 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 const OrderHistory = () => {
-    const orders = useSelector(state => state.orders);
+    const orders = useSelector((state) => state.orders);
 
     return (
         <div>
             <h2>Order History</h2>
-            <ul>
-                {orders.map(order => (
-                    <li key={order.id}>Order ID: {order.id}, Total: ${order.total}</li>
-                ))}
-            </ul>
+            {orders.length === 0 ? (
+                <p>No orders found.</p>
+            ) : (
+                orders.map((order, index) => (
+                    <div key={index}>
+                        <h3>Order #{index + 1}</h3>
+                        {order.items.map(item => (
+                            <div key={item.id}>
+                                <p>{item.name} - ${item.price}</p>
+                            </div>
+                        ))}
+                        <h4>Total: ${order.total}</h4>
+                    </div>
+                ))
+            )}
         </div>
     );
 };

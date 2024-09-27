@@ -1,25 +1,35 @@
+// src/components/Cart.js
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart } from '../actions/cartActions';
+import '../styles/Cart.css';
 
 const Cart = () => {
-    const cartItems = useSelector((state) => state.cart.cartItems);
+    const cartItems = useSelector((state) => state.cart);
     const dispatch = useDispatch();
 
+    const handleRemove = (item) => {
+        dispatch(removeFromCart(item.id));
+    };
+
+    const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
+
     return (
-        <div>
-            <h1>Your Cart</h1>
+        <div className="cart">
+            <h2>Your Shopping Cart</h2>
             {cartItems.length === 0 ? (
-                <p>Your cart is empty.</p>
+                <p>No items in the cart.</p>
             ) : (
-                <ul>
-                    {cartItems.map((item) => (
-                        <li key={item.id}>
-                            {item.name} - ${item.price}
-                            <button onClick={() => dispatch(removeFromCart(item))}>Remove</button>
-                        </li>
+                <div>
+                    {cartItems.map(item => (
+                        <div key={item.id} className="cart-item">
+                            <h3>{item.name}</h3>
+                            <p>Price: ${item.price}</p>
+                            <button onClick={() => handleRemove(item)}>Remove</button>
+                        </div>
                     ))}
-                </ul>
+                    <h3>Total: ${totalAmount}</h3>
+                </div>
             )}
         </div>
     );

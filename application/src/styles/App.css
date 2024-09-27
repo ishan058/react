@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+/* Add to existing CSS files or create a new styles.css */
+@media (max-width: 768px) {
+  .product-card, .cart-item {
+      width: 100%;
+  }
+
+  .product-list input, .product-list select {
+      width: 100%;
+  }
+}
