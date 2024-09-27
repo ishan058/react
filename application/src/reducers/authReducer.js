@@ -1,4 +1,3 @@
-// src/reducers/authReducer.js
 const initialState = {
     isAuthenticated: false,
     user: null,
@@ -7,18 +6,11 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'LOGIN':
-            return {
-                ...state,
-                isAuthenticated: true,
-                user: action.payload,
-            };
+            return { ...state, isAuthenticated: true, user: action.payload };
         case 'LOGOUT':
             return initialState;
         case 'REGISTER':
-            return {
-                ...state,
-                user: action.payload,
-            };
+            return { ...state, user: action.payload };
         default:
             return state;
     }
