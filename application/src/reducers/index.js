@@ -1,13 +1,14 @@
-// src/reducers/index.js
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
+import cartReducer from './cartReducer';
 import productReducer from './productReducer';
-import wishlistReducer from './wishlistReducer'; // Import the wishlist reducer
+import orderReducer from './orderReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
+    cart: cartReducer,
     products: productReducer,
-    wishlist: wishlistReducer, // Add the wishlist reducer
+    orders: orderReducer,
 });
 
 export default rootReducer;
