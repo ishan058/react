@@ -5,7 +5,7 @@ import '../styles/Header.css';
 const Header = () => {
     return (
         <header>
-            <h1>My E-commerce Site</h1>
+            <h1>ShiyoDhago</h1>
             <nav>
                 <ul>
                     <li><Link to="/">Home</Link></li>
