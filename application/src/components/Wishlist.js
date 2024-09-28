@@ -1,24 +1,27 @@
-// src/components/Wishlist.js
 import React from 'react';
-import { useSelector } from 'react-redux';
+import '../styles/Wishlist.css';
 
 const Wishlist = () => {
-    const wishlist = useSelector(state => state.wishlist); // Get wishlist from Redux state
+    const wishlistItems = [
+        { id: 1, name: 'Product 1', price: 200 },
+        { id: 2, name: 'Product 2', price: 150 },
+    ];
 
     return (
-        <div>
-            <h2>Your Wishlist</h2>
-            <ul>
-                {wishlist.length === 0 ? (
-                    <li>Your wishlist is empty.</li> // Message if no items in wishlist
-                ) : (
-                    wishlist.map(item => ( // Map through wishlist items and display them
+        <div className="wishlist-container">
+            <h2>Wishlist</h2>
+            {wishlistItems.length === 0 ? (
+                <p>No items in your wishlist.</p>
+            ) : (
+                <ul>
+                    {wishlistItems.map((item) => (
                         <li key={item.id}>
-                            {item.name} - ${item.price}
+                            <span>{item.name}</span>
+                            <span>${item.price}</span>
                         </li>
-                    ))
-                )}
-            </ul>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
