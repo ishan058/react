@@ -1,35 +1,25 @@
-import React, { useContext, useState } from 'react';
-import { CartContext } from '../context/CartContext';
+import React from 'react';
+import '../styles/Checkout.css';
 
-const Checkout = () => {
-  const { totalPrice, applyCoupon } = useContext(CartContext);
-  const [couponCode, setCouponCode] = useState('');
-  const [discount, setDiscount] = useState(0);
+const Checkout = ({ cartItems }) => {
+    const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const handleCoupon = async () => {
-    const response = await fetch(`/api/coupons/${couponCode}`);
-    const data = await response.json();
-    if (data.valid) {
-      setDiscount(data.discount);
-      applyCoupon(data.discount);
-    } else {
-      alert('Invalid coupon');
-    }
-  };
-
-  return (
-    <div>
-      <input
-        type="text"
-        placeholder="Coupon Code"
-        value={couponCode}
-        onChange={(e) => setCouponCode(e.target.value)}
-      />
-      <button onClick={handleCoupon}>Apply Coupon</button>
-      <h2>Total after discount: ${(totalPrice * (1 - discount / 100)).toFixed(2)}</h2>
-    </div>
-  );
+    return (
+        <div className="checkout-container">
+            <h2>Checkout</h2>
+            <div className="checkout-summary">
+                {cartItems.map((item) => (
+                    <div key={item.id} className="checkout-item">
+                        <span>{item.name}</span>
+                        <span>{item.quantity} x ${item.price}</span>
+                    </div>
+                ))}
+                <div className="total">
+                    <h3>Total: ${total.toFixed(2)}</h3>
+                </div>
+            </div>
+        </div>
+    );
 };
 
-// Ensure this line is at the bottom of your file
 export default Checkout;

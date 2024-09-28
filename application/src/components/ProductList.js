@@ -1,36 +1,38 @@
-// src/components/ProductList.js
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addToWishlist } from '../actions/wishlistActions'; // Import the action
+import React, { useState, useEffect } from 'react';
+import '../styles/ProductList.css';
 
 const ProductList = ({ products }) => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const dispatch = useDispatch();
+    const [filteredProducts, setFilteredProducts] = useState(products);
+    const [sortOption, setSortOption] = useState('none');
 
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const handleAddToWishlist = (product) => {
-        dispatch(addToWishlist(product)); // Dispatch the action to add to wishlist
-    };
+    useEffect(() => {
+        let sortedProducts = [...products];
+        if (sortOption === 'price-low-high') {
+            sortedProducts.sort((a, b) => a.price - b.price);
+        } else if (sortOption === 'price-high-low') {
+            sortedProducts.sort((a, b) => b.price - a.price);
+        }
+        setFilteredProducts(sortedProducts);
+    }, [sortOption, products]);
 
     return (
-        <div>
-            <h1>Product List</h1>
-            <input 
-                type="text" 
-                placeholder="Search products..." 
-                onChange={e => setSearchTerm(e.target.value)} 
-            />
-            <ul>
-                {filteredProducts.map(product => (
-                    <li key={product.id}>
-                        {product.name} - ${product.price}
-                        <button onClick={() => handleAddToWishlist(product)}>Add to Wishlist</button> {/* Add button */}
-                    </li>
+        <div className="product-list-container">
+            <div className="product-filters">
+                <select onChange={(e) => setSortOption(e.target.value)}>
+                    <option value="none">Sort by</option>
+                    <option value="price-low-high">Price: Low to High</option>
+                    <option value="price-high-low">Price: High to Low</option>
+                </select>
+            </div>
+            <div className="product-grid">
+                {filteredProducts.map((product) => (
+                    <div key={product.id} className="product-card">
+                        <img src={product.image} alt={product.name} />
+                        <h3>{product.name}</h3>
+                        <p>${product.price}</p>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

@@ -2,17 +2,29 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Header.css';
 
-const Header = () => {
+const Header = ({ isAuthenticated, handleLogout }) => {
     return (
-        <header>
-            <h1>ShiyoDhago</h1>
-            <nav>
-                <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/cart">Cart</Link></li>
-                    <li><Link to="/login">Login</Link></li>
-                    <li><Link to="/register">Register</Link></li>
-                </ul>
+        <header className="main-header">
+            <div className="logo">
+                <Link to="/">ShiyoDhago</Link>
+            </div>
+            <nav className="nav-links">
+                <Link to="/">Home</Link>
+                <Link to="/products">Products</Link>
+                <Link to="/wishlist">Wishlist</Link>
+                <Link to="/cart">Cart</Link>
+                {isAuthenticated ? (
+                    <div className="profile-dropdown">
+                        <button className="dropdown-toggle">Profile</button>
+                        <div className="dropdown-menu">
+                            <Link to="/profile">My Profile</Link>
+                            <Link to="/orders">My Orders</Link>
+                            <button onClick={handleLogout}>Logout</button>
+                        </div>
+                    </div>
+                ) : (
+                    <Link to="/login">Login</Link>
+                )}
             </nav>
         </header>
     );
