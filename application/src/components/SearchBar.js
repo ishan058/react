@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
+import '../styles/SearchBar.css';
 
 const SearchBar = ({ onSearch }) => {
-    const [query, setQuery] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        onSearch(query);
+    const handleSearch = () => {
+        onSearch(searchTerm);
     };
 
     return (
-        <form onSubmit={handleSearch}>
+        <div className="search-bar">
             <input
                 type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button type="submit">Search</button>
-        </form>
+            <button onClick={handleSearch}>Search</button>
+        </div>
     );
 };
 
