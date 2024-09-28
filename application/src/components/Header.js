@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Header.css';
+import { BsSun, BsMoon } from 'react-icons/bs';
 
 const Header = ({ isAuthenticated, handleLogout }) => {
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    const toggleTheme = () => {
+        setIsDarkMode(!isDarkMode);
+        document.body.classList.toggle('dark-mode');
+    };
+
     return (
-        <header className="main-header">
+        <header className={`main-header ${isDarkMode ? 'dark' : ''}`}>
             <div className="logo">
                 <Link to="/">ShiyoDhago</Link>
             </div>
@@ -26,6 +34,9 @@ const Header = ({ isAuthenticated, handleLogout }) => {
                     <Link to="/login">Login</Link>
                 )}
             </nav>
+            <button className="theme-toggle" onClick={toggleTheme}>
+                {isDarkMode ? <BsSun /> : <BsMoon />}
+            </button>
         </header>
     );
 };

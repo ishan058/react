@@ -1,3 +1,8 @@
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
 .main-header {
     display: flex;
     justify-content: space-between;
@@ -5,12 +10,18 @@
     padding: 15px 30px;
     background-color: #333;
     color: #fff;
+    transition: background 0.3s;
 }
 
-.main-header .logo a {
+.main-header.dark {
+    background-color: #1f1f1f;
+}
+
+.logo a {
     color: #fff;
     font-size: 24px;
     text-decoration: none;
+    transition: color 0.3s;
 }
 
 .nav-links {
@@ -22,9 +33,11 @@
     margin-right: 20px;
     color: #fff;
     text-decoration: none;
+    transition: color 0.3s;
 }
 
 .nav-links a:hover {
+    color: #f0a500;
     text-decoration: underline;
 }
 
@@ -37,15 +50,19 @@
     border: none;
     color: #fff;
     cursor: pointer;
+    padding: 5px;
+    font-size: 16px;
 }
 
 .dropdown-menu {
     display: none;
     position: absolute;
     right: 0;
+    top: 30px;
     background-color: #444;
     padding: 10px;
     border-radius: 4px;
+    z-index: 1;
 }
 
 .profile-dropdown:hover .dropdown-menu {
@@ -64,9 +81,18 @@
 .dropdown-menu button {
     background: none;
     border: none;
+    cursor: pointer;
 }
 
 .dropdown-menu a:hover,
 .dropdown-menu button:hover {
     background-color: #555;
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
 }
