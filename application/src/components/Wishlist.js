@@ -1,26 +1,27 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/Wishlist.css';
 
-const Wishlist = () => {
-    const wishlistItems = [
-        { id: 1, name: 'Product 1', price: 200 },
-        { id: 2, name: 'Product 2', price: 150 },
-    ];
-
+const Wishlist = ({ wishlistItems, removeFromWishlist }) => {
     return (
         <div className="wishlist-container">
-            <h2>Wishlist</h2>
-            {wishlistItems.length === 0 ? (
-                <p>No items in your wishlist.</p>
-            ) : (
-                <ul>
+            <h2>My Wishlist</h2>
+            {wishlistItems.length ? (
+                <div className="wishlist-grid">
                     {wishlistItems.map((item) => (
-                        <li key={item.id}>
-                            <span>{item.name}</span>
-                            <span>${item.price}</span>
-                        </li>
+                        <div key={item.id} className="wishlist-item">
+                            <img src={item.image} alt={item.name} />
+                            <h4>{item.name}</h4>
+                            <p className="price">${item.price}</p>
+                            <button onClick={() => removeFromWishlist(item.id)} className="remove-btn">
+                                Remove
+                            </button>
+                            <Link to={`/product/${item.id}`} className="view-btn">View Product</Link>
+                        </div>
                     ))}
-                </ul>
+                </div>
+            ) : (
+                <p>Your wishlist is empty!</p>
             )}
         </div>
     );
