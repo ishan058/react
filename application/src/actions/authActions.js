@@ -1,13 +1,24 @@
-export const login = (credentials) => ({
-    type: 'LOGIN',
-    payload: credentials,
-});
+// src/actions/authActions.js
+import { LOGIN, LOGOUT, REGISTER } from './types'; // Assuming you have action types defined
 
-export const logout = () => ({
-    type: 'LOGOUT',
-});
+export const login = (credentials) => {
+    return (dispatch) => {
+        // Logic for login
+        dispatch({ type: LOGIN, payload: credentials });
+    };
+};
 
-export const register = (userData) => ({
-    type: 'REGISTER',
-    payload: userData,
-});
+export const logout = () => {
+    return (dispatch) => {
+        // Logic for logout
+        dispatch({ type: LOGOUT });
+    };
+};
+
+// Ensure you have the correct export for register
+export const register = (userDetails) => {
+    return (dispatch) => {
+        // Logic for registration
+        dispatch({ type: REGISTER, payload: userDetails });
+    };
+};

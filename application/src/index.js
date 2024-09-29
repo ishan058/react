@@ -1,12 +1,16 @@
-// index.js or App.js
+// src/index.js or src/App.js
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import { AuthProvider } from './context/AuthContext'; // Import the AuthProvider
 import App from './App';
-import { AuthProvider } from './context/AuthContext';
 
 ReactDOM.render(
-  <AuthProvider>
-    <App />
-  </AuthProvider>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <AuthProvider>
+            <App />
+        </AuthProvider>
+    </Provider>,
+    document.getElementById('root')
 );

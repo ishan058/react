@@ -1,16 +1,24 @@
+// src/reducers/authReducer.js
+import { REGISTER_SUCCESS, REGISTER_FAIL } from '../actions/types';
+
 const initialState = {
-    isAuthenticated: false,
     user: null,
+    error: null,
 };
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'LOGIN':
-            return { ...state, isAuthenticated: true, user: action.payload };
-        case 'LOGOUT':
-            return initialState;
-        case 'REGISTER':
-            return { ...state, user: action.payload };
+        case REGISTER_SUCCESS:
+            return {
+                ...state,
+                user: action.payload,
+                error: null,
+            };
+        case REGISTER_FAIL:
+            return {
+                ...state,
+                error: 'Registration failed!',
+            };
         default:
             return state;
     }
