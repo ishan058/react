@@ -1,20 +1,39 @@
-import React from 'react';
-import { useAuth } from '../AuthContext'; // Import useAuth hook
-import { useNavigate } from 'react-router-dom';
-
+import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext'; // Import the useAuth hook
+ 
 const Login = () => {
-    const { login } = useAuth(); // Get login function
-    const navigate = useNavigate(); // Get navigate function
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    
+    // Destructure the login function from useAuth
+    const { login } = useAuth(); 
 
-    const handleLogin = () => {
-        login(); // Call login function
-        navigate('/profile'); // Redirect to profile after login
+    // Handle form submission
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        // Call the login function with user details
+        login({ email, password });
     };
 
     return (
         <div>
-            <h1>Login Page</h1>
-            <button onClick={handleLogin}>Login</button>
+            <h1>Login</h1>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
+                />
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                />
+                <button type="submit">Login</button>
+            </form>
         </div>
     );
 };
