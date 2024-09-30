@@ -1,13 +1,40 @@
-/* src/styles/Profile.css */
-.profile-page {
+.profile-container {
+  max-width: 400px;
+  margin: 50px auto;
   padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.profile-container h2 {
   text-align: center;
-}
-
-.profile-page h2 {
   margin-bottom: 20px;
+  color: #333;
 }
 
-.profile-page p {
-  font-size: 18px;
+.profile-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-container input {
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.profile-container button {
+  padding: 12px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-container button:hover {
+  background-color: #0056b3;
 }
