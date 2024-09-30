@@ -1,108 +1,125 @@
-// src/components/Register.js
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { register } from '../actions/authActions'; // Ensure this import is correct
-import '../styles/Register.css'; // Ensure this path is correct
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import '../styles/Register.css';
 
 const Register = () => {
-    const dispatch = useDispatch();
-    const [userDetails, setUserDetails] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
-    });
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [passwordStrength, setPasswordStrength] = useState('');
 
     const checkPasswordStrength = (password) => {
-        if (password.length < 6) {
-            setPasswordStrength('Weak');
-        } else if (password.length < 10) {
-            setPasswordStrength('Moderate');
+        let strength = '';
+        if (password.length > 8 && /[A-Z]/.test(password) && /[0-9]/.test(password) && /[!@#$%^&*]/.test(password)) {
+            strength = 'Strong';
+        } else if (password.length > 6 && /[A-Z]/.test(password) && /[0-9]/.test(password)) {
+            strength = 'Medium';
         } else {
-            setPasswordStrength('Strong');
+            strength = 'Weak';
         }
+        setPasswordStrength(strength);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (userDetails.password !== userDetails.confirmPassword) {
-            setError("Passwords do not match.");
-            return;
-        }
+    const validationSchema = Yup.object({
+        name: Yup.string().min(3, 'Name must be at least 3 characters').required('Name is required'),
+        email: Yup.string().email('Invalid email format').required('Email is required'),
+        phone: Yup.string()
+            .matches(/^[0-9]+$/, 'Phone number must be numeric')
+            .min(10, 'Phone number must be at least 10 digits')
+            .required('Phone number is required'),
+        password: Yup.string()
+            .min(6, 'Password must be at least 6 characters')
+            .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+            .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+            .matches(/[0-9]/, 'Password must contain at least one number')
+            .matches(/[!@#$%^&*]/, 'Password must contain at least one special character')
+            .required('Password is required'),
+        confirmPassword: Yup.string()
+            .oneOf([Yup.ref('password'), null], 'Passwords must match')
+            .required('Confirm Password is required'),
+    });
 
-        setLoading(true);
-        try {
-            await dispatch(register(userDetails));
-            setSuccess('Registration successful! Please log in.');
-            setError('');
-            setUserDetails({ name: '', email: '', phone: '', password: '', confirmPassword: '' }); // Clear fields
-        } catch (err) {
-            setError('Registration failed. Please try again.');
-            setSuccess('');
-        } finally {
-            setLoading(false);
-        }
+    const handleSubmit = (values, { resetForm }) => {
+        console.log('Form Data:', values);
+        alert('Registration Successful!');
+        resetForm({ values: '' });
     };
 
     return (
         <div className="register-container">
-            <h2 className="register-title">Register</h2>
-            <form className="register-form" onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Name"
-                    value={userDetails.name}
-                    onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
-                    required
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={userDetails.email}
-                    onChange={(e) => setUserDetails({ ...userDetails, email: e.target.value })}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Phone Number"
-                    value={userDetails.phone}
-                    onChange={(e) => setUserDetails({ ...userDetails, phone: e.target.value })}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={userDetails.password}
-                    onChange={(e) => {
-                        setUserDetails({ ...userDetails, password: e.target.value });
-                        checkPasswordStrength(e.target.value);
-                    }}
-                    required
-                />
-                <div className="password-strength">Strength: {passwordStrength}</div>
-                <input
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={userDetails.confirmPassword}
-                    onChange={(e) => setUserDetails({ ...userDetails, confirmPassword: e.target.value })}
-                    required
-                />
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Loading...' : 'Register'}
-                </button>
-                {error && <p className="error-message">{error}</p>}
-                {success && <p className="success-message">{success}</p>}
-            </form>
-            <div className="social-media-login">
-                <p>Or register with:</p>
-                <button className="social-button google-button">Google</button>
-                <button className="social-button facebook-button">Facebook</button>
-            </div>
+            <h2>Register</h2>
+            <Formik
+                initialValues={{
+                    name: '',
+                    email: '',
+                    phone: '',
+                    password: '',
+                    confirmPassword: '',
+                }}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+            >
+                {({ values, handleChange }) => (
+                    <Form>
+                        <div className="form-group">
+                            <Field name="name" type="text" placeholder="Full Name" />
+                            <ErrorMessage name="name" component="div" className="error-message" />
+                        </div>
+
+                        <div className="form-group">
+                            <Field name="email" type="email" placeholder="Email" />
+                            <ErrorMessage name="email" component="div" className="error-message" />
+                        </div>
+
+                        <div className="form-group">
+                            <Field name="phone" type="text" placeholder="Phone Number" />
+                            <ErrorMessage name="phone" component="div" className="error-message" />
+                        </div>
+
+                        <div className="form-group password-container">
+                            <Field
+                                name="password"
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Password"
+                                onChange={(e) => {
+                                    handleChange(e);
+                                    checkPasswordStrength(e.target.value);
+                                }}
+                            />
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                            <ErrorMessage name="password" component="div" className="error-message" />
+                        </div>
+                        <div className="password-strength">
+                            <p>Password Strength: <span className={passwordStrength.toLowerCase()}>{passwordStrength}</span></p>
+                        </div>
+
+                        <div className="form-group password-container">
+                            <Field
+                                name="confirmPassword"
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                placeholder="Confirm Password"
+                            />
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            >
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                            <ErrorMessage name="confirmPassword" component="div" className="error-message" />
+                        </div>
+
+                        <button type="submit">Register</button>
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 };

@@ -1,37 +1,18 @@
-import React, { useState } from 'react';
+// src/pages/AdminDashboard.js
+import React from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/Admin.css';
 
 const AdminDashboard = () => {
-    const [productName, setProductName] = useState('');
-    const [productPrice, setProductPrice] = useState('');
-
-    const handleAddProduct = () => {
-        // Implement add product logic (e.g., API call)
-        console.log('Added Product:', { name: productName, price: productPrice });
-    };
-
     return (
-        <div>
+        <div className="admin-dashboard">
             <h1>Admin Dashboard</h1>
-            <h2>Add New Product</h2>
-            <form onSubmit={handleAddProduct}>
-                <div>
-                    <label>Product Name:</label>
-                    <input
-                        type="text"
-                        value={productName}
-                        onChange={(e) => setProductName(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Product Price:</label>
-                    <input
-                        type="number"
-                        value={productPrice}
-                        onChange={(e) => setProductPrice(e.target.value)}
-                    />
-                </div>
-                <button type="submit">Add Product</button>
-            </form>
+            <div className="dashboard-links">
+                <Link to="/admin/users" className="dashboard-link">User Management</Link>
+                <Link to="/admin/products" className="dashboard-link">Product Management</Link>
+                <Link to="/admin/orders" className="dashboard-link">Order Management</Link>
+                <Link to="/admin/analytics" className="dashboard-link">Analytics</Link>
+            </div>
         </div>
     );
 };

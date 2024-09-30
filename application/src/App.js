@@ -1,3 +1,4 @@
+// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -5,6 +6,10 @@ import store from './store';
 
 // Import pages from the pages folder
 import AdminDashboard from './pages/AdminDashboard';
+import UserManagement from './pages/UserManagement';
+import ProductManagement from './pages/ProductManagement';
+import OrderManagement from './pages/OrderManagement';
+import Analytics from './pages/Analytics';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
@@ -20,22 +25,26 @@ import './styles/App.css';  // Updated import path
 
 const App = () => {
     return (
-        <Provider store={store}> {/* Wrap the Router with Provider */}
+        <Provider store={store}>
             <Router>
                 <div>
                     <Header />
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/products" element={<ProductList />} /> {/* Adjusted to avoid duplicates */}
-                        <Route path="/admin" element={<AdminDashboard />} /> {/* Admin Dashboard */}
-                        <Route path="/login" element={<Login />} /> {/* Login Page */}
-                        <Route path="/profile" element={<Profile />} /> {/* Profile Page */}
-                        <Route path="/user-profile/:userId" element={<UserProfile />} /> {/* User Profile with ID */}
-                        <Route path="/product/:productId" element={<ProductDetail />} /> {/* Product Detail */}
+                        <Route path="/products" element={<ProductList />} />
+                        <Route path="/admin" element={<AdminDashboard />} />
+                        <Route path="/admin/users" element={<UserManagement />} />
+                        <Route path="/admin/products" element={<ProductManagement />} />
+                        <Route path="/admin/orders" element={<OrderManagement />} />
+                        <Route path="/admin/analytics" element={<Analytics />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/user-profile/:userId" element={<UserProfile />} />
+                        <Route path="/product/:productId" element={<ProductDetail />} />
                         <Route path="/cart" element={<Cart />} />
-                        <Route path="/register" element={<Register />} /> {/* Registration Page */}
+                        <Route path="/register" element={<Register />} />
                         <Route path="/order-history" element={<OrderHistory />} />
-                        <Route path="*" element={<NotFound />} /> {/* 404 Not Found Page */}
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </div>
             </Router>

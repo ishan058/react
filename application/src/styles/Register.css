@@ -1,115 +1,165 @@
-/* Register.css */
-
+/* Register Container */
 .register-container {
     max-width: 450px;
     margin: 50px auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: all 0.3s ease;
 }
 
 .register-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
-.register-title {
-    text-align: center;
-    margin-bottom: 25px;
+/* Form Header */
+h2 {
+    font-family: 'Roboto', sans-serif;
     font-size: 28px;
-    color: #007BFF;
-    font-weight: bold;
-    letter-spacing: 1px;
+    margin-bottom: 20px;
+    color: #333;
+    letter-spacing: 0.5px;
 }
 
-.register-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.register-form input {
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
-    outline: none; /* Remove outline */
-}
-
-.register-form input:focus {
-    border: 2px solid #007BFF;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-.register-form button {
-    padding: 12px;
+/* Form Elements */
+.form-group {
     margin: 15px 0;
-    border: none;
+    position: relative;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-align: left;
+    color: #555;
+}
+
+form input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #007BFF;
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    background: #fff;
+    outline: none;
+    transition: border 0.3s ease, background 0.3s ease;
+}
+
+form input:focus {
+    border-color: #007bff;
+    background: #e9f5ff;
+}
+
+/* Password Container */
+.password-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Password Toggle Button */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #007bff;
+    transition: color 0.2s ease;
 }
 
-.register-form button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+.password-toggle:hover {
+    color: #0056b3;
 }
 
-.register-form button:hover:not(:disabled) {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.password-strength {
-    font-size: 14px;
-    margin: 5px 0;
-    color: #007BFF;
-}
-
-.error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.success-message {
-    color: green;
-    font-size: 14px;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.social-media-login {
-    text-align: center;
+/* Confirm Password Style */
+.confirm-password {
     margin-top: 20px;
 }
 
-.social-button {
-    padding: 10px 15px;
-    margin: 5px;
+/* Button Styling */
+button[type='submit'] {
+    width: 100%;
+    background: #007bff;
+    color: #fff;
     border: none;
-    border-radius: 8px;
-    color: #ffffff;
+    padding: 15px;
     font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.google-button {
-    background-color: #DB4437;
+button[type='submit']:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
 }
 
-.facebook-button {
-    background-color: #4267B2;
+button[type='submit']:active {
+    background: #003d7a;
+    transform: translateY(0);
 }
 
-.social-button:hover {
-    opacity: 0.8;
+/* Error Message */
+.error-message {
+    color: #ff4d4f;
+    font-size: 13px;
+    margin-top: 8px;
+    text-align: left;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+    text-align: left;
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.password-strength span {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.password-strength .strong {
+    background-color: #28a745;
+}
+
+.password-strength .medium {
+    background-color: #ffc107;
+}
+
+.password-strength .weak {
+    background-color: #dc3545;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .register-container {
+        padding: 30px;
+        margin: 20px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    form input {
+        padding: 12px;
+    }
+
+    button[type='submit'] {
+        padding: 12px;
+        font-size: 14px;
+    }
 }
