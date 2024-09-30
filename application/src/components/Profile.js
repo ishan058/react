@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserProfile } from '../actions/userActions'; // Ensure this action exists
-import '../styles/Profile.css'; // Create a corresponding CSS file
+import '../styles/Profile.css';
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.auth.user); // Assume user data is stored in auth state
+    const user = useSelector((state) => state.auth.user);
     const [profileData, setProfileData] = useState({
         name: '',
         email: '',
@@ -29,16 +29,16 @@ const Profile = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(updateUserProfile(profileData)); // Dispatch action to update profile
+        dispatch(updateUserProfile(profileData));
     };
 
     return (
         <div className="profile-container">
             <h2>User Profile</h2>
             <form onSubmit={handleSubmit}>
-                <input type="text" name="name" value={profileData.name} onChange={handleChange} required />
-                <input type="email" name="email" value={profileData.email} onChange={handleChange} required />
-                <input type="text" name="phone" value={profileData.phone} onChange={handleChange} required />
+                <input type="text" name="name" value={profileData.name} onChange={handleChange} required placeholder="Full Name" />
+                <input type="email" name="email" value={profileData.email} onChange={handleChange} required placeholder="Email" />
+                <input type="text" name="phone" value={profileData.phone} onChange={handleChange} required placeholder="Phone Number" />
                 <button type="submit">Update Profile</button>
             </form>
         </div>

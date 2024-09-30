@@ -18,6 +18,11 @@
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+.verification-container input:focus {
+    border-color: #007BFF;
 }
 
 .verification-container button {
@@ -27,7 +32,7 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
 .verification-container button:hover {

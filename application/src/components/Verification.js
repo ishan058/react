@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { resendVerificationEmail } from '../actions/authActions'; // Create this action
-import '../styles/Verification.css'; // Create corresponding CSS
+import { resendVerificationEmail } from '../actions/authActions'; // Ensure this action exists
+import '../styles/Verification.css';
 
 const Verification = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
 
     const handleResend = () => {
-        dispatch(resendVerificationEmail(email)); // Dispatch action to resend verification email
+        dispatch(resendVerificationEmail(email));
     };
 
     return (

@@ -23,6 +23,11 @@
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
+  transition: border-color 0.3s;
+}
+
+.profile-container input:focus {
+  border-color: #007BFF;
 }
 
 .profile-container button {
@@ -32,7 +37,7 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .profile-container button:hover {
