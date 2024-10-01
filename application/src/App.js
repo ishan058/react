@@ -1,10 +1,11 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
-import { AuthProvider, useAuth } from './AuthContext';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminLogin from './pages/AdminLogin'; // Import the new AdminLogin component
+import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute component
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
@@ -15,43 +16,36 @@ import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
 import Register from './components/Register';
 import OrderHistory from './components/OrderHistory';
-import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import './styles/App.css';
-
-const PrivateRoute = ({ children, allowedRoles }) => {
-    const { user } = useAuth();
-    return user && allowedRoles.includes(user.role) ? children : <Navigate to="/login" />;
-};
 
 const App = () => {
     return (
         <Provider store={store}>
-            <AuthProvider>
-                <Router>
-                    <div className="app-container">
-                        <Header />
-                        <div className="main-content">
-                            <Sidebar />
-                            <div className="content">
-                                <Routes>
-                                    <Route path="/" element={<Home />} />
-                                    <Route path="/products" element={<ProductList />} />
-                                    <Route path="/admin" element={<PrivateRoute allowedRoles={['admin']}><AdminDashboard /></PrivateRoute>} />
-                                    <Route path="/login" element={<Login />} />
-                                    <Route path="/profile" element={<Profile />} />
-                                    <Route path="/user-profile/:userId" element={<UserProfile />} />
-                                    <Route path="/product/:productId" element={<ProductDetail />} />
-                                    <Route path="/cart" element={<Cart />} />
-                                    <Route path="/register" element={<Register />} />
-                                    <Route path="/order-history" element={<OrderHistory />} />
-                                    <Route path="*" element={<NotFound />} />
-                                </Routes>
-                            </div>
-                        </div>
-                    </div>
-                </Router>
-            </AuthProvider>
+            <Router>
+                <div>
+                    <Header />
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/products" element={<ProductList />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/admin-login" element={<AdminLogin />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/user-profile/:userId" element={<UserProfile />} />
+                        <Route path="/product/:productId" element={<ProductDetail />} />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/order-history" element={<OrderHistory />} />
+                        {/* Protect Admin Route */}
+                        <Route path="/admin" element={
+                            <ProtectedRoute>
+                                <AdminDashboard />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </div>
+            </Router>
         </Provider>
     );
 };

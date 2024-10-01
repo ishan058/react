@@ -1,20 +1,30 @@
+// src/components/Navbar.js
 import React from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/Navbar.css'; // Updated path to the styles directory
+import { FaBell, FaUserCircle } from 'react-icons/fa';
+import '../styles/Navbar.css';
 
-function Navbar() {
-  return (
-    <nav className="navbar">
-      <h1 className="navbar-logo">Siyodhago</h1>
-      <ul className="navbar-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/cart">Cart</Link></li>
-        <li><Link to="/profile">Profile</Link></li>
-        <li><Link to="/login">Login</Link></li>
-        <li><Link to="/signup">Signup</Link></li>
-      </ul>
-    </nav>
-  );
-}
+const Navbar = () => {
+    return (
+        <div className="navbar">
+            <div className="navbar-left">
+                <h2>Admin Dashboard</h2>
+            </div>
+            <div className="navbar-right">
+                <div className="navbar-icon">
+                    <FaBell />
+                    <span className="badge">3</span>
+                </div>
+                <div className="navbar-profile">
+                    <FaUserCircle className="profile-icon" />
+                    <div className="profile-dropdown">
+                        <p>Admin Profile</p>
+                        <p>Settings</p>
+                        <p>Logout</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default Navbar;
