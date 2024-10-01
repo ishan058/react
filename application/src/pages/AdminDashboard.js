@@ -1,9 +1,8 @@
 // src/pages/AdminDashboard.js
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Admin.css'; // Include your refined CSS here
-import { fetchUsers, fetchOrders, fetchProducts } from '../api'; // Ensure this matches your file structure
+import { fetchUsers, fetchOrders, fetchProducts } from '../api'; // Replace with actual API calls
 import Chart from 'react-apexcharts';
 
 const AdminDashboard = () => {
@@ -11,34 +10,49 @@ const AdminDashboard = () => {
     const [orders, setOrders] = useState([]);
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [chartData, setChartData] = useState({ series: [] });
+    const [error, setError] = useState('');
+    const [chartData, setChartData] = useState({
+        series: [
+            { name: 'Users', data: [] },
+            { name: 'Orders', data: [] }
+        ],
+    });
 
     useEffect(() => {
         const getData = async () => {
-            const usersData = await fetchUsers();
-            const ordersData = await fetchOrders();
-            const productsData = await fetchProducts();
-            setUsers(usersData);
-            setOrders(ordersData);
-            setProducts(productsData);
-            setLoading(false);
-            setChartData({
-                series: [
-                    {
-                        name: 'Users',
-                        data: usersData.map(user => user.signupDate), // Modify based on your data structure
-                    },
-                    {
-                        name: 'Orders',
-                        data: ordersData.map(order => order.date), // Modify based on your data structure
-                    }
-                ],
-            });
+            try {
+                const usersData = await fetchUsers();
+                const ordersData = await fetchOrders();
+                const productsData = await fetchProducts();
+
+                setUsers(usersData);
+                setOrders(ordersData);
+                setProducts(productsData);
+
+                // Assuming your data structure has properties that hold values for the chart
+                setChartData({
+                    series: [
+                        {
+                            name: 'Users',
+                            data: usersData.map(user => user.signupCount || 0), // Provide default value
+                        },
+                        {
+                            name: 'Orders',
+                            data: ordersData.map(order => order.totalCount || 0), // Provide default value
+                        }
+                    ],
+                });
+            } catch (err) {
+                setError('Failed to fetch data');
+            } finally {
+                setLoading(false);
+            }
         };
         getData();
     }, []);
 
     if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
 
     return (
         <div className="admin-dashboard">
@@ -76,6 +90,7 @@ const AdminDashboard = () => {
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,6 +100,9 @@ const AdminDashboard = () => {
                                 <td>{user.email}</td>
                                 <td>{user.phone}</td>
                                 <td>{user.active ? 'Active' : 'Inactive'}</td>
+                                <td>
+                                    <Link to={`/admin/users/edit/${user.id}`} className="edit-button">Edit</Link>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

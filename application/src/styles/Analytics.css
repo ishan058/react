@@ -1,0 +1,13 @@
+/* src/styles/Analytics.css */
+.analytics {
+    margin: 20px;
+}
+
+.analytics h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.analytics .apexcharts-canvas {
+    max-width: 100%;
+}

@@ -1,15 +1,10 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
-
-// Import pages from the pages folder
+import { AuthProvider, useAuth } from './AuthContext'; // Import AuthContext
 import AdminDashboard from './pages/AdminDashboard';
-import UserManagement from './pages/UserManagement';
-import ProductManagement from './pages/ProductManagement';
-import OrderManagement from './pages/OrderManagement';
-import Analytics from './pages/Analytics';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
@@ -21,33 +16,36 @@ import Cart from './components/Cart';
 import Register from './components/Register';
 import OrderHistory from './components/OrderHistory';
 import Header from './components/Header';
-import './styles/App.css';  // Updated import path
+import './styles/App.css';
+
+const PrivateRoute = ({ children }) => {
+    const { isAdmin } = useAuth(); // Get isAdmin from Auth context
+    return isAdmin() ? children : <Navigate to="/login" />; // Redirect if not admin
+};
 
 const App = () => {
     return (
         <Provider store={store}>
-            <Router>
-                <div>
-                    <Header />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/products" element={<ProductList />} />
-                        <Route path="/admin" element={<AdminDashboard />} />
-                        <Route path="/admin/users" element={<UserManagement />} />
-                        <Route path="/admin/products" element={<ProductManagement />} />
-                        <Route path="/admin/orders" element={<OrderManagement />} />
-                        <Route path="/admin/analytics" element={<Analytics />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/user-profile/:userId" element={<UserProfile />} />
-                        <Route path="/product/:productId" element={<ProductDetail />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/order-history" element={<OrderHistory />} />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </div>
-            </Router>
+            <AuthProvider> {/* Wrap with AuthProvider */}
+                <Router>
+                    <div>
+                        <Header />
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/products" element={<ProductList />} />
+                            <Route path="/admin" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} /> {/* Protect Admin route */}
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/profile" element={<Profile />} />
+                            <Route path="/user-profile/:userId" element={<UserProfile />} />
+                            <Route path="/product/:productId" element={<ProductDetail />} />
+                            <Route path="/cart" element={<Cart />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route path="/order-history" element={<OrderHistory />} />
+                            <Route path="*" element={<NotFound />} />
+                        </Routes>
+                    </div>
+                </Router>
+            </AuthProvider>
         </Provider>
     );
 };

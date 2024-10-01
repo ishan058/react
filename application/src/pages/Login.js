@@ -1,64 +1,45 @@
+// src/pages/Login.js
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';  // Assuming you have this context in `context/AuthContext.js`
-import { Link, useNavigate } from 'react-router-dom';
-import '../styles/Login.css';  // Ensure the CSS path is correct
+import { useAuth } from '../AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const { login } = useAuth();  // Using the `useAuth` hook to access the login function
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-    try {
-      await login(email, password);
-      navigate('/');  // Redirect to the homepage on successful login
-    } catch (err) {
-      setError('Failed to log in. Please check your credentials.');
-    }
-  };
+        // Mock authentication process
+        const userData = { email, role: 'admin' }; // Assume logged-in user is an admin
+        login(userData); // Set user data in context
+        navigate('/admin'); // Redirect to Admin Dashboard
+    };
 
-  return (
-    <div className="login-page">
-      <div className="login-container">
-        <h2 className="login-title">Login</h2>
-        {error && <div className="login-error">{error}</div>}
-        <form onSubmit={handleLogin} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          <button type="submit" className="login-button">Log In</button>
-        </form>
-        <div className="login-footer">
-          <span>Don't have an account? </span>
-          <Link to="/register">Register here</Link>
+    return (
+        <div>
+            <h2>Login</h2>
+            <form onSubmit={handleSubmit}>
+                <input 
+                    type="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                    placeholder="Email" 
+                    required 
+                />
+                <input 
+                    type="password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    placeholder="Password" 
+                    required 
+                />
+                <button type="submit">Login</button>
+            </form>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Login;

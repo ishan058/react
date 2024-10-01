@@ -1,0 +1,35 @@
+/* src/styles/UserManagement.css */
+.user-management {
+    margin: 20px;
+}
+
+.user-management h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.user-management table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.user-management th, .user-management td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.user-management th {
+    background-color: #f4f4f4;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination .active {
+    font-weight: bold;
+    text-decoration: underline;
+}

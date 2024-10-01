@@ -1,38 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/ProductList.css';
+// src/components/ProductList.js
+import React from 'react';
+import '../styles/ProductList.css'; // Import your CSS for styling
 
-const ProductList = ({ products }) => {
-    const [filteredProducts, setFilteredProducts] = useState(products);
-    const [sortOption, setSortOption] = useState('none');
-
-    useEffect(() => {
-        let sortedProducts = [...products];
-        if (sortOption === 'price-low-high') {
-            sortedProducts.sort((a, b) => a.price - b.price);
-        } else if (sortOption === 'price-high-low') {
-            sortedProducts.sort((a, b) => b.price - a.price);
-        }
-        setFilteredProducts(sortedProducts);
-    }, [sortOption, products]);
-
+const ProductList = ({ products, deleteProduct }) => {
     return (
-        <div className="product-list-container">
-            <div className="product-filters">
-                <select onChange={(e) => setSortOption(e.target.value)}>
-                    <option value="none">Sort by</option>
-                    <option value="price-low-high">Price: Low to High</option>
-                    <option value="price-high-low">Price: High to Low</option>
-                </select>
-            </div>
-            <div className="product-grid">
-                {filteredProducts.map((product) => (
-                    <div key={product.id} className="product-card">
-                        <img src={product.image} alt={product.name} />
-                        <h3>{product.name}</h3>
-                        <p>${product.price}</p>
-                    </div>
-                ))}
-            </div>
+        <div className="product-list">
+            <h2>Product List</h2>
+            {products.length === 0 ? (
+                <p>No products added yet.</p>
+            ) : (
+                <ul>
+                    {products.map((product, index) => (
+                        <li key={index}>
+                            <img src={product.image} alt={product.name} width="50" height="50" />
+                            <h3>{product.name}</h3>
+                            <p>Price: ${product.price}</p>
+                            <p>{product.description}</p>
+                            <button onClick={() => deleteProduct(index)}>Delete</button>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
