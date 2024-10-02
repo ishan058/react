@@ -15,9 +15,10 @@ import Home from './pages/Home';
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
-import Register from './components/Register';
+import Register from './pages/Register';
 import OrderHistory from './components/OrderHistory';
 import Header from './components/Header';
+import PasswordRecovery from './pages/PasswordRecovery';
 import './styles/App.css';
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
                             <Route path="/cart" element={<Cart />} />
                             <Route path="/register" element={<Register />} />
                             <Route path="/order-history" element={<OrderHistory />} />
+                            <Route path="/password-recovery" element={<PasswordRecovery />} />
                             <Route path="/admin" element={
                                 <ProtectedRoute>
                                     <AdminDashboard />

@@ -1,95 +1,103 @@
-/* src/assets/styles/components/Login.css */
+/* src/styles/Login.css */
 
-.login-page {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-  }
-  
-  .login-container {
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    max-width: 100%;
-  }
-  
-  .login-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #333;
-  }
-  
-  .login-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    margin-bottom: 5px;
-    display: block;
-    font-weight: 600;
-    color: #555;
-  }
-  
-  .form-group input {
-    padding: 10px;
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-  }
-  
-  .form-group input:focus {
-    border-color: #f6d365;
-    outline: none;
-  }
-  
-  .login-button {
-    padding: 15px;
-    background: #fda085;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .login-button:hover {
-    background: #f6d365;
-  }
-  
-  .login-footer {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .login-footer a {
-    color: #fda085;
-    text-decoration: none;
-    font-weight: 600;
-  }
-  
-  .login-footer a:hover {
-    text-decoration: underline;
-  }
-  
-  .login-error {
-    background: #ffdddd;
-    padding: 10px;
-    border-radius: 5px;
-    color: #d8000c;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Clean, modern font */
+  background-color: #e9ecef; /* Light gray background for the whole page */
+  margin: 0;
+  padding: 0;
+}
+
+/* Container for the login form */
+.login-container {
+  width: 90%; /* Responsive width */
+  max-width: 400px; /* Max width for larger screens */
+  margin: auto; /* Center the container */
+  padding: 30px; /* Inner spacing */
+  border-radius: 8px; /* Rounded corners */
+  background-color: #ffffff; /* White background for form */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+  transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+}
+
+/* Add hover effect on the container */
+.login-container:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+}
+
+h2 {
+  text-align: center; /* Center align the heading */
+  margin-bottom: 20px; /* Space below the heading */
+  font-size: 24px; /* Font size for the heading */
+  color: #343a40; /* Dark gray color for the heading */
+}
+
+/* Styles for the form groups */
+.form-group {
+  margin-bottom: 20px; /* Space between form groups */
+}
+
+.input-field {
+  width: 100%; /* Full width input field */
+  padding: 12px 15px; /* Inner spacing for input */
+  border: 1px solid #ced4da; /* Light gray border */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 16px; /* Font size for input text */
+  transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.input-field:focus {
+  border-color: #007bff; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+}
+
+/* Style for the password visibility icon */
+.password-group {
+  position: relative; /* Positioning for the icon */
+}
+
+/* Style for the visibility toggle icon */
+.password-toggle {
+  position: absolute; /* Positioning within the input */
+  right: 10px; /* Position from the right */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust for vertical centering */
+  cursor: pointer; /* Pointer cursor on hover */
+  color: #007bff; /* Icon color */
+}
+
+/* Button styles */
+.login-button {
+  width: 100%; /* Full width button */
+  padding: 12px; /* Inner spacing for button */
+  background-color: #007bff; /* Primary button color */
+  color: #ffffff; /* White text color */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 16px; /* Font size for button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth background transition */
+}
+
+.login-button:hover {
+  background-color: #0056b3; /* Darker color on hover */
+}
+
+.register-link {
+  text-align: center; /* Center align registration link */
+  margin-top: 15px; /* Space above the link */
+  font-size: 14px; /* Font size for the link */
+}
+
+/* Error message styling */
+.error-message {
+  color: #dc3545; /* Red color for error messages */
+  text-align: center; /* Center align error messages */
+  margin-top: 10px; /* Space above error messages */
+}
+
+/* Success message styling */
+.success-message {
+  color: #28a745; /* Green color for success messages */
+  text-align: center; /* Center align success messages */
+  margin-top: 10px; /* Space above success messages */
+}
