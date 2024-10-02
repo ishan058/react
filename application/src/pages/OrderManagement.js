@@ -1,12 +1,16 @@
 // src/pages/OrderManagement.js
-import React from 'react';
+import React, { useState } from 'react';
+import '../styles/Admin.css';
 
 const OrderManagement = () => {
-    // Sample order data
-    const orders = [
+    const [orders, setOrders] = useState([
         { id: 1, user: 'John Doe', total: '$50', status: 'Shipped' },
         { id: 2, user: 'Jane Smith', total: '$75', status: 'Pending' },
-    ];
+    ]);
+
+    const handleCancel = (id) => {
+        setOrders(orders.filter(order => order.id !== id));
+    };
 
     return (
         <div className="order-management">
@@ -30,7 +34,7 @@ const OrderManagement = () => {
                             <td>{order.status}</td>
                             <td>
                                 <button>View</button>
-                                <button>Cancel</button>
+                                <button onClick={() => handleCancel(order.id)}>Cancel</button>
                             </td>
                         </tr>
                     ))}

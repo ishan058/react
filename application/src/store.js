@@ -1,12 +1,15 @@
 // src/store.js
-import { createStore, applyMiddleware } from 'redux';
-import { thunk } from 'redux-thunk'; // Correct way to import thunk
-import rootReducer from './reducers'; // Ensure this is pointing to your rootReducer
+import { configureStore } from '@reduxjs/toolkit';
+import authReducer from './slices/authSlice'; // Import your auth slice
+import rootReducer from './reducers'; // Ensure this is pointing to your rootReducer file
 
-// Create the Redux store with thunk middleware
-const store = createStore(
-    rootReducer,
-    applyMiddleware(thunk) // Applying the thunk middleware
-);
+// Create the Redux store using configureStore from Redux Toolkit
+const store = configureStore({
+    reducer: {
+        auth: authReducer, // Include the auth slice reducer
+        ...rootReducer,    // Spread the rootReducer to include all other reducers
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(), // Default middleware from Redux Toolkit
+});
 
-export default store; // Default export
+export default store;
