@@ -2,19 +2,22 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useAdminAuth } from '../contexts/AdminAuthContext'; // Correctly import `useAdminAuth`
 
-// ProtectedRoute component
 const ProtectedRoute = ({ children }) => {
-    // Access the authentication state from the Redux store
-    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    const { admin, loading } = useAdminAuth(); // Use `useAdminAuth` to access admin auth state
+    const isReduxAuthenticated = useSelector((state) => state.auth.isAuthenticated); // Check Redux authentication state
 
-    // If the user is not authenticated, redirect them to the admin login page
-    if (!isAuthenticated) {
-        return <Navigate to="/admin-login" />;
+    // Show loading indicator while checking admin auth status
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
-    // If authenticated, render the children components (the protected routes)
-    return children;
+    // Determine if the user is authenticated
+    const isAuthenticated = admin || isReduxAuthenticated;
+
+    // Redirect if not authenticated as admin
+    return isAuthenticated ? children : <Navigate to="/admin-login" />;
 };
 
 export default ProtectedRoute;
