@@ -1,18 +1,39 @@
 // src/api.js
 const API_URL = 'https://your-api-url.com/api'; // Replace with your actual API URL
 
+// Fetch all users
 export const fetchUsers = async () => {
     const response = await fetch(`${API_URL}/users`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
     return response.json();
 };
 
+// Fetch all orders
 export const fetchOrders = async () => {
     const response = await fetch(`${API_URL}/orders`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
     return response.json();
 };
 
+// Fetch all products for users
 export const fetchProducts = async () => {
     const response = await fetch(`${API_URL}/products`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+};
+
+// Fetch admin products
+export const fetchAdminProducts = async () => {
+    const response = await fetch(`${API_URL}/admin/products`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
     return response.json();
 };
 

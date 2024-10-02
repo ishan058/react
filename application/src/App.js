@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store'; // Ensure you import the store from the correct path
-import { AuthProvider } from './contexts/AuthContext'; // Fixed to 'contexts' (ensure the directory structure is correct)
+import { AuthProvider } from './contexts/AuthContext'; // Ensure the directory structure is correct
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -17,8 +17,10 @@ import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
 import Register from './pages/Register';
 import OrderHistory from './components/OrderHistory';
-import Header from './components/Header';
 import PasswordRecovery from './pages/PasswordRecovery';
+import AdminProducts from './pages/AdminProducts'; // Import AdminProducts
+import UserProducts from './pages/UserProducts'; // Import UserProducts
+import Header from './components/Header';
 import './styles/App.css';
 
 const App = () => {
@@ -31,6 +33,12 @@ const App = () => {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/products" element={<ProductList />} />
+                            <Route path="/user-products" element={<UserProducts />} />
+                            <Route path="/admin-products" element={
+                                <ProtectedRoute>
+                                    <AdminProducts />
+                                </ProtectedRoute>
+                            } />
                             <Route path="/login" element={<Login />} />
                             <Route path="/admin-login" element={<AdminLogin />} />
                             <Route path="/profile" element={<Profile />} />

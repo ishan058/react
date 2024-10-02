@@ -1,9 +1,9 @@
-// src/pages/Home.js
+// src/pages/UserProducts.js
 import React, { useState, useEffect } from 'react';
 import { fetchProducts } from '../api'; // Import the fetch function
-import '../styles/Home.css'; // Import CSS styles
+import '../styles/UserProducts.css'; // Import CSS styles
 
-const Home = () => {
+const UserProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null); // State for error handling
@@ -11,7 +11,7 @@ const Home = () => {
     useEffect(() => {
         const getProducts = async () => {
             try {
-                const data = await fetchProducts();
+                const data = await fetchProducts(); // Fetch all products for users
                 setProducts(data);
             } catch (error) {
                 setError('Failed to load products.');
@@ -23,8 +23,8 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="home">
-            <h1>Welcome to Our Store</h1>
+        <div className="user-products">
+            <h1>User Products</h1>
             {loading && <p>Loading products...</p>}
             {error && <p className="error">{error}</p>}
             <div className="product-list">
@@ -42,4 +42,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default UserProducts;
