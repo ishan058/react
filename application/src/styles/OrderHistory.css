@@ -1,0 +1,29 @@
+/* src/styles/OrderHistory.css */
+.order-history {
+    padding: 20px;
+}
+
+.order-history h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.order-history ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.order-history li {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .user-profile, .product-list, .order-history {
+        padding: 10px;
+    }
+    .user-profile input, .product-list ul li {
+        width: 100%;
+    }
+}

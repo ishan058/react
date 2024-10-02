@@ -1,28 +1,35 @@
 // src/components/OrderHistory.js
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { fetchOrderHistory } from '../api'; // Import the correct function
+import '../styles/OrderHistory.css';
 
-const OrderHistory = () => {
-    const orders = useSelector((state) => state.orders);
+const OrderHistory = ({ userId }) => {
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const getOrderHistory = async () => {
+            const orderData = await fetchOrderHistory(userId);
+            setOrders(orderData);
+            setLoading(false);
+        };
+        getOrderHistory();
+    }, [userId]);
+
+    if (loading) return <p>Loading...</p>;
 
     return (
-        <div>
-            <h2>Order History</h2>
-            {orders.length === 0 ? (
-                <p>No orders found.</p>
-            ) : (
-                orders.map((order, index) => (
-                    <div key={index}>
-                        <h3>Order #{index + 1}</h3>
-                        {order.items.map(item => (
-                            <div key={item.id}>
-                                <p>{item.name} - ${item.price}</p>
-                            </div>
-                        ))}
-                        <h4>Total: ${order.total}</h4>
-                    </div>
-                ))
-            )}
+        <div className="order-history">
+            <h2>Your Order History</h2>
+            <ul>
+                {orders.map(order => (
+                    <li key={order.id}>
+                        <h3>Order ID: {order.id}</h3>
+                        <p>Status: {order.status}</p>
+                        <p>Total: ${order.total}</p>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

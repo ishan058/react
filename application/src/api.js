@@ -1,25 +1,50 @@
 // src/api.js
-
-export const fetchProducts = async () => {
-    // Replace with your actual API call to fetch products
-    return [
-        { id: 1, name: 'Product 1', price: 100 },
-        { id: 2, name: 'Product 2', price: 200 },
-    ];
-};
+const API_URL = 'https://your-api-url.com/api'; // Replace with your actual API URL
 
 export const fetchUsers = async () => {
-    // Replace with your actual API call to fetch users
-    return [
-        { id: 1, name: 'John Doe', email: 'john@example.com', phone: '1234567890', active: true, signupDate: '2024-01-01' },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '0987654321', active: false, signupDate: '2024-02-01' },
-    ];
+    const response = await fetch(`${API_URL}/users`);
+    return response.json();
 };
 
 export const fetchOrders = async () => {
-    // Replace with your actual API call to fetch orders
-    return [
-        { id: 1, userName: 'John Doe', total: 150, status: 'Completed', date: '2024-01-10' },
-        { id: 2, userName: 'Jane Smith', total: 200, status: 'Pending', date: '2024-02-15' },
-    ];
+    const response = await fetch(`${API_URL}/orders`);
+    return response.json();
+};
+
+export const fetchProducts = async () => {
+    const response = await fetch(`${API_URL}/products`);
+    return response.json();
+};
+
+// Fetch a user's profile by user ID
+export const fetchUserProfile = async (userId) => {
+    const response = await fetch(`${API_URL}/users/${userId}`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+};
+
+// Update a user's profile
+export const updateUserProfile = async (userId, userData) => {
+    const response = await fetch(`${API_URL}/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+    });
+    if (!response.ok) {
+        throw new Error('Failed to update user profile');
+    }
+    return response.json();
+};
+
+// Fetch order history for a user by user ID
+export const fetchOrderHistory = async (userId) => {
+    const response = await fetch(`${API_URL}/users/${userId}/orders`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
 };

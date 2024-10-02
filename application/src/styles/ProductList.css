@@ -1,7 +1,11 @@
-/* src/components/ProductList.css */
-
+/* src/styles/ProductList.css */
 .product-list {
-    margin: 20px;
+    padding: 20px;
+}
+
+.product-list h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 .product-list ul {
@@ -10,27 +14,16 @@
 }
 
 .product-list li {
-    padding: 10px;
+    margin-bottom: 15px;
     border: 1px solid #ddd;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
+    padding: 10px;
 }
 
-.product-list img {
-    margin-right: 10px;
+.product-list .pagination {
+    margin-top: 20px;
 }
 
-.product-list button {
-    margin-left: auto;
+.product-list .pagination button {
+    margin-right: 5px;
     padding: 5px 10px;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.product-list button:hover {
-    background-color: #c82333;
 }

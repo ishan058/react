@@ -1,26 +1,48 @@
 // src/components/ProductList.js
-import React from 'react';
-import '../styles/ProductList.css'; // Import your CSS for styling
+import React, { useEffect, useState } from 'react';
+import { fetchProducts } from '../api'; // Assuming you have this API call
+import '../styles/ProductList.css';
 
-const ProductList = ({ products, deleteProduct }) => {
+const ProductList = () => {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 10; // Adjust based on your requirements
+
+    useEffect(() => {
+        const getProducts = async () => {
+            const productsData = await fetchProducts();
+            setProducts(productsData);
+            setLoading(false);
+        };
+        getProducts();
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+
+    const totalPages = Math.ceil(products.length / productsPerPage);
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
     return (
         <div className="product-list">
             <h2>Product List</h2>
-            {products.length === 0 ? (
-                <p>No products added yet.</p>
-            ) : (
-                <ul>
-                    {products.map((product, index) => (
-                        <li key={index}>
-                            <img src={product.image} alt={product.name} width="50" height="50" />
-                            <h3>{product.name}</h3>
-                            <p>Price: ${product.price}</p>
-                            <p>{product.description}</p>
-                            <button onClick={() => deleteProduct(index)}>Delete</button>
-                        </li>
-                    ))}
-                </ul>
-            )}
+            <ul>
+                {currentProducts.map(product => (
+                    <li key={product.id}>
+                        <h3>{product.name}</h3>
+                        <p>Price: ${product.price}</p>
+                    </li>
+                ))}
+            </ul>
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
+                        {i + 1}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 };
