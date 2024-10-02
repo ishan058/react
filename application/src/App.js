@@ -17,6 +17,8 @@ import Cart from './components/Cart';
 import Register from './components/Register';
 import OrderHistory from './components/OrderHistory';
 import Header from './components/Header';
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css';  // Import react-toastify CSS
 import './styles/App.css';
 
 const App = () => {
@@ -44,6 +46,18 @@ const App = () => {
                         } />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
+                    {/* Add ToastContainer globally to the App */}
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={true}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
                 </div>
             </Router>
         </Provider>

@@ -1,35 +1,38 @@
 /* src/styles/UserManagement.css */
 .user-management {
-    margin: 20px;
+    padding: 20px;
 }
 
-.user-management h2 {
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.user-management table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.user-management th, .user-management td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-.user-management th {
-    background-color: #f4f4f4;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
+.edit-user-form {
     margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
 }
 
-.pagination .active {
-    font-weight: bold;
-    text-decoration: underline;
+.edit-user-form h3 {
+    margin-bottom: 15px;
+}
+
+.edit-user-form input {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.edit-user-form button {
+    margin-right: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-user-form button:hover {
+    background-color: #0056b3;
 }

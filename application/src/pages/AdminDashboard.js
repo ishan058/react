@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import { fetchUsers, fetchOrders, fetchProducts } from '../api';
 import '../styles/AdminDashboard.css';
 
+
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [orders, setOrders] = useState([]);

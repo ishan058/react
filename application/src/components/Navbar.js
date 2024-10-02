@@ -1,29 +1,26 @@
 // src/components/Navbar.js
 import React from 'react';
-import { FaBell, FaUserCircle } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
 
 const Navbar = () => {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('isAdminAuthenticated'); // Clear authentication
+        navigate('/admin-login'); // Redirect to login page
+    };
+
     return (
-        <div className="navbar">
-            <div className="navbar-left">
-                <h2>Admin Dashboard</h2>
+        <nav className="navbar">
+            <h1>Admin Dashboard</h1>
+            <div className="nav-links">
+                <Link to="/admin/users">Users</Link>
+                <Link to="/admin/products">Products</Link>
+                <Link to="/admin/orders">Orders</Link>
+                <button className="logout-button" onClick={handleLogout}>Logout</button>
             </div>
-            <div className="navbar-right">
-                <div className="navbar-icon">
-                    <FaBell />
-                    <span className="badge">3</span>
-                </div>
-                <div className="navbar-profile">
-                    <FaUserCircle className="profile-icon" />
-                    <div className="profile-dropdown">
-                        <p>Admin Profile</p>
-                        <p>Settings</p>
-                        <p>Logout</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </nav>
     );
 };
 
