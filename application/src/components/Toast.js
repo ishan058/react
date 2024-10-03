@@ -1,6 +1,6 @@
 // src/components/Toast.js
 import React from 'react';
-import './Toast.css';
+import '../styles/Toast.css';
 
 const Toast = ({ message, type }) => {
     return (

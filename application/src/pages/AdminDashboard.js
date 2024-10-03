@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar';
 import ProductForm from '../components/ProductForm';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Toast from '../components/Toast';
-import { fetchUsers, fetchOrders, fetchProducts } from '../utils/api';
+import { fetchUsers, fetchOrders, fetchProducts } from '../api';
 import '../styles/AdminDashboard.css';
 
 const AdminDashboard = () => {
