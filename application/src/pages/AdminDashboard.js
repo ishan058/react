@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 import Chart from 'react-apexcharts';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
-import { fetchUsers, fetchOrders, fetchProducts } from '../api';
+import ProductForm from '../components/ProductForm';
+import LoadingSpinner from '../components/LoadingSpinner';
+import Toast from '../components/Toast';
+import { fetchUsers, fetchOrders, fetchProducts } from '../utils/api';
 import '../styles/AdminDashboard.css';
-
 
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
@@ -14,20 +16,22 @@ const AdminDashboard = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [chartData, setChartData] = useState({ series: [], options: {} });
+    const [isEditing, setIsEditing] = useState(false);
+    const [editProductId, setEditProductId] = useState(null);
+    const [notification, setNotification] = useState({ message: '', type: '' });
 
+    // Load data for users, orders, and products
     useEffect(() => {
         const getData = async () => {
+            setLoading(true);
             try {
-                // Fetch data from API (ensure your API calls are defined in `../api`)
                 const usersData = await fetchUsers();
                 const ordersData = await fetchOrders();
                 const productsData = await fetchProducts();
 
-                // Set state with the fetched data
                 setUsers(usersData);
                 setOrders(ordersData);
                 setProducts(productsData);
-                setLoading(false);
 
                 // Set up chart data for ApexCharts
                 setChartData({
@@ -58,16 +62,42 @@ const AdminDashboard = () => {
                         },
                     },
                 });
+
+                setLoading(false);
             } catch (error) {
-                console.error('Error fetching data:', error);
-                setLoading(false); // Stop loading on error
+                setNotification({ message: error.message, type: 'error' });
+                setLoading(false);
             }
         };
         getData();
     }, []);
 
+    const handleEdit = (productId) => {
+        setEditProductId(productId);
+        setIsEditing(true);
+    };
+
+    const handleSuccess = () => {
+        setEditProductId(null);
+        setIsEditing(false);
+        setNotification({ message: 'Product saved successfully!', type: 'success' });
+        // Reload products
+        const loadProducts = async () => {
+            setLoading(true);
+            try {
+                const data = await fetchProducts();
+                setProducts(data);
+            } catch (error) {
+                setNotification({ message: error.message, type: 'error' });
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadProducts();
+    };
+
     // Display a loading indicator while data is being fetched
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <LoadingSpinner />;
 
     return (
         <div className="admin-dashboard">
@@ -78,14 +108,12 @@ const AdminDashboard = () => {
                 <Navbar />
                 <div className="dashboard-content">
                     <h1>Welcome to Admin Dashboard</h1>
+
+                    {notification.message && <Toast message={notification.message} type={notification.type} />}
+
                     {/* Chart for Data Trends */}
                     <div className="chart-container">
-                        <Chart
-                            options={chartData.options}
-                            series={chartData.series}
-                            type="line"
-                            height="350"
-                        />
+                        <Chart options={chartData.options} series={chartData.series} type="line" height="350" />
                     </div>
 
                     {/* User Management Table */}
@@ -136,6 +164,27 @@ const AdminDashboard = () => {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+
+                    {/* Product Management Section */}
+                    <div className="table-container">
+                        <h2>Product Management</h2>
+                        {isEditing ? (
+                            <ProductForm productId={editProductId} onSuccess={handleSuccess} />
+                        ) : (
+                            <>
+                                <ProductForm onSuccess={handleSuccess} />
+                                <h2>Product List</h2>
+                                <ul>
+                                    {products.map((product) => (
+                                        <li key={product.id}>
+                                            {product.name} - ${product.price}
+                                            <button onClick={() => handleEdit(product.id)}>Edit</button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
