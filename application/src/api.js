@@ -69,3 +69,16 @@ export const fetchOrderHistory = async (userId) => {
     }
     return response.json();
 };
+
+// Fetch user's wishlist
+export const fetchWishlist = async (userId) => {
+    const response = await fetch(`/api/wishlist?user=${userId}`);
+    return response.json();
+};
+
+// Remove an item from the wishlist
+export const removeFromWishlist = async (productId) => {
+    await fetch(`/api/wishlist/${productId}`, {
+        method: 'DELETE',
+    });
+};
