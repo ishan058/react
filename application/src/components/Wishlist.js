@@ -1,27 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { fetchWishlist, removeFromWishlist } from '../utils/api';
 import { Link } from 'react-router-dom';
 import '../styles/Wishlist.css';
 
-const Wishlist = ({ wishlistItems, removeFromWishlist }) => {
+const Wishlist = () => {
+    const { currentUser } = useAuth();
+    const [wishlist, setWishlist] = useState([]);
+
+    useEffect(() => {
+        if (currentUser) {
+            const loadWishlist = async () => {
+                const items = await fetchWishlist(currentUser.id);
+                setWishlist(items);
+            };
+            loadWishlist();
+        }
+    }, [currentUser]);
+
+    const handleRemove = async (productId) => {
+        await removeFromWishlist(productId);
+        setWishlist(wishlist.filter(item => item.id !== productId));
+    };
+
     return (
-        <div className="wishlist-container">
-            <h2>My Wishlist</h2>
-            {wishlistItems.length ? (
-                <div className="wishlist-grid">
-                    {wishlistItems.map((item) => (
-                        <div key={item.id} className="wishlist-item">
-                            <img src={item.image} alt={item.name} />
-                            <h4>{item.name}</h4>
-                            <p className="price">${item.price}</p>
-                            <button onClick={() => removeFromWishlist(item.id)} className="remove-btn">
+        <div className="wishlist">
+            <h1>My Wishlist</h1>
+            {wishlist.length > 0 ? (
+                <ul>
+                    {wishlist.map((item) => (
+                        <li key={item.id} className="wishlist-item">
+                            <Link to={`/product/${item.id}`}>
+                                <img src={item.imageUrl} alt={item.name} />
+                                <p>{item.name}</p>
+                            </Link>
+                            <button onClick={() => handleRemove(item.id)} className="remove-btn">
                                 Remove
                             </button>
-                            <Link to={`/product/${item.id}`} className="view-btn">View Product</Link>
-                        </div>
+                        </li>
                     ))}
-                </div>
+                </ul>
             ) : (
-                <p>Your wishlist is empty!</p>
+                <p>Your wishlist is empty.</p>
             )}
         </div>
     );
