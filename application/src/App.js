@@ -26,6 +26,7 @@ import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
 import OrderHistory from './components/OrderHistory';
+import Wishlist from './pages/Wishlist'; 
 import './styles/App.css';
 
 const App = () => {
@@ -70,10 +71,11 @@ const App = () => {
                                 {/* User-Specific Routes */}
                                 <Route path="/profile" element={<Profile />} />
                                 <Route path="/order-history" element={<OrderHistory />} />
-
+                                <Route path="/wishlist" element={<Wishlist />} />
                                 {/* 404 Page */}
                                 <Route path="*" element={<NotFound />} />
                             </Routes>
+                                
                         </div>
                     </Router>
                 </AdminAuthProvider>
