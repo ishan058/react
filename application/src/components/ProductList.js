@@ -1,46 +1,47 @@
-// src/components/ProductList.js
-import React, { useEffect, useState } from 'react';
-import { fetchProducts } from '../api'; // Assuming you have this API call
+import React, { useState, useEffect } from 'react';
+import { fetchProducts } from '../utils/api';
+import SearchAndFilter from './SearchAndFilter';
+import ProductCard from './ProductCard';
 import '../styles/ProductList.css';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 10; // Adjust based on your requirements
+    const [filteredProducts, setFilteredProducts] = useState([]);
 
     useEffect(() => {
-        const getProducts = async () => {
-            const productsData = await fetchProducts();
-            setProducts(productsData);
-            setLoading(false);
+        const loadProducts = async () => {
+            const productData = await fetchProducts();
+            setProducts(productData);
+            setFilteredProducts(productData);
         };
-        getProducts();
+        loadProducts();
     }, []);
 
-    if (loading) return <p>Loading...</p>;
+    const handleSearch = (searchTerm) => {
+        const results = products.filter((product) =>
+            product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredProducts(results);
+    };
 
-    const totalPages = Math.ceil(products.length / productsPerPage);
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+    const handleFilter = ({ priceRange, category }) => {
+        let results = products;
+        if (category !== 'all') {
+            results = results.filter((product) => product.category === category);
+        }
+        if (priceRange !== 'all') {
+            const [min, max] = priceRange.split('-').map(Number);
+            results = results.filter((product) => product.price >= min && product.price <= max);
+        }
+        setFilteredProducts(results);
+    };
 
     return (
         <div className="product-list">
-            <h2>Product List</h2>
-            <ul>
-                {currentProducts.map(product => (
-                    <li key={product.id}>
-                        <h3>{product.name}</h3>
-                        <p>Price: ${product.price}</p>
-                    </li>
-                ))}
-            </ul>
-            <div className="pagination">
-                {Array.from({ length: totalPages }, (_, i) => (
-                    <button key={i + 1} onClick={() => setCurrentPage(i + 1)}>
-                        {i + 1}
-                    </button>
+            <SearchAndFilter onSearch={handleSearch} onFilter={handleFilter} />
+            <div className="products">
+                {filteredProducts.map((product) => (
+                    <ProductCard key={product.id} product={product} />
                 ))}
             </div>
         </div>
