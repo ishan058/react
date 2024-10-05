@@ -82,3 +82,8 @@ export const removeFromWishlist = async (productId) => {
         method: 'DELETE',
     });
 };
+
+export const fetchProductSuggestions = async (query) => {
+    const response = await fetch(`/api/products/suggestions?query=${query}`);
+    return response.json();
+};
