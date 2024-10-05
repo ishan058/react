@@ -162,3 +162,4 @@ export const recoverPassword = async (email) => {
         throw new Error('Error recovering password');
     }
 };
+

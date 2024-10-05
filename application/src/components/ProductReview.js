@@ -1,38 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { submitReview, fetchReviews } from '../utils/api';
 import '../styles/ProductReview.css';
 
-const ProductReview = () => {
-    const [reviews, setReviews] = useState([
-        { id: 1, user: 'Alice', comment: 'Great product!' },
-        { id: 2, user: 'Bob', comment: 'Satisfactory' },
-    ]);
+const ProductReview = ({ productId }) => {
+    const [reviews, setReviews] = useState([]);
     const [newReview, setNewReview] = useState('');
+    const [rating, setRating] = useState(0);
 
-    const handleAddReview = () => {
-        const newReviewObj = { id: reviews.length + 1, user: 'Guest', comment: newReview };
-        setReviews([...reviews, newReviewObj]);
+    useEffect(() => {
+        const loadReviews = async () => {
+            const productReviews = await fetchReviews(productId);
+            setReviews(productReviews);
+        };
+        loadReviews();
+    }, [productId]);
+
+    const handleReviewSubmit = async () => {
+        await submitReview({ productId, review: newReview, rating });
         setNewReview('');
+        setRating(0);
+        const updatedReviews = await fetchReviews(productId);
+        setReviews(updatedReviews);
     };
 
     return (
-        <div className="review-container">
+        <div className="reviews-container">
             <h3>Product Reviews</h3>
-            <ul>
-                {reviews.map((review) => (
-                    <li key={review.id}>
-                        <strong>{review.user}:</strong> {review.comment}
+            <div className="review-form">
+                <textarea
+                    value={newReview}
+                    onChange={(e) => setNewReview(e.target.value)}
+                    placeholder="Write your review..."
+                />
+                <select value={rating} onChange={(e) => setRating(e.target.value)}>
+                    <option value="0">Select Rating</option>
+                    {[1, 2, 3, 4, 5].map((r) => (
+                        <option key={r} value={r}>
+                            {r} Stars
+                        </option>
+                    ))}
+                </select>
+                <button onClick={handleReviewSubmit} className="submit-review-btn">
+                    Submit
+                </button>
+            </div>
+            <ul className="reviews-list">
+                {reviews.map((review, index) => (
+                    <li key={index} className="review-item">
+                        <strong>{review.user}</strong>
+                        <span>Rating: {review.rating} / 5</span>
+                        <p>{review.review}</p>
                     </li>
                 ))}
             </ul>
-            <div className="review-input">
-                <input
-                    type="text"
-                    placeholder="Add a review..."
-                    value={newReview}
-                    onChange={(e) => setNewReview(e.target.value)}
-                />
-                <button onClick={handleAddReview}>Add Review</button>
-            </div>
         </div>
     );
 };
