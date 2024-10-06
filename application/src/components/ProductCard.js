@@ -2,19 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/ProductCard.css'; // Updated path to the styles directory
 
-function ProductCard({ id, name, price, image }) {
+const ProductCard = ({ product, addToWishlist }) => {
   return (
-    <div className="product-card">
-      <Link to={`/product/${id}`}>
-        <img src={image} alt={name} className="product-image" />
-      </Link>
-      <div className="product-info">
-        <h2 className="product-name">{name}</h2>
-        <p className="product-price">${price}</p>
-        <button className="add-to-cart-button">Add to Cart</button>
+      <div className="product-card">
+          <img src={product.image} alt={product.name} />
+          <h2>{product.name}</h2>
+          <p>${product.price}</p>
+          <button onClick={() => addToWishlist(product)}>Add to Wishlist</button>
       </div>
-    </div>
   );
-}
+};
+
 
 export default ProductCard;
