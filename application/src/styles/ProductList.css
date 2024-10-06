@@ -1,29 +1,56 @@
-/* src/styles/ProductList.css */
-.product-list {
+.product-list-container {
+    width: 90%;
+    margin: 0 auto;
     padding: 20px;
 }
 
-.product-list h2 {
-    font-size: 24px;
+.product-list-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-.product-list ul {
-    list-style-type: none;
-    padding: 0;
+.sort-options {
+    display: flex;
+    align-items: center;
 }
 
-.product-list li {
-    margin-bottom: 15px;
+.sort-options select {
+    margin-left: 10px;
+    padding: 5px;
     border: 1px solid #ddd;
-    padding: 10px;
+    border-radius: 4px;
 }
 
-.product-list .pagination {
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
     margin-top: 20px;
 }
 
-.product-list .pagination button {
-    margin-right: 5px;
-    padding: 5px 10px;
+.page-btn {
+    padding: 10px 15px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #f0f0f0;
+    transition: background 0.3s;
+}
+
+.page-btn.active {
+    background: #007bff;
+    color: #fff;
+}
+
+.page-btn:hover {
+    background: #007bff;
+    color: #fff;
 }

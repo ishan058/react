@@ -1,37 +1,41 @@
-// src/components/SearchWithSuggestions.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchProductSuggestions } from '../utils/api';
+import '../styles/SearchWithSuggestions.css';
 
 const SearchWithSuggestions = ({ onSearch }) => {
-    const [query, setQuery] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     const [suggestions, setSuggestions] = useState([]);
 
-    const handleInputChange = async (e) => {
-        const value = e.target.value;
-        setQuery(value);
-        if (value.length > 2) {
-            const results = await fetchProductSuggestions(value); // Use the correct function here
-            setSuggestions(results);
-        } else {
-            setSuggestions([]);
-        }
-    };
+    useEffect(() => {
+        const loadSuggestions = async () => {
+            if (searchTerm) {
+                const suggestionData = await fetchProductSuggestions(searchTerm);
+                setSuggestions(suggestionData);
+            } else {
+                setSuggestions([]);
+            }
+        };
+        loadSuggestions();
+    }, [searchTerm]);
 
     return (
-        <div>
+        <div className="search-with-suggestions">
             <input
                 type="text"
-                value={query}
-                onChange={handleInputChange}
-                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search for products..."
             />
-            <ul>
-                {suggestions.map((suggestion) => (
-                    <li key={suggestion.id} onClick={() => onSearch(suggestion.name)}>
-                        {suggestion.name}
-                    </li>
-                ))}
-            </ul>
+            <button onClick={() => onSearch(searchTerm)}>Search</button>
+            {suggestions.length > 0 && (
+                <ul className="suggestion-list">
+                    {suggestions.map((item) => (
+                        <li key={item.id} onClick={() => onSearch(item.name)}>
+                            {item.name}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
