@@ -54,6 +54,28 @@ const ProductList = () => {
 
     const handlePagination = (pageNumber) => setCurrentPage(pageNumber);
 
+    const handleFilter = ({ priceRange, category, brand }) => {
+        let results = products;
+    
+        // Apply category filter
+        if (category !== 'all') {
+            results = results.filter((product) => product.category === category);
+        }
+    
+        // Apply price range filter
+        if (priceRange !== 'all') {
+            const [min, max] = priceRange.split('-').map(Number);
+            results = results.filter((product) => product.price >= min && product.price <= max);
+        }
+    
+        // Apply brand filter
+        if (brand !== 'all') {
+            results = results.filter((product) => product.brand === brand);
+        }
+    
+        setFilteredProducts(results);
+    };
+    
     return (
         <div className="product-list-container">
             <div className="product-list-controls">
