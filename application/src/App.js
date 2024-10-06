@@ -27,7 +27,7 @@ import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
 import OrderHistory from './components/OrderHistory';
 import Wishlist from './pages/Wishlist'; 
-import './styles/App.css';
+import '../styles/App.css';
 
 const App = () => {
     return (
