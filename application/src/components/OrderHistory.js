@@ -1,35 +1,35 @@
-// src/components/OrderHistory.js
 import React, { useEffect, useState } from 'react';
-import { fetchOrderHistory } from '../api'; // Import the correct function
+import { fetchOrders } from '../utils/api';
 import '../styles/OrderHistory.css';
 
 const OrderHistory = ({ userId }) => {
     const [orders, setOrders] = useState([]);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const getOrderHistory = async () => {
-            const orderData = await fetchOrderHistory(userId);
-            setOrders(orderData);
-            setLoading(false);
+        const loadOrders = async () => {
+            const userOrders = await fetchOrders(userId);
+            setOrders(userOrders);
         };
-        getOrderHistory();
+        loadOrders();
     }, [userId]);
-
-    if (loading) return <p>Loading...</p>;
 
     return (
         <div className="order-history">
-            <h2>Your Order History</h2>
-            <ul>
-                {orders.map(order => (
-                    <li key={order.id}>
-                        <h3>Order ID: {order.id}</h3>
-                        <p>Status: {order.status}</p>
-                        <p>Total: ${order.total}</p>
-                    </li>
-                ))}
-            </ul>
+            <h1>Your Order History</h1>
+            {orders.length === 0 ? (
+                <p>No orders found.</p>
+            ) : (
+                <ul>
+                    {orders.map((order) => (
+                        <li key={order.id}>
+                            <p>Order ID: {order.id}</p>
+                            <p>Product: {order.productName}</p>
+                            <p>Status: {order.status}</p>
+                            <p>Total: ${order.total}</p>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
