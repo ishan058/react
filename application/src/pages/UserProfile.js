@@ -1,66 +1,38 @@
 // src/pages/UserProfile.js
 import React, { useEffect, useState } from 'react';
-import { fetchUserProfile, updateUserProfile } from '../utils/api'; // Import the correct functions
-import '../styles/UserProfile.css';
+import { fetchUserProfile, updateUserProfile } from '../utils/api';
 
 const UserProfile = ({ userId }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [isEditing, setIsEditing] = useState(false);
-    const [updatedUser, setUpdatedUser] = useState({});
+  const [profile, setProfile] = useState(null);
 
-    useEffect(() => {
-        const getUserProfile = async () => {
-            const userData = await fetchUserProfile(userId);
-            setUser(userData);
-            setLoading(false);
-        };
-        getUserProfile();
-    }, [userId]);
-
-    const handleInputChange = (e) => {
-        setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      const data = await fetchUserProfile(userId);
+      setProfile(data);
     };
+    loadUserProfile();
+  }, [userId]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        await updateUserProfile(userId, updatedUser);
-        setIsEditing(false);
-        // Optionally refresh user data
-    };
+  const handleUpdate = async (newProfileData) => {
+    const updatedProfile = await updateUserProfile(userId, newProfileData);
+    setProfile(updatedProfile);
+  };
 
-    if (loading) return <p>Loading...</p>;
-
-    return (
-        <div className="user-profile">
-            <h2>User Profile</h2>
-            {isEditing ? (
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        name="name"
-                        value={updatedUser.name || user.name}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <input
-                        type="email"
-                        name="email"
-                        value={updatedUser.email || user.email}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <button type="submit">Save Changes</button>
-                </form>
-            ) : (
-                <div>
-                    <p>Name: {user.name}</p>
-                    <p>Email: {user.email}</p>
-                    <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-                </div>
-            )}
+  return (
+    <div className="container">
+      <h1>User Profile</h1>
+      {profile ? (
+        <div>
+          <p>Name: {profile.name}</p>
+          <button onClick={() => handleUpdate({ ...profile, name: 'Updated Name' })}>
+            Update Profile
+          </button>
         </div>
-    );
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
 };
 
 export default UserProfile;

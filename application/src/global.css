@@ -1,92 +1,73 @@
-/* Global Styles */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
-}
-
+/* Smooth transitions for buttons */
 button {
-  background-color: #007bff;
-  color: #fff;
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: white;
   border: none;
-  padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-dark);
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Product Grid */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  margin: 20px;
-}
-
-.product-card {
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  text-align: center;
-}
-
-.product-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-}
-
-.product-card h3 {
-  font-size: 1.2em;
+/* Improved list item styles */
+li {
+  background: white;
   margin: 10px 0;
-}
-
-/* Search Bar */
-.search-bar {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.search-bar input {
-  width: 80%;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Filter */
-.filter-container {
-  margin: 20px 0;
-  text-align: right;
+li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.filter-container label {
-  margin-right: 10px;
-}
-
-/* Profile */
-.profile-container {
-  max-width: 500px;
-  margin: 20px auto;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.profile-container form label {
-  display: block;
-  margin: 10px 0 5px;
-}
-
-.profile-container form input {
-  width: 100%;
+/* Navbar styles */
+.navbar {
+  background-color: var(--secondary-color);
   padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+/* Add transitions to the main content */
+main {
+  transition: padding 0.3s ease;
+}
+
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  button {
+    width: 100%;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
 }

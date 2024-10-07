@@ -1,45 +1,29 @@
 // src/pages/AdminProducts.js
-import React, { useState, useEffect } from 'react';
-import { fetchAdminProducts } from '../utils/api'; // Assume this fetches admin-specific products
-import '../styles/AdminProducts.css'; // Import CSS styles
+import React, { useEffect, useState } from 'react';
+import { fetchAdminProducts } from '../utils/api'; // Ensure correct import path
+import '../styles/AdminProducts.css'; // Optional, if you want component-specific styles
 
 const AdminProducts = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null); // State for error handling
+  const [products, setProducts] = useState([]);
 
-    useEffect(() => {
-        const getProducts = async () => {
-            try {
-                const data = await fetchAdminProducts(); // Fetch products added by admin
-                setProducts(data);
-            } catch (error) {
-                setError('Failed to load products.');
-            } finally {
-                setLoading(false);
-            }
-        };
-        getProducts();
-    }, []);
+  useEffect(() => {
+    const loadProducts = async () => {
+      const data = await fetchAdminProducts();
+      setProducts(data);
+    };
+    loadProducts();
+  }, []);
 
-    return (
-        <div className="admin-products">
-            <h1>Admin Products</h1>
-            {loading && <p>Loading products...</p>}
-            {error && <p className="error">{error}</p>}
-            <div className="product-list">
-                {products.map(product => (
-                    <div key={product.id} className="product-card">
-                        <h3>{product.name}</h3>
-                        <p>Price: ${product.price}</p>
-                        <p>{product.description}</p>
-                        <img src={product.imageUrl} alt={product.name} />
-                        <button>Edit Product</button> {/* Replace with your edit product function */}
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+  return (
+    <div className="container">
+      <h1>Admin Products</h1>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>{product.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default AdminProducts;

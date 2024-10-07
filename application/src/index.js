@@ -1,22 +1,19 @@
-// index.js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter for routing
-import { Provider } from 'react-redux'; // Import Redux Provider
-import store from './store'; // Import the Redux store
-import { AuthProvider } from './contexts/AuthContext'; // Import the AuthProvider
-import App from './App'; // Import the main App component
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import store from './store';
+import { AuthProvider } from './contexts/AuthContext';
+import App from './App';
+import './global.css'; // Import global CSS
 
-// Ensure that there is only a single BrowserRouter wrapping the entire app.
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}> {/* Wrap App with Redux Provider */}
-      <AuthProvider> {/* Wrap App with AuthContext */}
-        <BrowserRouter> {/* Ensure there is only a single BrowserRouter */}
-          <App /> {/* Main App Component */}
-        </BrowserRouter>
-      </AuthProvider>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <AuthProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AuthProvider>
+  </Provider>,
   document.getElementById('root')
 );
