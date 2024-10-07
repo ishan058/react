@@ -1,6 +1,6 @@
 // src/pages/AdminProducts.js
 import React, { useState, useEffect } from 'react';
-import { fetchAdminProducts } from '../api'; // Assume this fetches admin-specific products
+import { fetchAdminProducts } from '../utils/api'; // Assume this fetches admin-specific products
 import '../styles/AdminProducts.css'; // Import CSS styles
 
 const AdminProducts = () => {

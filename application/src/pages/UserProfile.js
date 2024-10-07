@@ -1,6 +1,6 @@
 // src/pages/UserProfile.js
 import React, { useEffect, useState } from 'react';
-import { fetchUserProfile, updateUserProfile } from '../api'; // Import the correct functions
+import { fetchUserProfile, updateUserProfile } from '../utils/api'; // Import the correct functions
 import '../styles/UserProfile.css';
 
 const UserProfile = ({ userId }) => {
