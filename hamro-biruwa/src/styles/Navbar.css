@@ -1,29 +1,19 @@
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background-color: #f3f8ed;
-}
-
-.logo {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #6dbd6d;
-}
-
-.nav-links {
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #333;
-}
-
 .search-bar {
+    display: flex;
+    gap: 5px;
+}
+
+.search-bar input {
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.search-bar button {
+    background-color: #6dbd6d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
 }

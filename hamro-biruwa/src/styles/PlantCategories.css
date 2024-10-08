@@ -23,6 +23,11 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 150px;
+    transition: transform 0.3s;
+}
+
+.plant-card:hover {
+    transform: scale(1.05);
 }
 
 .plant-card h3 {
@@ -33,4 +38,10 @@
 .plant-card p {
     color: #6dbd6d;
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .plant-card {
+        width: 100%;
+    }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
@@ -9,15 +9,21 @@ import Footer from './components/Footer';
 import ContactForm from './components/ContactForm';
 
 const App = () => {
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (term) => {
+        setSearchTerm(term.toLowerCase());
+    };
+
     return (
         <Router>
             <div className="App">
-                <Navbar />
+                <Navbar onSearch={handleSearch} />
                 <Routes>
                     <Route path="/" element={
                         <>
                             <HeroSection />
-                            <PlantCategories />
+                            <PlantCategories searchTerm={searchTerm} />
                             <BestSellers />
                             <Testimonials />
                             <ContactForm />

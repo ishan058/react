@@ -27,12 +27,15 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 200px;
+    transition: transform 0.3s;
 }
 
-.testimonial-card h3 {
-    color: #333;
+.testimonial-card:hover {
+    transform: scale(1.05);
 }
 
-.testimonial-card p {
-    color: #666;
+@media (max-width: 768px) {
+    .testimonial-card {
+        width: 100%;
+    }
 }

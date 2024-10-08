@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ onSearch }) => {
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = () => {
+        onSearch(searchTerm);
+    };
+
     return (
         <nav className="navbar">
             <div className="logo">Hamro Biruwa</div>
@@ -12,7 +18,15 @@ const Navbar = () => {
                 <Link to="/contact">Contact</Link>
                 <Link to="/about">About Us</Link>
             </ul>
-            <input type="text" placeholder="Search plants..." />
+            <div className="search-bar">
+                <input
+                    type="text"
+                    placeholder="Search plants..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button onClick={handleSearch}>Search</button>
+            </div>
         </nav>
     );
 };
