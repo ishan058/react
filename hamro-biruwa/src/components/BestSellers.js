@@ -1,25 +1,25 @@
-// BestSellers.js
 import React from 'react';
-import '../styles/BestSellers.css';
 
-const BestSellerCard = ({ name }) => (
-  <div className="best-seller-card">
-    <img src="/path-to-image.png" alt={name} />
-    <h3>{name}</h3>
-    <button>Shop</button>
-  </div>
-);
+const BestSeller = () => {
+    const bestSellers = [
+        { id: 1, name: "Snake Plant" },
+        // Add more plants here
+    ];
 
-const BestSellers = () => (
-  <section className="best-sellers">
-    <div className="container">
-      <h2>Best Sellers</h2>
-      <div className="grid">
-        <BestSellerCard name="Snake Plant" />
-        {/* Add more BestSellerCard components */}
-      </div>
-    </div>
-  </section>
-);
+    return (
+        <section className="best-seller">
+            <h2>Here Are the Best Seller</h2>
+            <div className="product-list">
+                {bestSellers.map((product) => (
+                    <div key={product.id} className="product-item">
+                        <img src="path/to/image" alt={product.name} />
+                        <h3>{product.name}</h3>
+                        <button className="buy-now">Buy Now</button>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
 
-export default BestSellers;
+export default BestSeller;

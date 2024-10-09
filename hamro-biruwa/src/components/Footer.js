@@ -1,22 +1,31 @@
-// Footer.js
 import React from 'react';
 
-const Footer = () => (
-  <footer className="footer">
-    <div className="quick-links">
-      <h3>Quick Links</h3>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/products">Products</a></li>
-        {/* Add more links */}
-      </ul>
-    </div>
-    <div className="contact-info">
-      <h3>Contact Us</h3>
-      <p>Phone: 9845126486</p>
-      <p>Email: info@hamro-biruwa.com</p>
-    </div>
-  </footer>
-);
+const Footer = () => {
+    return (
+        <footer className="footer">
+            <div className="footer-content">
+                <div className="quick-links">
+                    <a href="/">Home</a>
+                    <a href="/product">Product</a>
+                    <a href="/blog">Blog</a>
+                </div>
+                <div className="contact-info">
+                    <p>Find us on Maps</p>
+                    <p>Contact: +985123456</p>
+                </div>
+                <div className="privacy">
+                    <a href="/terms">Terms of Use</a>
+                    <a href="/policy">Privacy Policy</a>
+                </div>
+                <form className="contact-form">
+                    <input type="text" placeholder="Full Name" />
+                    <input type="tel" placeholder="Contact Number" />
+                    <textarea placeholder="Message"></textarea>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </footer>
+    );
+}
 
 export default Footer;

@@ -1,27 +1,22 @@
-// Categories.js
 import React from 'react';
-import '../styles/PlantCategories.css';
 
-const CategoryCard = ({ name }) => (
-  <div className="category-card">
-    <img src="/path-to-image.png" alt={name} />
-    <h3>{name}</h3>
-    <p>Beautiful plants for your space.</p>
-    <button>Shop</button>
-  </div>
-);
+const Categories = () => {
+    const categories = ["Indoor", "Outdoor", "Flowering", "Succulents", "Herbs"];
 
-const Categories = () => (
-  <section className="categories">
-    <div className="container">
-      <h2>Plant Categories</h2>
-      <div className="grid">
-        <CategoryCard name="Snake Plant" />
-        <CategoryCard name="Aloe Vera" />
-        {/* Add more CategoryCard components */}
-      </div>
-    </div>
-  </section>
-);
+    return (
+        <section className="categories">
+            <h2>Plant Categories</h2>
+            <div className="category-list">
+                {categories.map((category, index) => (
+                    <div key={index} className="category-item">
+                        <img src="path/to/image" alt={category} />
+                        <h3>{category}</h3>
+                        <button className="view-details">View Details</button>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
 
 export default Categories;
