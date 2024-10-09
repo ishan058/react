@@ -1,47 +1,22 @@
+/* Categories.css */
 .categories {
-    padding: 40px 20px;
-    background-color: #f3f8ed;
-}
-
-.categories h2 {
+    padding: 2rem 0;
+  }
+  
+  .category-card {
+    background-color: var(--white-color);
+    padding: var(--spacing);
     text-align: center;
-    font-size: 2em;
-    color: #333;
-}
-
-.plant-list {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.plant-card {
-    background-color: white;
-    padding: 20px;
-    text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 150px;
-    transition: transform 0.3s;
-}
-
-.plant-card:hover {
-    transform: scale(1.05);
-}
-
-.plant-card h3 {
-    color: #333;
-    margin: 10px 0;
-}
-
-.plant-card p {
-    color: #6dbd6d;
-    font-weight: bold;
-}
-
-@media (max-width: 768px) {
-    .plant-card {
-        width: 100%;
-    }
-}
+    border-radius: 5px;
+    transition: box-shadow 0.3s;
+  }
+  
+  .category-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .category-card img {
+    width: 100%;
+    height: auto;
+  }
+  

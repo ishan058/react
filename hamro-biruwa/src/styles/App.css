@@ -1,0 +1,55 @@
+/* App.css */
+:root {
+  --primary-color: #4caf50;
+  --secondary-color: #f0f9e8;
+  --text-color: #333;
+  --white-color: #fff;
+  --font-primary: 'Arial', sans-serif;
+  --spacing: 1rem;
+}
+
+body {
+  font-family: var(--font-primary);
+  margin: 0;
+  color: var(--text-color);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #388e3c;
+}
+
+h1, h2, h3 {
+  color: var(--primary-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: var(--spacing);
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+  gap: var(--spacing);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .flex {
+    flex-direction: column;
+  }
+}

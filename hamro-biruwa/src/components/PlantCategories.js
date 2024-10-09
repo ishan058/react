@@ -1,40 +1,27 @@
-import React, { useState, useEffect } from 'react';
+// Categories.js
+import React from 'react';
 import '../styles/PlantCategories.css';
 
-const PlantCategories = () => {
-    const [plants, setPlants] = useState([]);
+const CategoryCard = ({ name }) => (
+  <div className="category-card">
+    <img src="/path-to-image.png" alt={name} />
+    <h3>{name}</h3>
+    <p>Beautiful plants for your space.</p>
+    <button>Shop</button>
+  </div>
+);
 
-    useEffect(() => {
-        // Simulating API call with a delay
-        setTimeout(() => {
-            setPlants([
-                { id: 1, name: 'Snake Plant', price: '$20' },
-                { id: 2, name: 'Sunflower', price: '$15' },
-                { id: 3, name: 'Fiddle Leaf Fig', price: '$25' },
-                // Add more plants dynamically
-            ]);
-        }, 1000);
-    }, []);
+const Categories = () => (
+  <section className="categories">
+    <div className="container">
+      <h2>Plant Categories</h2>
+      <div className="grid">
+        <CategoryCard name="Snake Plant" />
+        <CategoryCard name="Aloe Vera" />
+        {/* Add more CategoryCard components */}
+      </div>
+    </div>
+  </section>
+);
 
-    return (
-        <section className="categories">
-            <h2>Plant Categories</h2>
-            <div className="plant-list">
-                {plants.length === 0 ? (
-                    <p>Loading plants...</p>
-                ) : (
-                    plants.map((plant) => (
-                        <div key={plant.id} className="plant-card">
-                            <img src={`/${plant.name.toLowerCase().replace(' ', '-')}.jpg`} alt={plant.name} />
-                            <h3>{plant.name}</h3>
-                            <p>{plant.price}</p>
-                            <button>Buy Now</button>
-                        </div>
-                    ))
-                )}
-            </div>
-        </section>
-    );
-};
-
-export default PlantCategories;
+export default Categories;
