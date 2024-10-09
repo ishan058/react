@@ -1,7 +1,6 @@
-// src/components/Layout.js
 import React from 'react';
 import Sidebar from './Sidebar';
-import '../App.css';
+import '../styles/Layout.css'; // Create a separate Layout.css for layout styles
 import Toast from './Toast';
 
 const Layout = ({ children }) => {

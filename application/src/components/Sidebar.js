@@ -1,42 +1,49 @@
 // src/components/Sidebar.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaHome, FaUsers, FaBox, FaChartLine, FaBars } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
+import { FaHome, FaUser, FaBoxOpen, FaHeart, FaInfoCircle } from 'react-icons/fa';
 import '../styles/Sidebar.css';
 
 const Sidebar = () => {
-    const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-    return (
-        <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-            <div className="sidebar-header">
-                <h3>Admin Panel</h3>
-                <FaBars className="toggle-icon" onClick={() => setIsCollapsed(!isCollapsed)} />
-            </div>
-            <ul className="sidebar-menu">
-                <li>
-                    <Link to="/admin">
-                        <FaHome /> <span className="menu-item">Dashboard</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/admin/users">
-                        <FaUsers /> <span className="menu-item">Manage Users</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/admin/products">
-                        <FaBox /> <span className="menu-item">Manage Products</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/admin/orders">
-                        <FaChartLine /> <span className="menu-item">Manage Orders</span>
-                    </Link>
-                </li>
-            </ul>
-        </div>
-    );
+  // Toggle the sidebar open and close state
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+      <div className="sidebar-header">
+        <h1 className="sidebar-logo">{isOpen ? 'MyApp' : 'M'}</h1>
+        <button className="sidebar-toggle" onClick={toggleSidebar}>
+          {isOpen ? '⟨' : '⟩'}
+        </button>
+      </div>
+      <nav className="sidebar-nav">
+        <NavLink exact to="/" className="sidebar-link" activeClassName="active">
+          <FaHome className="sidebar-icon" />
+          {isOpen && <span>Home</span>}
+        </NavLink>
+        <NavLink to="/about" className="sidebar-link" activeClassName="active">
+          <FaInfoCircle className="sidebar-icon" />
+          {isOpen && <span>About</span>}
+        </NavLink>
+        <NavLink to="/profile" className="sidebar-link" activeClassName="active">
+          <FaUser className="sidebar-icon" />
+          {isOpen && <span>Profile</span>}
+        </NavLink>
+        <NavLink to="/admin/products" className="sidebar-link" activeClassName="active">
+          <FaBoxOpen className="sidebar-icon" />
+          {isOpen && <span>Admin Products</span>}
+        </NavLink>
+        <NavLink to="/wishlist" className="sidebar-link" activeClassName="active">
+          <FaHeart className="sidebar-icon" />
+          {isOpen && <span>Wishlist</span>}
+        </NavLink>
+      </nav>
+    </div>
+  );
 };
 
 export default Sidebar;
