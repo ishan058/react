@@ -1,73 +1,60 @@
-/* Smooth transitions for buttons */
+/* src/styles/global.css */
+.app-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.main-content {
+  padding: 20px;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.main-content h1 {
+  font-size: 2rem;
+  color: #212529;
+}
+
+.main-content p {
+  font-size: 1rem;
+  color: #343a40;
+  line-height: 1.6;
+}
+
+/* Typography */
+body, html {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+/* Primary Color Scheme */
+:root {
+  --primary-color: #007bff;
+  --primary-dark: #0056b3;
+  --secondary-color: #6c757d;
+  --accent-color: #28a745;
+  --background-color: #f8f9fa;
+}
+
+/* Buttons */
 button {
   padding: 10px 20px;
   background-color: var(--primary-color);
-  color: white;
-  border: none;
+  color: #fff;
   border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  transition: all 0.3s ease;
 }
 
 button:hover {
   background-color: var(--primary-dark);
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Improved list item styles */
-li {
-  background: white;
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-li:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Navbar styles */
-.navbar {
-  background-color: var(--secondary-color);
-  padding: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border-bottom: 2px solid var(--primary-color);
-}
-
-.navbar a {
-  color: white;
-  text-decoration: none;
-  padding: 10px;
-}
-
-.navbar a:hover {
-  text-decoration: underline;
-}
-
-/* Add transitions to the main content */
-main {
-  transition: padding 0.3s ease;
-}
-
-
-/* Responsive styles */
-@media (max-width: 768px) {
-  .container {
-    padding: 10px;
-  }
-
-  button {
-    width: 100%;
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
+button:active {
+  background-color: var(--primary-dark);
+  transform: scale(0.98);
 }
