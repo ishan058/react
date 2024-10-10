@@ -1,48 +1,25 @@
 // src/components/Sidebar.js
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { FaHome, FaUser, FaBoxOpen, FaHeart, FaInfoCircle } from 'react-icons/fa';
-import '../styles/Sidebar.css';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/Sidebar.css'; // Enhanced sidebar styles
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Toggle the sidebar open and close state
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
-    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+    <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-header">
-        <h1 className="sidebar-logo">{isOpen ? 'MyApp' : 'M'}</h1>
-        <button className="sidebar-toggle" onClick={toggleSidebar}>
-          {isOpen ? '⟨' : '⟩'}
-        </button>
+        <h2>MyApp</h2>
+        <button className="close-btn" onClick={toggleSidebar}>X</button>
       </div>
       <nav className="sidebar-nav">
-        <NavLink exact to="/" className="sidebar-link" activeClassName="active">
-          <FaHome className="sidebar-icon" />
-          {isOpen && <span>Home</span>}
-        </NavLink>
-        <NavLink to="/about" className="sidebar-link" activeClassName="active">
-          <FaInfoCircle className="sidebar-icon" />
-          {isOpen && <span>About</span>}
-        </NavLink>
-        <NavLink to="/profile" className="sidebar-link" activeClassName="active">
-          <FaUser className="sidebar-icon" />
-          {isOpen && <span>Profile</span>}
-        </NavLink>
-        <NavLink to="/admin/products" className="sidebar-link" activeClassName="active">
-          <FaBoxOpen className="sidebar-icon" />
-          {isOpen && <span>Admin Products</span>}
-        </NavLink>
-        <NavLink to="/wishlist" className="sidebar-link" activeClassName="active">
-          <FaHeart className="sidebar-icon" />
-          {isOpen && <span>Wishlist</span>}
-        </NavLink>
+        <ul>
+          <li><Link to="/dashboard">Dashboard</Link></li>
+          <li><Link to="/profile">Profile</Link></li>
+          <li><Link to="/settings">Settings</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/help">Help</Link></li>
+        </ul>
       </nav>
-    </div>
+    </aside>
   );
 };
 
