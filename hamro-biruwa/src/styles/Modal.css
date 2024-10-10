@@ -6,28 +6,34 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     z-index: 1000;
   }
   
   .modal-content {
     background-color: #fff;
-    padding: 1rem;
+    padding: 2rem;
     border-radius: 8px;
-    max-width: 500px;
     width: 90%;
-    text-align: center;
+    max-width: 500px;
     position: relative;
+    text-align: center;
   }
   
   .close-button {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 10px;
+    right: 10px;
     background: none;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
+  }
+  
+  .modal-content img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
   }
   

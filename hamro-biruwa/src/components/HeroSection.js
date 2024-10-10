@@ -1,14 +1,14 @@
 import React from 'react';
 import '../styles/HeroSection.css';
 
-const Hero = () => {
+const HeroSection = () => {
   return (
     <section className="hero">
-      <h2>Home Is Where <span>Plants</span> Are....</h2>
-      <p>We collect and sell the finest indoor and outdoor plants...</p>
-      <button>Shop Now</button>
+      <h1 className="fade-in">Welcome to Our Plant Store</h1>
+      <p className="slide-up">Find the perfect plants for your home or office</p>
+      <button className="fade-in-delay">Shop Now</button>
     </section>
   );
 };
 
-export default Hero;
+export default HeroSection;

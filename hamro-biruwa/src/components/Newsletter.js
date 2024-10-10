@@ -7,7 +7,7 @@ const Newsletter = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Implement email submission logic here
+    // Handle subscription logic, e.g., API call
     setMessage('Thank you for subscribing!');
     setEmail('');
   };

@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+// src/App.js
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeContext';
+import ThemeToggle from './components/ThemeToggle';
 import Navbar from './components/Navbar';
 import Hero from './components/HeroSection';
 import Categories from './components/PlantCategories';
@@ -13,36 +16,30 @@ import ScrollToTop from './components/ScrollToTop';
 import './styles/App.css';
 
 const App = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
   return (
-    <div className={isDarkMode ? 'app dark-mode' : 'app'}>
-      <Newsletter />
-      <ScrollToTop />
-      <Router>
-        <Navbar />
-        <button onClick={toggleDarkMode} className="mode-toggle">
-          {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-        </button>
-        <Routes>
-          <Route path="/" element={
-            <>
-              <Hero />
-              <Categories />
-              <BestSellers />
-              <Testimonials />
-            </>
-          } />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </div>
+    <ThemeProvider>
+      <div className="app">
+        <Router>
+          <Navbar />
+          <ThemeToggle />
+          <Newsletter />
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={
+              <>
+                <Hero />
+                <Categories />
+                <BestSellers />
+                <Testimonials />
+              </>
+            } />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </div>
+    </ThemeProvider>
   );
 };
 

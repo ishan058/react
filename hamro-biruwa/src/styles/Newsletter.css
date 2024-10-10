@@ -1,8 +1,9 @@
 .newsletter {
     background-color: #4CAF50;
+    color: white;
     padding: 2rem;
     text-align: center;
-    color: white;
+    border-radius: 8px;
   }
   
   .newsletter h3 {
@@ -17,18 +18,19 @@
   
   .newsletter input {
     padding: 0.5rem;
-    border: none;
     border-radius: 5px;
-    width: 200px;
+    border: none;
+    width: 250px;
   }
   
   .newsletter button {
     padding: 0.5rem 1rem;
-    background-color: #fff;
-    color: #4CAF50;
     border: none;
     border-radius: 5px;
+    background-color: #fff;
+    color: #4CAF50;
     cursor: pointer;
+    transition: background-color 0.3s;
   }
   
   .newsletter button:hover {
