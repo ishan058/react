@@ -1,0 +1,42 @@
+.newsletter {
+    background-color: #4CAF50;
+    padding: 2rem;
+    text-align: center;
+    color: white;
+  }
+  
+  .newsletter h3 {
+    margin-bottom: 1rem;
+  }
+  
+  .newsletter form {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .newsletter input {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    width: 200px;
+  }
+  
+  .newsletter button {
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .newsletter button:hover {
+    background-color: #f7f7f7;
+  }
+  
+  .message {
+    margin-top: 1rem;
+    color: #fff;
+  }
+  

@@ -8,6 +8,8 @@ import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import AboutUs from './pages/About';
 import Contact from './pages/Contact';
+import Newsletter from './components/Newsletter';
+import ScrollToTop from './components/ScrollToTop';
 import './styles/App.css';
 
 const App = () => {
@@ -19,6 +21,8 @@ const App = () => {
 
   return (
     <div className={isDarkMode ? 'app dark-mode' : 'app'}>
+      <Newsletter />
+      <ScrollToTop />
       <Router>
         <Navbar />
         <button onClick={toggleDarkMode} className="mode-toggle">
