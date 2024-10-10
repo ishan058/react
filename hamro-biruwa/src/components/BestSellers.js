@@ -1,25 +1,50 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import { PlantContext } from '../contexts/PlantContext';
+import '../styles/BestSellers.css';
 
-const BestSeller = () => {
-    const bestSellers = [
-        { id: 1, name: "Snake Plant" },
-        // Add more plants here
-    ];
+const BestSellers = () => {
+  const { bestSellers } = useContext(PlantContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
 
-    return (
-        <section className="best-seller">
-            <h2>Here Are the Best Seller</h2>
-            <div className="product-list">
-                {bestSellers.map((product) => (
-                    <div key={product.id} className="product-item">
-                        <img src="path/to/image" alt={product.name} />
-                        <h3>{product.name}</h3>
-                        <button className="buy-now">Buy Now</button>
-                    </div>
-                ))}
-            </div>
-        </section>
-    );
-}
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = bestSellers.slice(indexOfFirstItem, indexOfLastItem);
 
-export default BestSeller;
+  const handleClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(bestSellers.length / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <section className="best-sellers">
+      <h2>Here Are the Best Sellers</h2>
+      <div className="product-grid">
+        {currentItems.map((product, index) => (
+          <div key={index} className="product-card">
+            <img src={product.imageUrl} alt={product.name} />
+            <h3>{product.name}</h3>
+            <span>${product.price}</span>
+          </div>
+        ))}
+      </div>
+      <div className="pagination">
+        {pageNumbers.map(number => (
+          <button
+            key={number}
+            onClick={() => handleClick(number)}
+            className={currentPage === number ? 'active' : ''}
+          >
+            {number}
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default BestSellers;

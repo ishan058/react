@@ -1,22 +1,36 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import { PlantContext } from '../contexts/PlantContext';
+import '../styles/PlantCategories.css';
 
 const Categories = () => {
-    const categories = ["Indoor", "Outdoor", "Flowering", "Succulents", "Herbs"];
+  const { categories } = useContext(PlantContext);
+  const [searchTerm, setSearchTerm] = useState('');
 
-    return (
-        <section className="categories">
-            <h2>Plant Categories</h2>
-            <div className="category-list">
-                {categories.map((category, index) => (
-                    <div key={index} className="category-item">
-                        <img src="path/to/image" alt={category} />
-                        <h3>{category}</h3>
-                        <button className="view-details">View Details</button>
-                    </div>
-                ))}
-            </div>
-        </section>
-    );
-}
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredCategories = categories.filter(category =>
+    category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <section className="categories">
+      <h2>Plant Categories</h2>
+      <input
+        type="text"
+        placeholder="Search Categories..."
+        value={searchTerm}
+        onChange={handleSearch}
+        className="search-bar"
+      />
+      <div className="category-cards">
+        {filteredCategories.map((category, index) => (
+          <div key={index} className="category-card">{category}</div>
+        ))}
+      </div>
+    </section>
+  );
+};
 
 export default Categories;
