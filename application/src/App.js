@@ -1,27 +1,36 @@
 // src/App.js
-import React, { Suspense, lazy } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import Loader from './components/Loader';
-
-const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
-const UserProfile = lazy(() => import('./pages/UserProfile'));
-const AdminProducts = lazy(() => import('./pages/AdminProducts'));
-const Wishlist = lazy(() => import('./pages/Wishlist'));
+import Dashboard from './pages/AdminDashboard';
+import Profile from './pages/Profile';
+// import Settings from './pages/Settings';
+import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute'; // New component
 
 const App = () => {
   return (
     <Layout>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-        </Routes>
-      </Suspense>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        {/* <Route path="/settings" element={<Settings />} /> */}
+      </Routes>
     </Layout>
   );
 };

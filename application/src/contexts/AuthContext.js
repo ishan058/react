@@ -1,37 +1,25 @@
 // src/contexts/AuthContext.js
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { createContext, useState, useEffect } from 'react';
+import { loginUser, registerUser } from '../utils/api';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    // Logic to check for authentication status
-    const savedUser = JSON.parse(localStorage.getItem('user'));
-    if (savedUser) setUser(savedUser);
-  }, []);
-
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    navigate('/profile');
+  const login = async (credentials) => {
+    const response = await loginUser(credentials);
+    setUser(response);
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    navigate('/');
+  const register = async (userData) => {
+    const response = await registerUser(userData);
+    setUser(response);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-// Custom Hook for accessing Auth context
-export const useAuth = () => useContext(AuthContext);

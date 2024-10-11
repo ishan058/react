@@ -1,32 +1,24 @@
 // src/pages/UserProfile.js
 import React, { useEffect, useState } from 'react';
-import { fetchUserProfile, updateUserProfile } from '../utils/api';
+import { fetchUserProfile } from '../utils/api';
 
-const UserProfile = ({ userId }) => {
-  const [profile, setProfile] = useState(null);
+const UserProfile = () => {
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const loadUserProfile = async () => {
-      const data = await fetchUserProfile(userId);
-      setProfile(data);
+      const profileData = await fetchUserProfile(1); // Hardcoded userId for example
+      setUser(profileData);
     };
     loadUserProfile();
-  }, [userId]);
-
-  const handleUpdate = async (newProfileData) => {
-    const updatedProfile = await updateUserProfile(userId, newProfileData);
-    setProfile(updatedProfile);
-  };
+  }, []);
 
   return (
-    <div className="container">
-      <h1>User Profile</h1>
-      {profile ? (
+    <div>
+      {user ? (
         <div>
-          <p>Name: {profile.name}</p>
-          <button onClick={() => handleUpdate({ ...profile, name: 'Updated Name' })}>
-            Update Profile
-          </button>
+          <h1>{user.name}</h1>
+          <p>{user.email}</p>
         </div>
       ) : (
         <p>Loading...</p>

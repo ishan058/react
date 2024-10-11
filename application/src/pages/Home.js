@@ -1,45 +1,18 @@
 // src/pages/Home.js
-import React, { useState, useEffect } from 'react';
-import { fetchProducts } from '../api'; // Import the fetch function
-import '../styles/Home.css'; // Import CSS styles
+import React from 'react';
 
 const Home = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null); // State for error handling
-
-    useEffect(() => {
-        const getProducts = async () => {
-            try {
-                const data = await fetchProducts();
-                setProducts(data);
-            } catch (error) {
-                setError('Failed to load products.');
-            } finally {
-                setLoading(false);
-            }
-        };
-        getProducts();
-    }, []);
-
-    return (
-        <div className="home">
-            <h1>Welcome to Our Store</h1>
-            {loading && <p>Loading products...</p>}
-            {error && <p className="error">{error}</p>}
-            <div className="product-list">
-                {products.map(product => (
-                    <div key={product.id} className="product-card">
-                        <h3>{product.name}</h3>
-                        <p>Price: ${product.price}</p>
-                        <p>{product.description}</p>
-                        <img src={product.imageUrl} alt={product.name} />
-                        <button>Add to Cart</button> {/* Replace with your add to cart function */}
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="p-8 bg-white shadow-lg rounded-lg">
+        <h1 className="text-4xl font-bold text-center text-blue-600">Welcome to Our App</h1>
+        <p className="mt-4 text-center text-gray-600">Your one-stop solution for all your needs!</p>
+        <button className="mt-6 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition">
+          Get Started
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default Home;

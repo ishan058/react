@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import store from './store';
 import { AuthProvider } from './contexts/AuthContext';
 import App from './App';
-import './global.css'; // Import global CSS
+import './styles/index.css';
 
 ReactDOM.render(
   <Provider store={store}>
