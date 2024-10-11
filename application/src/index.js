@@ -5,15 +5,21 @@ import { BrowserRouter } from 'react-router-dom';
 import store from './store';
 import { AuthProvider } from './contexts/AuthContext';
 import App from './App';
-import './styles/index.css';
+import './index.css';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <AuthProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </AuthProvider>
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <AuthProvider>
+        <ThemeProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ThemeProvider>
+      </AuthProvider>
+    </Provider>
+  </React.StrictMode>,
   document.getElementById('root')
 );
+

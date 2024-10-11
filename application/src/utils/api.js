@@ -1,20 +1,56 @@
-// src/utils/api.js
 import axios from 'axios';
 
-const API_BASE_URL = 'https://api.yourapp.com';
+const API_URL = 'http://localhost:5000/api';
 
-// Define common API endpoints for reuse
+const apiClient = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Generic error handler
+const handleError = (error) => {
+  if (error.response) {
+    console.error("API Error:", error.response.data);
+    throw new Error(error.response.data.message || 'An error occurred');
+  }
+  throw new Error('Network error');
+};
+
 export const fetchProducts = async () => {
-  const response = await axios.get(`${API_BASE_URL}/products`);
-  return response.data;
+  try {
+    const response = await apiClient.get('/products');
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
-export const fetchUserProfile = async (userId) => {
-  const response = await axios.get(`${API_BASE_URL}/users/${userId}`);
-  return response.data;
+export const fetchOrders = async () => {
+  try {
+    const response = await apiClient.get('/orders');
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
-export const updateUserProfile = async (userId, profileData) => {
-  const response = await axios.put(`${API_BASE_URL}/users/${userId}`, profileData);
-  return response.data;
+// Update the loginUser and registerUser functions with error handling
+export const loginUser = async (email, password) => {
+  try {
+    const response = await apiClient.post('/auth/login', { email, password });
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const registerUser = async (name, email, password) => {
+  try {
+    const response = await apiClient.post('/auth/register', { name, email, password });
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
 };
