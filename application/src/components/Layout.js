@@ -1,36 +1,25 @@
 // src/components/Layout.js
-import React, { useState } from 'react';
-import Sidebar from './Sidebar';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './App.css';
+import ThemeToggle from './ThemeToggle';
 import Toast from './Toast';
-import '../styles/Layout.css'; // Import enhanced Layout styles
+import '../styles/Layout.css';
 
 const Layout = ({ children }) => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
-
-  // Toggle Sidebar Function
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
-
   return (
-    <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <main className="main-content">
-        <header className="content-header">
-          <button className="toggle-btn" onClick={toggleSidebar}>
-            {isSidebarOpen ? 'Close' : 'Open'} Menu
-          </button>
-          <h1>Dashboard</h1>
-        </header>
-        <div className="content-body">
-          {children} {/* Render children components dynamically */}
-        </div>
-        <footer className="footer">
-          &copy; {new Date().getFullYear()} MyApp. All rights reserved.
-        </footer>
-      </main>
-      <Toast />
-    </div>
+    <>
+      <nav className="navbar">
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+        <Link to="/profile">Profile</Link>
+        <Link to="/admin/products">Admin Products</Link>
+        <Link to="/wishlist">Wishlist</Link>
+        <ThemeToggle />
+      </nav>
+      <Toast /> {/* Include Toast for notifications */}
+      <main>{children}</main>
+    </>
   );
 };
 
