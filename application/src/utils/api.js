@@ -1,56 +1,31 @@
-import axios from 'axios';
+// src/utils/api.js
 
-const API_URL = 'http://localhost:5000/api';
+const BASE_URL = 'https://api.yoursite.com'; // Example API URL
 
-const apiClient = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Generic error handler
-const handleError = (error) => {
-  if (error.response) {
-    console.error("API Error:", error.response.data);
-    throw new Error(error.response.data.message || 'An error occurred');
+const request = async (url, method = 'GET', body = null, headers = {}) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
   }
-  throw new Error('Network error');
+  
+  const options = { method, headers: { 'Content-Type': 'application/json', ...headers } };
+  
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+  
+  const response = await fetch(`${BASE_URL}${url}`, options);
+  
+  if (!response.ok) {
+    throw new Error('API request failed');
+  }
+  
+  return await response.json();
 };
 
-export const fetchProducts = async () => {
-  try {
-    const response = await apiClient.get('/products');
-    return response.data;
-  } catch (error) {
-    handleError(error);
-  }
-};
-
-export const fetchOrders = async () => {
-  try {
-    const response = await apiClient.get('/orders');
-    return response.data;
-  } catch (error) {
-    handleError(error);
-  }
-};
-
-// Update the loginUser and registerUser functions with error handling
-export const loginUser = async (email, password) => {
-  try {
-    const response = await apiClient.post('/auth/login', { email, password });
-    return response.data;
-  } catch (error) {
-    handleError(error);
-  }
-};
-
-export const registerUser = async (name, email, password) => {
-  try {
-    const response = await apiClient.post('/auth/register', { name, email, password });
-    return response.data;
-  } catch (error) {
-    handleError(error);
-  }
-};
+export const fetchProducts = () => request('/products');
+export const fetchUserProfile = () => request('/user/profile');
+export const updateUserProfile = (data) => request('/user/profile', 'PUT', data);
+export const loginUser = (data) => request('/auth/login', 'POST', data);
+export const registerUser = (data) => request('/auth/register', 'POST', data);
+export const fetchOrders = () => request('/orders'); // Add fetchOrders API call

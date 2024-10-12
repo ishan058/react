@@ -1,65 +1,58 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode'; // Updated import
-import { loginUser, registerUser } from '../utils/api';
+// src/contexts/AuthContext.js
+
+import { createContext, useContext, useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode'; 
+import { loginUser, registerUser } from '../utils/api'; // Import necessary API functions
 
 const AuthContext = createContext();
 
+export const useAuth = () => useContext(AuthContext);
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decoded = jwtDecode(token); // Usage remains the same
-      setUser(decoded);
-    }
-    setLoading(false);
-  }, []);
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const decodedToken = jwtDecode(token);
+                if (decodedToken.exp * 1000 < Date.now()) {
+                    localStorage.removeItem('token');
+                } else {
+                    setCurrentUser(decodedToken);
+                }
+            } catch (error) {
+                console.error('Invalid token:', error);
+            }
+        }
+        setLoading(false);
+    }, []);
 
-  const login = async (email, password) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const { token } = await loginUser(email, password);
-      localStorage.setItem('token', token);
-      const decoded = jwtDecode(token);
-      setUser(decoded);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const login = async (email, password) => {
+        const response = await loginUser({ email, password });
+        const token = response.token;
+        localStorage.setItem('token', token);
+        const decodedToken = jwtDecode(token);
+        setCurrentUser(decodedToken);
+    };
 
-  const register = async (name, email, password) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const { token } = await registerUser(name, email, password);
-      localStorage.setItem('token', token);
-      const decoded = jwtDecode(token);
-      setUser(decoded);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const register = async (email, password) => {
+        const response = await registerUser({ email, password });
+        const token = response.token;
+        localStorage.setItem('token', token);
+        const decodedToken = jwtDecode(token);
+        setCurrentUser(decodedToken);
+    };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
-  };
+    const logout = () => {
+        localStorage.removeItem('token');
+        setCurrentUser(null);
+    };
 
-  return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading, error }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export const useAuth = () => {
-  return useContext(AuthContext);
+    return (
+        <AuthContext.Provider value={{ currentUser, login, register, logout, loading }}>
+            {!loading && children}
+        </AuthContext.Provider>
+    );
 };
