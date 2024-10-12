@@ -1,16 +1,29 @@
 // src/pages/Home.js
 import React from 'react';
+import '../styles/Home.css'; // Import CSS for the Home component
 
 const Home = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="p-8 bg-white shadow-lg rounded-lg">
-        <h1 className="text-4xl font-bold text-center text-blue-600">Welcome to Our App</h1>
-        <p className="mt-4 text-center text-gray-600">Your one-stop solution for all your needs!</p>
-        <button className="mt-6 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition">
-          Get Started
-        </button>
-      </div>
+    <div className="home-container">
+      <header className="home-header">
+        <h1>Welcome to Our Website!</h1>
+        <p>Your one-stop shop for everything you need.</p>
+        <button className="home-button">Shop Now</button>
+      </header>
+      <section className="home-features">
+        <div className="feature">
+          <h2>Quality Products</h2>
+          <p>We offer a wide range of high-quality products.</p>
+        </div>
+        <div className="feature">
+          <h2>Fast Shipping</h2>
+          <p>Get your orders delivered quickly and safely.</p>
+        </div>
+        <div className="feature">
+          <h2>Customer Support</h2>
+          <p>Our support team is here to help you 24/7.</p>
+        </div>
+      </section>
     </div>
   );
 };
