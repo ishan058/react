@@ -1,42 +1,21 @@
-// src/contexts/AuthContext.js
-import { createContext, useContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; // Correctly importing jwtDecode
-import { loginUser, registerUser } from '../utils/api'; // Ensure these are correctly exported in api.js
+import React, { createContext, useContext, useState } from 'react';
+import { loginUser, registerUser } from '../utils/api';
 
-// Your context and provider logic here...
-
-const AuthContext = React.createContext();
-
-export const useAuth = () => useContext(AuthContext);
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const checkTokenExpiration = (token) => {
-        try {
-            const decodedToken = jwtDecode(token);
-            if (decodedToken.exp * 1000 < Date.now()) {
-                logout();
-            } else {
-                setCurrentUser(decodedToken);
-            }
-        } catch (error) {
-            console.error('Invalid token', error);
-            logout();
-        }
-    };
-
     const login = async (email, password) => {
         setLoading(true);
+        setError(null);
         try {
-            const response = await loginUser({ email, password });
-            const token = response.token;
-            checkTokenExpiration(token);
-            localStorage.setItem('token', token);  // Store token securely
-        } catch (error) {
-            setError('Login failed');
+            const user = await loginUser(email, password);
+            setCurrentUser(user);
+        } catch (err) {
+            setError(err.message);
         } finally {
             setLoading(false);
         }
@@ -44,31 +23,22 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (email, password) => {
         setLoading(true);
+        setError(null);
         try {
-            const response = await registerUser({ email, password });
-            const token = response.token;
-            checkTokenExpiration(token);
-            localStorage.setItem('token', token);
-        } catch (error) {
-            setError('Registration failed');
+            const user = await registerUser(email, password);
+            setCurrentUser(user);
+        } catch (err) {
+            setError(err.message);
         } finally {
             setLoading(false);
         }
     };
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setCurrentUser(null);
-    };
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) checkTokenExpiration(token);
-    }, []);
-
     return (
-        <AuthContext.Provider value={{ currentUser, login, register, logout, error, loading }}>
+        <AuthContext.Provider value={{ currentUser, login, register, error, loading }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+export const useAuth = () => useContext(AuthContext);
