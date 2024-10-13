@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ProductReviews from './ProductReviews';
+import '../App.css';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -16,13 +17,14 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
-  if (!product) return <div>Loading...</div>;
+  if (!product) return <div className="loading">Loading...</div>;
 
   return (
-    <div>
-      <h1>{product.name}</h1>
-      <p>${product.price}</p>
-      <img src={product.image} alt={product.name} />
+    <div className="product-detail">
+      <img src={product.image} alt={product.name} className="product-detail-image" />
+      <h1 className="product-detail-title">{product.name}</h1>
+      <p className="product-detail-price">${product.price}</p>
+      <p className="product-detail-description">{product.description}</p>
       <ProductReviews productId={product._id} />
     </div>
   );
