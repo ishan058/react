@@ -7,7 +7,7 @@ import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
-// import ProfilePage from './pages/ProfilePage';
+import WishlistPage from './pages/WishlistPage'; // Ensure this import is correct
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        {/* <Route path="/profile" element={<ProfilePage />} /> */}
+        <Route path="/wishlist" element={<WishlistPage />} /> {/* Added if needed */}
       </Routes>
     </Router>
   );
