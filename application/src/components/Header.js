@@ -21,6 +21,9 @@ const Header = ({ isAuthenticated, handleLogout }) => {
                 <Link to="/products">Products</Link>
                 <Link to="/wishlist">Wishlist</Link>
                 <Link to="/cart">Cart</Link>
+                <Link to="/Login">Login</Link>
+                <Link to="/Signup">Signup</Link>
+                
                 {isAuthenticated ? (
                     <div className="profile-dropdown">
                         <button className="dropdown-toggle">Profile</button>

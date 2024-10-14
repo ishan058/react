@@ -281,6 +281,89 @@ body {
   margin-bottom: 10px;
 }
 
+/* Admin Panel Styles */
+.admin-panel {
+  margin: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.admin-panel form {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-panel input, .admin-panel textarea {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.admin-panel button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.admin-panel button:hover {
+  background-color: #45a049;
+}
+
+/* Home Page Styles */
+.home-page {
+  margin: 20px;
+}
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* Product Card Styles */
+.product-card {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.product-card img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.product-card h3 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.product-card .price {
+  font-size: 16px;
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.product-card .view-product {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.product-card .view-product:hover {
+  background-color: #45a049;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
