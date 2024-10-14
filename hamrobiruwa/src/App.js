@@ -11,6 +11,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import WishlistPage from './pages/WishlistPage'; 
 import AdminPanel from './components/AdminPanel';
+import AdminDashboard from './pages/AdminDashboard';
 import './App.css';
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/wishlist" element={<WishlistPage />} /> 
+        <Route path="/admindashboard" element={<AdminDashboard />} /> 
         <Route path="/admin" component={AdminPanel} />
         {/* Add more routes here as needed */}
       </Routes>
