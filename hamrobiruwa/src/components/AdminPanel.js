@@ -1,79 +1,70 @@
 // src/components/AdminPanel.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { fetchProducts, addProduct, deleteProduct } from '../api';
 import '../App.css';
 
 const AdminPanel = () => {
-  const [productName, setProductName] = useState('');
-  const [productPrice, setProductPrice] = useState('');
-  const [productDescription, setProductDescription] = useState('');
-  const [productImage, setProductImage] = useState('');
+  const [products, setProducts] = useState([]);
+  const [newProduct, setNewProduct] = useState({ name: '', price: '', category: '' });
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      const allProducts = await fetchProducts();
+      setProducts(allProducts);
+    };
+    loadProducts();
+  }, []);
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
+    const addedProduct = await addProduct(newProduct);
+    setProducts([...products, addedProduct]);
+    setNewProduct({ name: '', price: '', category: '' });
+  };
 
-    const newProduct = {
-      name: productName,
-      price: productPrice,
-      description: productDescription,
-      image: productImage,
-    };
-
-    try {
-      const response = await fetch('/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newProduct),
-      });
-
-      if (response.ok) {
-        alert('Product added successfully!');
-        setProductName('');
-        setProductPrice('');
-        setProductDescription('');
-        setProductImage('');
-      } else {
-        alert('Failed to add product');
-      }
-    } catch (error) {
-      console.error('Error adding product:', error);
-    }
+  const handleDeleteProduct = async (id) => {
+    await deleteProduct(id);
+    setProducts(products.filter(product => product.id !== id));
   };
 
   return (
     <div className="admin-panel">
-      <h2>Add New Product</h2>
-      <form onSubmit={handleAddProduct}>
+      <h2>Admin Dashboard</h2>
+
+      <form className="add-product-form" onSubmit={handleAddProduct}>
         <input
           type="text"
           placeholder="Product Name"
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
+          value={newProduct.name}
+          onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
           required
         />
-        <input
-          type="number"
-          placeholder="Product Price"
-          value={productPrice}
-          onChange={(e) => setProductPrice(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="Product Description"
-          value={productDescription}
-          onChange={(e) => setProductDescription(e.target.value)}
-          required
-        ></textarea>
         <input
           type="text"
-          placeholder="Product Image URL"
-          value={productImage}
-          onChange={(e) => setProductImage(e.target.value)}
+          placeholder="Price"
+          value={newProduct.price}
+          onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Category"
+          value={newProduct.category}
+          onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
           required
         />
         <button type="submit">Add Product</button>
       </form>
+
+      <h3>Existing Products</h3>
+      <ul className="product-list">
+        {products.map(product => (
+          <li key={product.id}>
+            {product.name} - ${product.price}
+            <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
