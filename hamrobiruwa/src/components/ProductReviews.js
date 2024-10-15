@@ -1,75 +1,41 @@
-// src/components/ProductReviews.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import '../App.css';
+// src/components/ProductReview.js
+import React, { useState } from 'react';
+import './styles.css';
 
-const ProductReviews = ({ productId }) => {
-  const [reviews, setReviews] = useState([]);
-  const [rating, setRating] = useState(1);
-  const [comment, setComment] = useState('');
+const ProductReview = ({ productId, submitReview }) => {
+  const [rating, setRating] = useState(0);
+  const [reviewText, setReviewText] = useState('');
 
-  // Fetch reviews when the component mounts or productId changes
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await axios.get(`/api/reviews/${productId}`);
-        setReviews(response.data);
-      } catch (error) {
-        console.error('Failed to fetch reviews', error);
-      }
-    };
-    fetchReviews();
-  }, [productId]);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
-
-    try {
-      await axios.post('/api/reviews', { productId, rating, comment }, {
-        headers: { Authorization: token },
-      });
-
-      // Reset form fields
-      setRating(1);
-      setComment('');
-
-      // Re-fetch reviews after submission
-      const response = await axios.get(`/api/reviews/${productId}`);
-      setReviews(response.data);
-    } catch (error) {
-      console.error('Failed to submit review', error);
-    }
+    submitReview(productId, rating, reviewText);
+    setRating(0);
+    setReviewText('');
   };
 
   return (
-    <div className="reviews-section">
-      <h3>Reviews</h3>
-      <form onSubmit={handleSubmit} className="review-form">
-        <select value={rating} onChange={(e) => setRating(Number(e.target.value))}>
-          <option value="1">1 Star</option>
-          <option value="2">2 Stars</option>
-          <option value="3">3 Stars</option>
-          <option value="4">4 Stars</option>
-          <option value="5">5 Stars</option>
-        </select>
-        <textarea
-          placeholder="Leave a comment..."
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          required
-        />
-        <button type="submit">Submit Review</button>
-      </form>
-      <ul className="review-list">
-        {reviews.map((review) => (
-          <li key={review._id} className="review-item">
-            <strong>{review.userId.name}:</strong> {review.rating} Stars - {review.comment}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <form className="product-review" onSubmit={handleSubmit}>
+      <label>Rating:</label>
+      <select value={rating} onChange={(e) => setRating(e.target.value)} required>
+        <option value="">Select</option>
+        <option value="1">1 star</option>
+        <option value="2">2 stars</option>
+        <option value="3">3 stars</option>
+        <option value="4">4 stars</option>
+        <option value="5">5 stars</option>
+      </select>
+      
+      <label>Review:</label>
+      <textarea
+        value={reviewText}
+        onChange={(e) => setReviewText(e.target.value)}
+        placeholder="Write your review"
+        required
+      />
+      
+      <button type="submit">Submit Review</button>
+    </form>
   );
 };
 
-export default ProductReviews;
+export default ProductReview;

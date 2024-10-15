@@ -1,31 +1,42 @@
 // src/components/ProductDetail.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import ProductReviews from './ProductReviews';
-import '../App.css';
+import React, { useState, useEffect } from 'react';
+import ProductReview from './ProductReview';
+import { fetchReviews, submitReview } from '../api';
+import './styles.css';
 
-const ProductDetail = () => {
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
+const ProductDetail = ({ productId }) => {
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const response = await axios.get(`/api/products/${id}`);
-      setProduct(response.data);
+    const loadReviews = async () => {
+      const productReviews = await fetchReviews(productId);
+      setReviews(productReviews);
     };
-    fetchProduct();
-  }, [id]);
+    loadReviews();
+  }, [productId]);
 
-  if (!product) return <div className="loading">Loading...</div>;
+  const handleSubmitReview = async (productId, rating, reviewText) => {
+    const newReview = await submitReview(productId, rating, reviewText);
+    setReviews([...reviews, newReview]);
+  };
 
   return (
     <div className="product-detail">
-      <img src={product.image} alt={product.name} className="product-detail-image" />
-      <h1 className="product-detail-title">{product.name}</h1>
-      <p className="product-detail-price">${product.price}</p>
-      <p className="product-detail-description">{product.description}</p>
-      <ProductReviews productId={product._id} />
+      <h2>Reviews</h2>
+      {reviews.length > 0 ? (
+        <ul>
+          {reviews.map((review) => (
+            <li key={review.id}>
+              <p>{review.text}</p>
+              <p>Rating: {review.rating} stars</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No reviews yet.</p>
+      )}
+      
+      <ProductReview productId={productId} submitReview={handleSubmitReview} />
     </div>
   );
 };

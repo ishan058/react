@@ -1,29 +1,39 @@
 // src/components/Wishlist.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { fetchWishlist, removeFromWishlist } from '../api';
+import './styles.css';
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
-    const fetchWishlist = async () => {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/api/wishlist', {
-        headers: { Authorization: token },
-      });
-      setWishlist(response.data.products);
+    const loadWishlist = async () => {
+      const items = await fetchWishlist();  // API to fetch wishlist items
+      setWishlist(items);
     };
-    fetchWishlist();
+    loadWishlist();
   }, []);
 
+  const handleRemove = async (productId) => {
+    await removeFromWishlist(productId);
+    setWishlist(wishlist.filter(item => item.id !== productId));
+  };
+
   return (
-    <div>
-      <h1>Your Wishlist</h1>
-      <ul>
-        {wishlist.map(product => (
-          <li key={product._id}>{product.name}</li>
-        ))}
-      </ul>
+    <div className="wishlist">
+      <h2>Your Wishlist</h2>
+      {wishlist.length > 0 ? (
+        <ul>
+          {wishlist.map(item => (
+            <li key={item.id}>
+              <p>{item.name} - ${item.price}</p>
+              <button onClick={() => handleRemove(item.id)}>Remove</button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Your wishlist is empty.</p>
+      )}
     </div>
   );
 };
