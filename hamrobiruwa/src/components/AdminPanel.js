@@ -1,70 +1,64 @@
 // src/components/AdminPanel.js
 import React, { useState, useEffect } from 'react';
-import { fetchProducts, addProduct, deleteProduct } from '../api';
-import '../App.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../slices/productsSlice';
+import { addProduct, deleteProduct } from '../api';
 
 const AdminPanel = () => {
-  const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState({ name: '', price: '', category: '' });
+  const [newProduct, setNewProduct] = useState({ name: '', price: 0 });
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products.products);
+  const productStatus = useSelector((state) => state.products.status);
 
   useEffect(() => {
-    const loadProducts = async () => {
-      const allProducts = await fetchProducts();
-      setProducts(allProducts);
-    };
-    loadProducts();
-  }, []);
+    if (productStatus === 'idle') {
+      dispatch(fetchProducts());
+    }
+  }, [productStatus, dispatch]);
 
-  const handleAddProduct = async (e) => {
-    e.preventDefault();
+  const handleAddProduct = async () => {
     const addedProduct = await addProduct(newProduct);
-    setProducts([...products, addedProduct]);
-    setNewProduct({ name: '', price: '', category: '' });
+    dispatch(fetchProducts()); // Fetch products again after adding
   };
 
-  const handleDeleteProduct = async (id) => {
-    await deleteProduct(id);
-    setProducts(products.filter(product => product.id !== id));
+  const handleDeleteProduct = async (productId) => {
+    await deleteProduct(productId);
+    dispatch(fetchProducts()); // Fetch products again after deletion
   };
 
   return (
-    <div className="admin-panel">
-      <h2>Admin Dashboard</h2>
-
-      <form className="add-product-form" onSubmit={handleAddProduct}>
+    <div>
+      <h2>Admin Panel</h2>
+      <div>
+        <h3>Add New Product</h3>
         <input
           type="text"
           placeholder="Product Name"
           value={newProduct.name}
           onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-          required
         />
         <input
-          type="text"
+          type="number"
           placeholder="Price"
           value={newProduct.price}
-          onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-          required
+          onChange={(e) => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
         />
-        <input
-          type="text"
-          placeholder="Category"
-          value={newProduct.category}
-          onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-          required
-        />
-        <button type="submit">Add Product</button>
-      </form>
+        <button onClick={handleAddProduct}>Add Product</button>
+      </div>
 
-      <h3>Existing Products</h3>
-      <ul className="product-list">
-        {products.map(product => (
-          <li key={product.id}>
-            {product.name} - ${product.price}
-            <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <h3>Product List</h3>
+      {productStatus === 'loading' ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {products.map((product) => (
+            <li key={product.id}>
+              {product.name} - ${product.price}
+              <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

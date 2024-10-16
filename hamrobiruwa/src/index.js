@@ -1,13 +1,13 @@
 // src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import App from './App';
-import './App.css'; // Importing global CSS
+import store from './store';
 
-// Rendering the App component into the root div
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
