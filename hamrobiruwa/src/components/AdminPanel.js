@@ -1,36 +1,49 @@
-// src/components/AdminPanel.js
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../slices/productsSlice';
-import { addProduct, deleteProduct } from '../api/api';
+import { addProductAPI, deleteProductAPI, fetchProductsAPI } from '../api/api'; // Correct import names
 
 const AdminPanel = () => {
-  const [newProduct, setNewProduct] = useState({ name: '', price: 0 });
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.products.products);
-  const productStatus = useSelector((state) => state.products.status);
+  const [products, setProducts] = useState([]);
+  const [newProduct, setNewProduct] = useState({
+    name: '',
+    price: '',
+    description: '',
+  });
 
   useEffect(() => {
-    if (productStatus === 'idle') {
-      dispatch(fetchProducts());
-    }
-  }, [productStatus, dispatch]);
+    const fetchProducts = async () => {
+      try {
+        const response = await fetchProductsAPI();
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const handleAddProduct = async () => {
-    const addedProduct = await addProduct(newProduct);
-    dispatch(fetchProducts()); // Fetch products again after adding
+    try {
+      const response = await addProductAPI(newProduct);
+      setProducts([...products, response.data]);
+      setNewProduct({ name: '', price: '', description: '' }); // Reset form fields
+    } catch (error) {
+      console.error('Error adding product:', error);
+    }
   };
 
-  const handleDeleteProduct = async (productId) => {
-    await deleteProduct(productId);
-    dispatch(fetchProducts()); // Fetch products again after deletion
+  const handleDeleteProduct = async (id) => {
+    try {
+      await deleteProductAPI(id);
+      setProducts(products.filter((product) => product.id !== id));
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
   };
 
   return (
-    <div>
+    <div className="admin-panel">
       <h2>Admin Panel</h2>
-      <div>
-        <h3>Add New Product</h3>
+      <div className="add-product-form">
         <input
           type="text"
           placeholder="Product Name"
@@ -38,27 +51,30 @@ const AdminPanel = () => {
           onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
         />
         <input
-          type="number"
-          placeholder="Price"
+          type="text"
+          placeholder="Product Price"
           value={newProduct.price}
-          onChange={(e) => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
+          onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
         />
+        <textarea
+          placeholder="Product Description"
+          value={newProduct.description}
+          onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+        ></textarea>
         <button onClick={handleAddProduct}>Add Product</button>
       </div>
 
-      <h3>Product List</h3>
-      {productStatus === 'loading' ? (
-        <p>Loading...</p>
-      ) : (
-        <ul>
-          {products.map((product) => (
-            <li key={product.id}>
-              {product.name} - ${product.price}
-              <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="product-list">
+        <h3>Product List</h3>
+        {products.map((product) => (
+          <div key={product.id} className="product-item">
+            <h4>{product.name}</h4>
+            <p>Price: ${product.price}</p>
+            <p>{product.description}</p>
+            <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
