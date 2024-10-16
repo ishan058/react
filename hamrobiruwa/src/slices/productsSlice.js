@@ -1,28 +1,21 @@
-// src/slices/productsSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchProducts as fetchProductsAPI } from '../api';
+import { fetchProductsAPI } from '../api/api';
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
-    const products = await fetchProductsAPI();
-    return products;
+    const response = await fetchProductsAPI();
+    return response.data;
   }
 );
 
 const productsSlice = createSlice({
   name: 'products',
-  initialState: {
-    products: [],
-    status: 'idle',
-    error: null,
-  },
+  initialState: { products: [], status: 'idle', error: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state) => {
-        state.status = 'loading';
-      })
+      .addCase(fetchProducts.pending, (state) => { state.status = 'loading'; })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.products = action.payload;

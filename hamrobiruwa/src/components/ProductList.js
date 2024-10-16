@@ -1,29 +1,26 @@
-// src/components/ProductList.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import '../App.css';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../slices/productsSlice';
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products.products);
+  const status = useSelector((state) => state.products.status);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await axios.get('/api/products'); // Update with your API endpoint
-      setProducts(response.data);
-    };
-    fetchProducts();
-  }, []);
+    if (status === 'idle') {
+      dispatch(fetchProducts());
+    }
+  }, [status, dispatch]);
 
   return (
     <div className="product-list">
-      {products.map((product) => (
-        <div className="product-card" key={product._id}>
-          <Link to={`/product/${product._id}`} className="product-link">
-            <img src={product.image} alt={product.name} className="product-image" />
-            <h3 className="product-title">{product.name}</h3>
-            <p className="product-price">${product.price}</p>
-          </Link>
+      {status === 'loading' && <p>Loading...</p>}
+      {status === 'succeeded' && products.map((product) => (
+        <div key={product.id} className="product">
+          <h3>{product.name}</h3>
+          <p>${product.price}</p>
+          <button>Add to Cart</button>
         </div>
       ))}
     </div>

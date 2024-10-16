@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../slices/productsSlice';
-import { addProduct, deleteProduct } from '../api';
+import { addProduct, deleteProduct } from '../api/api';
 
 const AdminPanel = () => {
   const [newProduct, setNewProduct] = useState({ name: '', price: 0 });
