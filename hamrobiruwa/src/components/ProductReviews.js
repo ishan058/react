@@ -1,41 +1,46 @@
-// src/components/ProductReview.js
-import React, { useState } from 'react';
-import './styles.css';
+// src/components/ProductReviews.js
+import React, { useState, useEffect } from 'react';
 
-const ProductReview = ({ productId, submitReview }) => {
-  const [rating, setRating] = useState(0);
-  const [reviewText, setReviewText] = useState('');
+const ProductReviews = ({ productId }) => {
+  const [reviews, setReviews] = useState([]);
+  const [sortBy, setSortBy] = useState('latest');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    submitReview(productId, rating, reviewText);
-    setRating(0);
-    setReviewText('');
-  };
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const response = await fetch(`/api/reviews?productId=${productId}&sortBy=${sortBy}`);
+      const data = await response.json();
+      setReviews(data.reviews);
+    };
+
+    fetchReviews();
+  }, [productId, sortBy]);
 
   return (
-    <form className="product-review" onSubmit={handleSubmit}>
-      <label>Rating:</label>
-      <select value={rating} onChange={(e) => setRating(e.target.value)} required>
-        <option value="">Select</option>
-        <option value="1">1 star</option>
-        <option value="2">2 stars</option>
-        <option value="3">3 stars</option>
-        <option value="4">4 stars</option>
-        <option value="5">5 stars</option>
-      </select>
-      
-      <label>Review:</label>
-      <textarea
-        value={reviewText}
-        onChange={(e) => setReviewText(e.target.value)}
-        placeholder="Write your review"
-        required
-      />
-      
-      <button type="submit">Submit Review</button>
-    </form>
+    <div className="reviews-container">
+      <h3>Product Reviews</h3>
+      <div className="review-sort">
+        <label htmlFor="sort">Sort by: </label>
+        <select id="sort" onChange={(e) => setSortBy(e.target.value)}>
+          <option value="latest">Latest</option>
+          <option value="highest">Highest Rating</option>
+          <option value="lowest">Lowest Rating</option>
+        </select>
+      </div>
+      {reviews.length > 0 ? (
+        <ul>
+          {reviews.map((review) => (
+            <li key={review.id}>
+              <h4>{review.userName}</h4>
+              <p>Rating: {review.rating}</p>
+              <p>{review.comment}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No reviews yet</p>
+      )}
+    </div>
   );
 };
 
-export default ProductReview;
+export default ProductReviews;

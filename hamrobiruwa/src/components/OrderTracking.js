@@ -1,23 +1,26 @@
 // src/components/OrderTracking.js
 import React, { useState, useEffect } from 'react';
-import { fetchOrderStatus } from '../api';
-import './styles.css';
 
 const OrderTracking = ({ orderId }) => {
-  const [status, setStatus] = useState('');
+  const [orderStatus, setOrderStatus] = useState('Pending');
+  const [shipmentStatus, setShipmentStatus] = useState('');
 
   useEffect(() => {
-    const loadStatus = async () => {
-      const orderStatus = await fetchOrderStatus(orderId);
-      setStatus(orderStatus);
+    const fetchOrderStatus = async () => {
+      const response = await fetch(`/api/order/status?orderId=${orderId}`);
+      const data = await response.json();
+      setOrderStatus(data.status);
+      setShipmentStatus(data.shipmentStatus);
     };
-    loadStatus();
+
+    fetchOrderStatus();
   }, [orderId]);
 
   return (
     <div className="order-tracking">
-      <h2>Order Status</h2>
-      <p>Status: {status}</p>
+      <h3>Order Tracking</h3>
+      <p>Order Status: {orderStatus}</p>
+      {shipmentStatus && <p>Shipment Status: {shipmentStatus}</p>}
     </div>
   );
 };

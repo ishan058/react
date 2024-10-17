@@ -1,0 +1,36 @@
+/* src/styles/ProductReviews.css */
+.reviews-container {
+    padding: 20px;
+  }
+  
+  .reviews-container h3 {
+    margin-bottom: 20px;
+  }
+  
+  .review-sort {
+    margin-bottom: 20px;
+  }
+  
+  .review-sort select {
+    padding: 5px;
+    font-size: 1rem;
+  }
+  
+  .reviews-container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .reviews-container li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .reviews-container li h4 {
+    margin: 0 0 5px 0;
+  }
+  
+  .reviews-container li p {
+    margin: 5px 0;
+  }
+  
