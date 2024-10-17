@@ -1,38 +1,48 @@
 // src/components/Wishlist.js
 import React, { useState, useEffect } from 'react';
-import { fetchWishlist, removeFromWishlist } from '../api';
-import './styles.css';
 
-const Wishlist = () => {
+const Wishlist = ({ userId }) => {
   const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
-    const loadWishlist = async () => {
-      const items = await fetchWishlist();  // API to fetch wishlist items
-      setWishlist(items);
+    // Fetch user's wishlist from the API
+    const fetchWishlist = async () => {
+      const response = await fetch(`/api/wishlist?userId=${userId}`);
+      const data = await response.json();
+      setWishlist(data.wishlist);
     };
-    loadWishlist();
-  }, []);
 
-  const handleRemove = async (productId) => {
-    await removeFromWishlist(productId);
-    setWishlist(wishlist.filter(item => item.id !== productId));
+    fetchWishlist();
+  }, [userId]);
+
+  const removeFromWishlist = async (productId) => {
+    await fetch(`/api/wishlist/remove`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId, productId }),
+    });
+
+    setWishlist((prev) => prev.filter((item) => item.id !== productId));
   };
 
   return (
-    <div className="wishlist">
+    <div className="wishlist-container">
       <h2>Your Wishlist</h2>
       {wishlist.length > 0 ? (
         <ul>
-          {wishlist.map(item => (
-            <li key={item.id}>
-              <p>{item.name} - ${item.price}</p>
-              <button onClick={() => handleRemove(item.id)}>Remove</button>
+          {wishlist.map((product) => (
+            <li key={product.id}>
+              <span>{product.name}</span>
+              <button onClick={() => removeFromWishlist(product.id)}>
+                Remove
+              </button>
             </li>
           ))}
         </ul>
       ) : (
-        <p>Your wishlist is empty.</p>
+        <p>Your wishlist is empty</p>
       )}
     </div>
   );

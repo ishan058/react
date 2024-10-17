@@ -1,0 +1,30 @@
+/* src/styles/Wishlist.css */
+.wishlist-container {
+    padding: 20px;
+  }
+  
+  .wishlist-container h2 {
+    margin-bottom: 20px;
+  }
+  
+  .wishlist-container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .wishlist-container li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .wishlist-container li button {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
