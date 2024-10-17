@@ -48,6 +48,7 @@
     ]
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "workbox-webpack-plugin": "^7.1.0"
   }
 }

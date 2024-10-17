@@ -1,0 +1,21 @@
+/* src/styles/ProductComparison.css */
+.comparison-table {
+    margin: 20px 0;
+    overflow-x: auto;
+  }
+  
+  .comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  .comparison-table th, .comparison-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .comparison-table th {
+    background-color: #f4f4f4;
+  }
+  
