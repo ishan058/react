@@ -1,47 +1,63 @@
-// src/components/ProductFilters.js
 import React, { useState } from 'react';
-import '../App.css';
 
-const ProductFilters = ({ applyFilters }) => {
-  const [category, setCategory] = useState('');
-  const [price, setPrice] = useState('');
+const ProductFilter = ({ onFilterChange }) => {
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(1000);
   const [rating, setRating] = useState('');
 
-  const handleFilter = (e) => {
-    e.preventDefault();
-    const filters = {
-      category,
-      price,
+  const handleFilterChange = () => {
+    onFilterChange({
+      category: selectedCategory,
+      priceRange: { min: minPrice, max: maxPrice },
       rating,
-    };
-    applyFilters(filters); // Callback to apply filters
+    });
   };
 
   return (
-    <form className="product-filters" onSubmit={handleFilter}>
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
-        <option value="">Category</option>
-        <option value="electronics">Electronics</option>
-        <option value="fashion">Fashion</option>
-        <option value="home">Home</option>
-      </select>
+    <div className="product-filter">
+      <h3>Filter Products</h3>
 
-      <select value={price} onChange={(e) => setPrice(e.target.value)}>
-        <option value="">Price</option>
-        <option value="low-high">Low to High</option>
-        <option value="high-low">High to Low</option>
-      </select>
+      <div>
+        <label>Category:</label>
+        <select onChange={(e) => setSelectedCategory(e.target.value)} value={selectedCategory}>
+          <option value="">All</option>
+          <option value="electronics">Electronics</option>
+          <option value="clothing">Clothing</option>
+          <option value="books">Books</option>
+        </select>
+      </div>
 
-      <select value={rating} onChange={(e) => setRating(e.target.value)}>
-        <option value="">Rating</option>
-        <option value="5">5 stars</option>
-        <option value="4">4 stars & above</option>
-        <option value="3">3 stars & above</option>
-      </select>
+      <div>
+        <label>Price Range:</label>
+        <input
+          type="number"
+          placeholder="Min"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Max"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
+        />
+      </div>
 
-      <button type="submit">Apply Filters</button>
-    </form>
+      <div>
+        <label>Rating:</label>
+        <select onChange={(e) => setRating(e.target.value)} value={rating}>
+          <option value="">All</option>
+          <option value="1">1 Star & up</option>
+          <option value="2">2 Stars & up</option>
+          <option value="3">3 Stars & up</option>
+          <option value="4">4 Stars & up</option>
+        </select>
+      </div>
+
+      <button onClick={handleFilterChange}>Apply Filters</button>
+    </div>
   );
 };
 
-export default ProductFilters;
+export default ProductFilter;
