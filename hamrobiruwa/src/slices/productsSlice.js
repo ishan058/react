@@ -1,27 +1,34 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchProductsAPI } from '../api/api';
+import { fetchProducts } from '../api/api';  // Updated to use fetchProducts
 
-export const fetchProducts = createAsyncThunk(
+// Async Thunk to fetch products
+export const fetchProductsThunk = createAsyncThunk(
   'products/fetchProducts',
   async () => {
-    const response = await fetchProductsAPI();
-    return response.data;
+    const response = await fetchProducts();
+    return response;
   }
 );
 
 const productsSlice = createSlice({
   name: 'products',
-  initialState: { products: [], status: 'idle', error: null },
-  reducers: {},
+  initialState: {
+    products: [],
+    loading: false,
+    error: null,
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state) => { state.status = 'loading'; })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.products = action.payload;
+      .addCase(fetchProductsThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
-      .addCase(fetchProducts.rejected, (state, action) => {
-        state.status = 'failed';
+      .addCase(fetchProductsThunk.fulfilled, (state, action) => {
+        state.products = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchProductsThunk.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message;
       });
   },

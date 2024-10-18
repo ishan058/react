@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { addProductAPI, deleteProductAPI, fetchProductsAPI } from '../api/api'; // Correct import names
+import { fetchProducts, addProduct, deleteProduct } from '../api/api';
 
 const AdminPanel = () => {
   const [products, setProducts] = useState([]);
@@ -7,74 +7,83 @@ const AdminPanel = () => {
     name: '',
     price: '',
     description: '',
+    imageUrl: '',
   });
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    // Fetch all products when the component loads
+    const loadProducts = async () => {
       try {
-        const response = await fetchProductsAPI();
-        setProducts(response.data);
+        const productList = await fetchProducts();
+        setProducts(productList);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
-    fetchProducts();
+
+    loadProducts();
   }, []);
 
   const handleAddProduct = async () => {
     try {
-      const response = await addProductAPI(newProduct);
-      setProducts([...products, response.data]);
-      setNewProduct({ name: '', price: '', description: '' }); // Reset form fields
+      await addProduct(newProduct);
+      const updatedProducts = await fetchProducts();
+      setProducts(updatedProducts);
+      setNewProduct({ name: '', price: '', description: '', imageUrl: '' });
     } catch (error) {
       console.error('Error adding product:', error);
     }
   };
 
-  const handleDeleteProduct = async (id) => {
+  const handleDeleteProduct = async (productId) => {
     try {
-      await deleteProductAPI(id);
-      setProducts(products.filter((product) => product.id !== id));
+      await deleteProduct(productId);
+      const updatedProducts = await fetchProducts();
+      setProducts(updatedProducts);
     } catch (error) {
       console.error('Error deleting product:', error);
     }
   };
 
   return (
-    <div className="admin-panel">
-      <h2>Admin Panel</h2>
-      <div className="add-product-form">
-        <input
-          type="text"
-          placeholder="Product Name"
-          value={newProduct.name}
-          onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Product Price"
-          value={newProduct.price}
-          onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-        />
-        <textarea
-          placeholder="Product Description"
-          value={newProduct.description}
-          onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-        ></textarea>
-        <button onClick={handleAddProduct}>Add Product</button>
-      </div>
+    <div>
+      <h1>Admin Panel</h1>
+      <h2>Add New Product</h2>
+      <input
+        type="text"
+        placeholder="Name"
+        value={newProduct.name}
+        onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+      />
+      <input
+        type="number"
+        placeholder="Price"
+        value={newProduct.price}
+        onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Description"
+        value={newProduct.description}
+        onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Image URL"
+        value={newProduct.imageUrl}
+        onChange={(e) => setNewProduct({ ...newProduct, imageUrl: e.target.value })}
+      />
+      <button onClick={handleAddProduct}>Add Product</button>
 
-      <div className="product-list">
-        <h3>Product List</h3>
+      <h2>Product List</h2>
+      <ul>
         {products.map((product) => (
-          <div key={product.id} className="product-item">
-            <h4>{product.name}</h4>
-            <p>Price: ${product.price}</p>
-            <p>{product.description}</p>
+          <li key={product.id}>
+            {product.name} - ${product.price}
             <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
