@@ -1,21 +1,27 @@
 /* src/styles/ProductComparison.css */
+
+.product-comparison {
+  margin: 20px;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+}
+
 .comparison-table {
-    margin: 20px 0;
-    overflow-x: auto;
-  }
-  
-  .comparison-table table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-  }
-  
-  .comparison-table th, .comparison-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  .comparison-table th {
-    background-color: #f4f4f4;
-  }
-  
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.comparison-table th, .comparison-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}

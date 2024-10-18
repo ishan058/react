@@ -1,31 +1,28 @@
-// src/pages/HomePage.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import ProductCard from '../components/ProductCard'; // Adjust the path if needed
-import '../App.css';
+import React, { useState, useEffect } from 'react';
+import { fetchProducts } from '../api/api';
+import ProductCard from '../components/ProductCard';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const loadProducts = async () => {
       try {
-        const { data } = await axios.get('/api/products'); // Your API endpoint
-        setProducts(data);
+        const fetchedProducts = await fetchProducts();
+        setProducts(fetchedProducts);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error loading products:', error);
       }
     };
-
-    fetchProducts();
+    loadProducts();
   }, []);
 
   return (
-    <div className="home-page">
-      <h2>Welcome to Hamro Biruwa</h2>
-      <div className="product-list">
-        {products.map(product => (
-          <ProductCard key={product._id} product={product} />
+    <div className="homepage">
+      <h1>Welcome to Hamro Biruwa</h1>
+      <div className="product-grid">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>
