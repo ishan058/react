@@ -57,6 +57,17 @@ export const loginAPI = async (credentials) => {
   }
 };
 
+// Fetch Wishlist
+export const fetchWishlist = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/wishlist`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching wishlist:', error);
+    throw error;
+  }
+};
+
 // Add to Wishlist
 export const addToWishlist = async (productId) => {
   try {

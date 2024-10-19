@@ -1,0 +1,12 @@
+.category-filter {
+    margin-bottom: 20px;
+  }
+  
+  .category-filter button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: pointer;
+  }
+  
