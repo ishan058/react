@@ -1,35 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import axios from 'axios';
-import './ProductList.css';
+import { fetchProducts } from '../api/api';
 
-// Function to fetch products from the API
-const fetchProducts = async () => {
-  const { data } = await axios.get('http://your-api-endpoint.com/products'); // Replace with your actual API endpoint
-  return data;
-};
-
-// Custom hook for using products (can be reused in other components)
-export const useProducts = () => {
-  return useQuery('products', fetchProducts);
-};
-
-// ProductList Component
 const ProductList = () => {
-  const { data, error, isLoading } = useProducts();
+  const [page, setPage] = useState(1);
+  const { data: products, isLoading, error } = useQuery(['products', page], () => fetchProducts(page));
 
-  if (isLoading) return <p>Loading products...</p>;
+  if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading products</p>;
 
+  const totalPages = Math.ceil(products.total / products.per_page); // Assuming your API returns total and per_page
+
   return (
-    <div className="product-list">
-      {data.map((product) => (
-        <div key={product.id} className="product-item">
-          <img src={product.image} alt={product.name} />
-          <h3>{product.name}</h3>
-          <p>{product.price}</p>
-        </div>
-      ))}
+    <div>
+      <div className="product-list">
+        {products.data.map(product => (
+          <div key={product.id} className="product-item">
+            <h3>{product.name}</h3>
+            <p>{product.price}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="pagination">
+        <button onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1}>Previous</button>
+        <span>Page {page} of {totalPages}</span>
+        <button onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} disabled={page === totalPages}>Next</button>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useQuery } from 'react-query';
 
 const API_URL = 'https://your-backend-api-url.com/api'; // Replace with your actual API URL
 
@@ -110,4 +111,16 @@ export const fetchReviews = async (productId) => {
     console.error('Error fetching reviews:', error);
     throw error;
   }
+};
+
+const fetchFilteredProducts = async ({ queryKey }) => {
+  const [, filters] = queryKey;
+  const { data } = await axios.get('http://your-api-endpoint.com/products', {
+    params: filters,
+  });
+  return data;
+};
+
+export const useFilteredProducts = (filters) => {
+  return useQuery(['products', filters], fetchFilteredProducts);
 };

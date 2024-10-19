@@ -1,32 +1,23 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getWishlist } from '../slices/wishlistSlice';
-import './Wishlist.css';
+import React from 'react';
+import { useWishlist, useAddToWishlist, useRemoveFromWishlist } from '../hooks/useWishlist';
 
 const Wishlist = () => {
-  const dispatch = useDispatch();
-  const { items, loading } = useSelector((state) => state.wishlist);
+  const { data: wishlist, isLoading, error } = useWishlist();
+  const { mutate: addToWishlist } = useAddToWishlist();
+  const { mutate: removeFromWishlist } = useRemoveFromWishlist();
 
-  useEffect(() => {
-    dispatch(getWishlist());
-  }, [dispatch]);
-
-  if (loading) {
-    return <p>Loading wishlist...</p>;
-  }
+  if (isLoading) return <p>Loading wishlist...</p>;
+  if (error) return <p>Error loading wishlist</p>;
 
   return (
-    <div className="wishlist-container">
-      <h2>Your Wishlist</h2>
-      <div className="wishlist-items">
-        {items.map((item) => (
-          <div className="wishlist-item" key={item.id}>
-            <img src={item.image} alt={item.name} />
-            <h3>{item.name}</h3>
-            <p>{item.price}</p>
-          </div>
-        ))}
-      </div>
+    <div className="wishlist">
+      <h3>Your Wishlist</h3>
+      {wishlist && wishlist.map((item) => (
+        <div key={item.id} className="wishlist-item">
+          <h4>{item.name}</h4>
+          <button onClick={() => removeFromWishlist(item.id)}>Remove</button>
+        </div>
+      ))}
     </div>
   );
 };

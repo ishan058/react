@@ -1,127 +1,42 @@
-// import React, { useState } from 'react';
-
-// const ProductFilter = ({ onFilterChange }) => {
-//   const [selectedCategory, setSelectedCategory] = useState('');
-//   const [minPrice, setMinPrice] = useState(0);
-//   const [maxPrice, setMaxPrice] = useState(1000);
-//   const [rating, setRating] = useState('');
-
-//   const handleFilterChange = () => {
-//     onFilterChange({
-//       category: selectedCategory,
-//       priceRange: { min: minPrice, max: maxPrice },
-//       rating,
-//     });
-//   };
-
-//   return (
-//     <div className="product-filter">
-//       <h3>Filter Products</h3>
-
-//       <div>
-//         <label>Category:</label>
-//         <select onChange={(e) => setSelectedCategory(e.target.value)} value={selectedCategory}>
-//           <option value="">All</option>
-//           <option value="electronics">Electronics</option>
-//           <option value="clothing">Clothing</option>
-//           <option value="books">Books</option>
-//         </select>
-//       </div>
-
-//       <div>
-//         <label>Price Range:</label>
-//         <input
-//           type="number"
-//           placeholder="Min"
-//           value={minPrice}
-//           onChange={(e) => setMinPrice(e.target.value)}
-//         />
-//         <input
-//           type="number"
-//           placeholder="Max"
-//           value={maxPrice}
-//           onChange={(e) => setMaxPrice(e.target.value)}
-//         />
-//       </div>
-
-//       <div>
-//         <label>Rating:</label>
-//         <select onChange={(e) => setRating(e.target.value)} value={rating}>
-//           <option value="">All</option>
-//           <option value="1">1 Star & up</option>
-//           <option value="2">2 Stars & up</option>
-//           <option value="3">3 Stars & up</option>
-//           <option value="4">4 Stars & up</option>
-//         </select>
-//       </div>
-
-//       <button onClick={handleFilterChange}>Apply Filters</button>
-//     </div>
-//   );
-// };
-
-// export default ProductFilter;
-
 import React, { useState } from 'react';
+import { useFilteredProducts } from '../hooks/useProducts';
 
-const ProductFilter = ({ onFilterChange }) => {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1000);
-  const [rating, setRating] = useState('');
+const ProductFilters = () => {
+  const [filters, setFilters] = useState({ category: '', sort: '' });
+  const { data: products, isLoading, error } = useFilteredProducts(filters);
 
-  const handleFilterChange = () => {
-    onFilterChange({
-      category: selectedCategory,
-      priceRange: { min: minPrice, max: maxPrice },
-      rating,
-    });
-  };
+  const handleCategoryChange = (e) => setFilters({ ...filters, category: e.target.value });
+  const handleSortChange = (e) => setFilters({ ...filters, sort: e.target.value });
+
+  if (isLoading) return <p>Loading products...</p>;
+  if (error) return <p>Error loading products</p>;
 
   return (
-    <div className="product-filter">
-      <h3>Filter Products</h3>
-
-      <div>
-        <label>Category:</label>
-        <select onChange={(e) => setSelectedCategory(e.target.value)} value={selectedCategory}>
-          <option value="">All</option>
+    <div>
+      <div className="filters">
+        <select onChange={handleCategoryChange}>
+          <option value="">All Categories</option>
           <option value="electronics">Electronics</option>
-          <option value="clothing">Clothing</option>
-          <option value="books">Books</option>
+          <option value="fashion">Fashion</option>
+        </select>
+
+        <select onChange={handleSortChange}>
+          <option value="">Sort by</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
         </select>
       </div>
 
-      <div>
-        <label>Price Range:</label>
-        <input
-          type="number"
-          placeholder="Min"
-          value={minPrice}
-          onChange={(e) => setMinPrice(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Max"
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(e.target.value)}
-        />
+      <div className="product-list">
+        {products && products.map((product) => (
+          <div key={product.id} className="product-item">
+            <h3>{product.name}</h3>
+            <p>{product.price}</p>
+          </div>
+        ))}
       </div>
-
-      <div>
-        <label>Rating:</label>
-        <select onChange={(e) => setRating(e.target.value)} value={rating}>
-          <option value="">All</option>
-          <option value="1">1 Star & up</option>
-          <option value="2">2 Stars & up</option>
-          <option value="3">3 Stars & up</option>
-          <option value="4">4 Stars & up</option>
-        </select>
-      </div>
-
-      <button onClick={handleFilterChange}>Apply Filters</button>
     </div>
   );
 };
 
-export default ProductFilter;
+export default ProductFilters;
