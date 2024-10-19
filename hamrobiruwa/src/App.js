@@ -11,7 +11,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import WishlistPage from './pages/WishlistPage'; 
 import AdminPanel from './components/AdminPanel';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminDashboard from './components/AdminDashboard';
 import './App.css';
 
 const App = () => {
