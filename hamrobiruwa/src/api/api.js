@@ -91,9 +91,9 @@ export const removeFromWishlist = async (productId) => {
 };
 
 // Submit Review
-export const submitReview = async (productId, reviewData) => {
+export const submitReview = async (productId, review) => {
   try {
-    const response = await axios.post(`${API_URL}/products/${productId}/reviews`, reviewData);
+    const response = await axios.post(`${API_URL}/products/${productId}/reviews`, { review });
     return response.data;
   } catch (error) {
     console.error('Error submitting review:', error);
