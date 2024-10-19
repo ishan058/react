@@ -1,0 +1,30 @@
+.reviews-container {
+    padding: 20px;
+  }
+  
+  .review {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+  
+  .add-review {
+    margin-top: 20px;
+  }
+  
+  .add-review textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+  
+  .add-review button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
