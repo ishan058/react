@@ -1,47 +1,38 @@
 // src/pages/ProductList.js
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import ProductFilters from '../components/ProductFilters';
+import ProductCard from '../components/ProductCard';
+import Pagination from '../components/Pagination';
 
 const ProductList = () => {
+  const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const products = useSelector((state) => state.products.products);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const handleFilter = (filters) => {
-    const { category, priceRange, rating } = filters;
-    let filtered = products;
-
-    if (category) {
-      filtered = filtered.filter((product) => product.category === category);
-    }
-
-    if (priceRange) {
-      filtered = filtered.filter(
-        (product) => product.price >= priceRange[0] && product.price <= priceRange[1]
-      );
-    }
-
-    if (rating) {
-      filtered = filtered.filter((product) => product.rating >= rating);
-    }
-
-    setFilteredProducts(filtered);
-  };
+  const productsPerPage = 10;
 
   useEffect(() => {
-    setFilteredProducts(products);
-  }, [products]);
+    async function fetchProducts() {
+      const res = await fetch(`/api/products?page=${currentPage}&limit=${productsPerPage}`);
+      const data = await res.json();
+      setProducts(data.products);
+      setTotalPages(data.totalPages);
+    }
+    fetchProducts();
+  }, [currentPage]);
 
   return (
     <div>
-      <ProductFilters onFilter={handleFilter} />
-      <ul>
-        {filteredProducts.map((product) => (
-          <li key={product.id}>
-            {product.name} - ${product.price} - {product.rating} Stars
-          </li>
+      <div className="product-grid">
+        {filteredProducts.map(product => (
+          <ProductCard key={product.id} product={product} />
         ))}
-      </ul>
+      </div>
+      <Pagination 
+        currentPage={currentPage} 
+        totalPages={totalPages} 
+        onPageChange={(page) => setCurrentPage(page)} 
+      />
     </div>
   );
 };
