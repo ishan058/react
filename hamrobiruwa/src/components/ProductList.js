@@ -1,31 +1,67 @@
-import React, { useState } from 'react';
-import { useQuery } from 'react-query';
-import { fetchProducts } from '../api/api';
+import React, { useState, useEffect } from 'react';
+import { fetchProducts } from '../api/api'; // Fetch products API function
 
 const ProductList = () => {
-  const [page, setPage] = useState(1);
-  const { data: products, isLoading, error } = useQuery(['products', page], () => fetchProducts(page));
+  const [products, setProducts] = useState([]);
+  const [sortOption, setSortOption] = useState('');
+  const [filter, setFilter] = useState({ category: '', priceRange: '' });
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading products</p>;
+  useEffect(() => {
+    // Fetch products and apply filters
+    const getProducts = async () => {
+      const fetchedProducts = await fetchProducts();
+      setProducts(fetchedProducts);
+    };
+    getProducts();
+  }, [filter, sortOption]);
 
-  const totalPages = Math.ceil(products.total / products.per_page); // Assuming your API returns total and per_page
+  const handleFilterChange = (e) => {
+    setFilter({
+      ...filter,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  const sortedAndFilteredProducts = products
+    .filter((product) => {
+      if (filter.category && product.category !== filter.category) return false;
+      // Add more filter conditions like priceRange
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortOption === 'price-asc') return a.price - b.price;
+      if (sortOption === 'price-desc') return b.price - a.price;
+      return 0; // Default sorting logic
+    });
 
   return (
     <div>
-      <div className="product-list">
-        {products.data.map(product => (
-          <div key={product.id} className="product-item">
-            <h3>{product.name}</h3>
-            <p>{product.price}</p>
-          </div>
-        ))}
+      <div className="filter-sort-options">
+        <select name="category" onChange={handleFilterChange}>
+          <option value="">All Categories</option>
+          <option value="electronics">Electronics</option>
+          <option value="clothing">Clothing</option>
+        </select>
+
+        <select onChange={handleSortChange}>
+          <option value="">Sort by</option>
+          <option value="price-asc">Price (Low to High)</option>
+          <option value="price-desc">Price (High to Low)</option>
+        </select>
       </div>
 
-      <div className="pagination">
-        <button onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1}>Previous</button>
-        <span>Page {page} of {totalPages}</span>
-        <button onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} disabled={page === totalPages}>Next</button>
+      <div className="product-grid">
+        {sortedAndFilteredProducts.map((product) => (
+          <div key={product.id} className="product-item">
+            <img src={product.image} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>${product.price}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
