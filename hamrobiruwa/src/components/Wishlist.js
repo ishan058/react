@@ -1,21 +1,30 @@
-import React from 'react';
-import { useWishlist, useAddToWishlist, useRemoveFromWishlist } from '../hooks/useWishlist';
+// src/components/Wishlist.js
+import React, { useEffect, useState } from 'react';
+import { fetchWishlist, removeFromWishlist } from '../api/api';
 
 const Wishlist = () => {
-  const { data: wishlist, isLoading, error } = useWishlist();
-  const { mutate: addToWishlist } = useAddToWishlist();
-  const { mutate: removeFromWishlist } = useRemoveFromWishlist();
+  const [wishlist, setWishlist] = useState([]);
 
-  if (isLoading) return <p>Loading wishlist...</p>;
-  if (error) return <p>Error loading wishlist</p>;
+  useEffect(() => {
+    const loadWishlist = async () => {
+      const data = await fetchWishlist();
+      setWishlist(data);
+    };
+    loadWishlist();
+  }, []);
+
+  const handleRemove = async (productId) => {
+    await removeFromWishlist(productId);
+    setWishlist(wishlist.filter(item => item.id !== productId));
+  };
 
   return (
     <div className="wishlist">
-      <h3>Your Wishlist</h3>
-      {wishlist && wishlist.map((item) => (
+      <h1>Your Wishlist</h1>
+      {wishlist.map((item) => (
         <div key={item.id} className="wishlist-item">
-          <h4>{item.name}</h4>
-          <button onClick={() => removeFromWishlist(item.id)}>Remove</button>
+          <p>{item.name}</p>
+          <button onClick={() => handleRemove(item.id)}>Remove</button>
         </div>
       ))}
     </div>

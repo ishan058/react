@@ -1,21 +1,65 @@
+// src/api/api.js
+
 import axios from 'axios';
 import { useQuery } from 'react-query';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://your-backend-api-url.com/api'; // Use .env variable or fallback URL
+// Set API URL, either from the environment variable or fallback to a default
+const API_URL = process.env.REACT_APP_API_URL || 'https://your-backend-api-url.com/api';
 
-// Function to fetch dashboard data
+// Fetch dashboard data (totalProducts, totalOrders, totalUsers)
 export const fetchDashboardData = async () => {
     try {
-        const response = await fetch(`${API_URL}/dashboard`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch dashboard data');
-        }
-        const data = await response.json();
-        return data; // Assume this returns an object with totalProducts, totalOrders, totalUsers
+        const response = await axios.get(`${API_URL}/dashboard`);
+        return response.data;
     } catch (error) {
         console.error('Error fetching dashboard data:', error);
-        throw error; // Re-throw the error to handle it in your component
+        throw error;
     }
+};
+
+// Fetch all orders for the admin dashboard
+export const fetchOrders = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/orders`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        throw error;
+    }
+};
+
+// Fetch product statistics (like total sales, views, etc.)
+export const fetchProductStatistics = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/product-stats`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching product statistics:', error);
+        throw error;
+    }
+};
+
+// WebSocket connection for real-time updates
+export const connectWebSocket = () => {
+    const ws = new WebSocket('wss://your-websocket-server.com');
+    
+    ws.onopen = () => {
+        console.log('WebSocket connection established');
+    };
+
+    ws.onmessage = (event) => {
+        console.log('WebSocket message received:', event.data);
+    };
+
+    ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+    };
+
+    ws.onclose = () => {
+        console.log('WebSocket connection closed');
+    };
+
+    return ws;
 };
 
 // Fetch all products
@@ -51,7 +95,7 @@ export const deleteProduct = async (productId) => {
     }
 };
 
-// Fetch product details by ID
+// Fetch specific product by ID
 export const fetchProductById = async (productId) => {
     try {
         const response = await axios.get(`${API_URL}/products/${productId}`);
@@ -137,6 +181,8 @@ const fetchFilteredProducts = async ({ queryKey }) => {
     return data;
 };
 
+// Hook to get filtered products
 export const useFilteredProducts = (filters) => {
     return useQuery(['products', filters], fetchFilteredProducts);
 };
+

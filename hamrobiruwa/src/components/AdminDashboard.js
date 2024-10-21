@@ -1,46 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { fetchDashboardData, deleteProduct } from '../api/api';
+// src/components/AdminDashboard.js
+import React, { useEffect, useState } from 'react';
+import { fetchOrders, fetchProductStatistics, connectWebSocket } from '../api/api';
+import OrdersTable from './OrdersTable';
+import ProductStats from './ProductStats';
 
 const AdminDashboard = () => {
-  const [dashboardData, setDashboardData] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [productStats, setProductStats] = useState({});
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    const getDashboardData = async () => {
-      const data = await fetchDashboardData();
-      setDashboardData(data);
+    const loadOrders = async () => {
+      const ordersData = await fetchOrders();
+      setOrders(ordersData);
     };
-    getDashboardData();
+
+    const loadProductStats = async () => {
+      const statsData = await fetchProductStatistics();
+      setProductStats(statsData);
+    };
+
+    const ws = connectWebSocket();
+    ws.onmessage = (event) => {
+      const notification = JSON.parse(event.data);
+      setNotifications((prev) => [...prev, notification]);
+    };
+
+    loadOrders();
+    loadProductStats();
   }, []);
-
-  const handleDeleteProduct = async (productId) => {
-    await deleteProduct(productId);
-    // Re-fetch data to update dashboard after deletion
-    const updatedData = await fetchDashboardData();
-    setDashboardData(updatedData);
-  };
-
-  if (!dashboardData) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div className="admin-dashboard">
-      <h2>Admin Dashboard</h2>
-
-      <div className="statistics">
-        <p>Total Products: {dashboardData.totalProducts}</p>
-        <p>Total Sales: {dashboardData.totalSales}</p>
-        <p>Total Users: {dashboardData.totalUsers}</p>
-      </div>
-
-      <div className="product-list">
-        <h3>Manage Products</h3>
-        {dashboardData.products.map((product) => (
-          <div key={product.id} className="product-item">
-            <p>{product.name} - ${product.price}</p>
-            <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-          </div>
+      <h1>Admin Dashboard</h1>
+      <div className="notifications">
+        {notifications.map((notification, index) => (
+          <p key={index}>{notification.message}</p>
         ))}
+      </div>
+      <div className="stats-overview">
+        <ProductStats data={productStats} />
+      </div>
+      <div className="orders-section">
+        <h2>Recent Orders</h2>
+        <OrdersTable orders={orders} />
       </div>
     </div>
   );

@@ -5,19 +5,15 @@ const DarkModeToggle = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    const savedMode = localStorage.getItem('darkMode');
-    if (savedMode) {
-      setDarkMode(JSON.parse(savedMode));
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
     }
-  }, []);
-
-  useEffect(() => {
-    document.body.className = darkMode ? 'dark-mode' : '';
-    localStorage.setItem('darkMode', JSON.stringify(darkMode));
   }, [darkMode]);
 
   return (
-    <button className="dark-mode-toggle" onClick={() => setDarkMode(!darkMode)}>
+    <button onClick={() => setDarkMode(!darkMode)}>
       {darkMode ? 'Light Mode' : 'Dark Mode'}
     </button>
   );
