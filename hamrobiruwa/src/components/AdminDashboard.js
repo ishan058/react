@@ -1,50 +1,29 @@
 // src/components/AdminDashboard.js
-import React, { useEffect, useState } from 'react';
-import { fetchOrders, fetchProductStatistics, connectWebSocket } from '../api/api';
-import OrdersTable from './OrdersTable';
-import ProductStats from './ProductStats';
+import React, { useState } from 'react';
+import { deleteProduct } from '../api/api';
+import ProductTable from './ProductTable';
 
 const AdminDashboard = () => {
-  const [orders, setOrders] = useState([]);
-  const [productStats, setProductStats] = useState({});
-  const [notifications, setNotifications] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    const loadOrders = async () => {
-      const ordersData = await fetchOrders();
-      setOrders(ordersData);
-    };
+  const handleDeleteProduct = async (productId) => {
+    // Optimistic UI: Remove the product from the UI before waiting for the server response
+    const updatedProducts = products.filter((product) => product.id !== productId);
+    setProducts(updatedProducts);
 
-    const loadProductStats = async () => {
-      const statsData = await fetchProductStatistics();
-      setProductStats(statsData);
-    };
-
-    const ws = connectWebSocket();
-    ws.onmessage = (event) => {
-      const notification = JSON.parse(event.data);
-      setNotifications((prev) => [...prev, notification]);
-    };
-
-    loadOrders();
-    loadProductStats();
-  }, []);
+    try {
+      await deleteProduct(productId);
+    } catch (error) {
+      // If the delete fails, rollback the UI update
+      setProducts(products);
+      alert('Failed to delete product. Please try again.');
+    }
+  };
 
   return (
-    <div className="admin-dashboard">
+    <div>
       <h1>Admin Dashboard</h1>
-      <div className="notifications">
-        {notifications.map((notification, index) => (
-          <p key={index}>{notification.message}</p>
-        ))}
-      </div>
-      <div className="stats-overview">
-        <ProductStats data={productStats} />
-      </div>
-      <div className="orders-section">
-        <h2>Recent Orders</h2>
-        <OrdersTable orders={orders} />
-      </div>
+      <ProductTable products={products} onDelete={handleDeleteProduct} />
     </div>
   );
 };
