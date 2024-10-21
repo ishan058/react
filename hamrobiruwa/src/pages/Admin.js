@@ -1,4 +1,4 @@
-// src/pages/Admin.js
+
 import React from 'react';
 import AdminDashboard from '../components/AdminDashboard';
 import withRole from '../components/withRole';
