@@ -1,43 +1,45 @@
-// src/pages/ProductList.js
+// src/components/ProductList.js
+
 import React, { useState, useEffect } from 'react';
-import ProductCard from '../components/ProductCard';
-import Filter from '../components/Filter';
+import { fetchPaginatedProducts } from '../api/api';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const categories = ['Electronics', 'Clothing', 'Books'];
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    // Fetch products from the API
-    async function fetchProducts() {
-      const res = await fetch('/api/products');
-      const data = await res.json();
-      setProducts(data);
-      setFilteredProducts(data);
-    }
-    fetchProducts();
-  }, []);
+    const loadProducts = async () => {
+      const { products, totalPages } = await fetchPaginatedProducts(page);
+      setProducts(products);
+      setTotalPages(totalPages);
+    };
 
-  const handleFilter = (filters) => {
-    let filtered = products;
-    if (filters.category) {
-      filtered = filtered.filter(product => product.category === filters.category);
-    }
-    if (filters.priceRange) {
-      filtered = filtered.filter(product => product.price <= filters.priceRange[1]);
-    }
-    setFilteredProducts(filtered);
+    loadProducts();
+  }, [page]);
+
+  const handleNextPage = () => {
+    if (page < totalPages) setPage(page + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) setPage(page - 1);
   };
 
   return (
     <div>
-      <Filter categories={categories} onFilter={handleFilter} />
-      <div className="product-grid">
-        {filteredProducts.map(product => (
-          <ProductCard key={product.id} product={product} />
+      <h2>Products</h2>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>{product.name}</li>
         ))}
-      </div>
+      </ul>
+      <button onClick={handlePreviousPage} disabled={page === 1}>
+        Previous
+      </button>
+      <button onClick={handleNextPage} disabled={page === totalPages}>
+        Next
+      </button>
     </div>
   );
 };

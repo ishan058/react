@@ -1,17 +1,21 @@
 // src/controllers/productController.js
-const { check, validationResult } = require('express-validator');
 
-exports.createProduct = [
-  check('name').isLength({ min: 3 }).withMessage('Product name must be at least 3 characters long'),
-  check('price').isFloat({ min: 0.01 }).withMessage('Price must be a positive number'),
-  check('stock').isInt({ min: 0 }).withMessage('Stock cannot be negative'),
-
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    // Product creation logic
-  },
-];
+exports.getPaginatedProducts = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  
+  try {
+    const products = await Product.find()
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+      
+    const totalProducts = await Product.countDocuments();
+    
+    res.json({
+      products,
+      totalPages: Math.ceil(totalProducts / limit),
+      currentPage: Number(page),
+    });
+  } catch (error) {
+    res.status(500).send('Server Error');
+  }
+};
