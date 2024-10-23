@@ -1,34 +1,39 @@
-import React, { useState } from 'react';
-import { useQuery } from 'react-query';
-import { fetchProducts } from '../api/api';
+// src/components/ProductSearch.js
+
+import React, { useState, useEffect } from 'react';
+import { debounce } from '../utils/debounce';
+import { fetchFilteredProducts } from '../api/api';
 
 const ProductSearch = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const { data: products, isLoading, error } = useQuery(['products', searchTerm], () => fetchProducts(searchTerm));
+  const [query, setQuery] = useState('');
+  const [products, setProducts] = useState([]);
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
+  const debouncedFetchProducts = debounce(async (searchQuery) => {
+    const result = await fetchFilteredProducts(searchQuery);
+    setProducts(result);
+  }, 300);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading products</p>;
+  useEffect(() => {
+    if (query) {
+      debouncedFetchProducts(query);
+    } else {
+      setProducts([]); // Clear results when the query is empty
+    }
+  }, [query]);
 
   return (
     <div>
       <input
         type="text"
-        value={searchTerm}
-        onChange={handleSearch}
-        placeholder="Search for products"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search Products"
       />
-      <div className="product-list">
-        {products.data.map(product => (
-          <div key={product.id} className="product-item">
-            <h3>{product.name}</h3>
-            <p>{product.price}</p>
-          </div>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>{product.name}</li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

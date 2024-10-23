@@ -1,26 +1,38 @@
 // src/controllers/authController.js
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
-exports.send2FACode = async (req, res) => {
-  const { email } = req.body;
-  const code = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit code
-
-  await sendEmail(email, `Your 2FA code is ${code}`);
-
-  // Store code in the database with an expiration time
-  await TwoFactorAuth.create({ email, code, expiresAt: Date.now() + 10 * 60 * 1000 });
-
-  res.status(200).send('2FA code sent');
+exports.register = async (req, res) => {
+  const { username, password } = req.body;
+  
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, password: hashedPassword });
+    await newUser.save();
+    
+    res.status(201).json({ message: 'User registered' });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
-// Validate 2FA code
-exports.verify2FACode = async (req, res) => {
-  const { email, code } = req.body;
-  const validCode = await TwoFactorAuth.findOne({ email, code, expiresAt: { $gt: Date.now() } });
-
-  if (!validCode) {
-    return res.status(400).send('Invalid or expired 2FA code');
+exports.login = async (req, res) => {
+  const { username, password } = req.body;
+  
+  try {
+    const user = await User.findOne({ username });
+    
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+    
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
   }
-
-  // Proceed with login
-  res.status(200).send('2FA code verified');
 };
