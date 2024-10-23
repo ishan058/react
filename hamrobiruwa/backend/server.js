@@ -1,4 +1,5 @@
-// backend/server.js
+// src/server.js
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -23,8 +24,18 @@ const io = socketIo(server);
 
 // Socket.io connection handling
 io.on('connection', (socket) => {
-  console.log('New client connected');
+  console.log('Admin connected');
 
+  socket.on('disconnect', () => {
+    console.log('Admin disconnected');
+  });
+
+  // Listen for product updates and broadcast to all clients
+  socket.on('productUpdate', (data) => {
+    io.emit('productUpdate', data);
+  });
+  
+  console.log('New client connected');
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });
