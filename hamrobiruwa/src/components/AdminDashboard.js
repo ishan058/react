@@ -1,49 +1,52 @@
 // src/components/AdminDashboard.js
-
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
-import { deleteProduct } from '../api/api';
+import React, { useState, useEffect } from 'react';
+import { fetchDashboardData } from '../api/api';
 import ProductTable from './ProductTable';
-
-const socket = io.connect('http://localhost:5000');
+import SalesChart from './SalesChart'; // New component to display sales chart
+import OrdersOverview from './OrdersOverview'; // New component to display recent orders
 
 const AdminDashboard = () => {
-  const [products, setProducts] = useState([]);
+  const [dashboardData, setDashboardData] = useState(null);
 
-  // WebSocket product updates
   useEffect(() => {
-    socket.on('productUpdate', (updatedProduct) => {
-      setProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.id === updatedProduct.id ? updatedProduct : product
-        )
-      );
-    });
-
-    // Cleanup WebSocket connection on component unmount
-    return () => {
-      socket.off('productUpdate');
+    const fetchData = async () => {
+      const data = await fetchDashboardData();
+      setDashboardData(data);
     };
+    fetchData();
   }, []);
 
-  // Handle product deletion
-  const handleDeleteProduct = async (productId) => {
-    const updatedProducts = products.filter((product) => product.id !== productId);
-    setProducts(updatedProducts);
-
-    try {
-      await deleteProduct(productId);
-    } catch (error) {
-      // Rollback UI update if deletion fails
-      setProducts(products);
-      alert('Failed to delete product. Please try again.');
-    }
-  };
-
   return (
-    <div>
+    <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
-      <ProductTable products={products} onDelete={handleDeleteProduct} />
+
+      {dashboardData ? (
+        <>
+          {/* Sales and product statistics */}
+          <div className="stats-overview">
+            <div className="stat-item">
+              <h2>Total Sales</h2>
+              <p>{dashboardData.totalSales}</p>
+            </div>
+            <div className="stat-item">
+              <h2>Products Sold</h2>
+              <p>{dashboardData.productsSold}</p>
+            </div>
+          </div>
+
+          {/* Sales Chart */}
+          <SalesChart salesData={dashboardData.salesData} />
+
+          {/* Recent Orders */}
+          <OrdersOverview orders={dashboardData.recentOrders} />
+
+          {/* Manage Products */}
+          <h2>Manage Products</h2>
+          <ProductTable products={dashboardData.products} />
+        </>
+      ) : (
+        <p>Loading dashboard data...</p>
+      )}
     </div>
   );
 };

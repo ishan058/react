@@ -1,19 +1,18 @@
-// src/components/LoginForm.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { loginAPI } from '../api/api';
-import { useHistory } from 'react-router-dom';
 
-const LoginForm = () => {
+const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const { token } = await loginAPI({ username, password });
       localStorage.setItem('authToken', token);
-      history.push('/admin');
+      navigate('/admin');
     } catch (error) {
       alert('Login failed. Please check your credentials.');
     }
@@ -38,4 +37,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default LoginPage;
