@@ -1,4 +1,5 @@
 const { Order } = require('../models/Order');
+const { sequelize } = require('../config/db');
 
 exports.getDashboardData = async (req, res) => {
   try {
