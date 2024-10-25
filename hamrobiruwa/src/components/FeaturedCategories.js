@@ -1,6 +1,6 @@
 // src/components/FeaturedCategories.js
 import React from 'react';
-import './FeaturedCategories.css';
+import '../styles/FeaturedCategories.css';
 
 const categories = [
   { id: 1, name: 'Indoor Plants', image: '/images/indoor.jpg' },

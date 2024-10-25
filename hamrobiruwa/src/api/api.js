@@ -1,12 +1,10 @@
-// src/api/api.js
-
 import axios from 'axios';
 import { useQuery } from 'react-query';
 
 // Set API URL, either from the environment variable or fallback to a default
-const API_URL = process.env.REACT_APP_API_URL || 'https://your-backend-api-url.com/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-// Fetch dashboard data (totalProducts, totalOrders, totalUsers)
+// Fetch dashboard data (e.g., totalProducts, totalOrders, totalUsers)
 export const fetchDashboardData = async () => {
     try {
         const response = await axios.get(`${API_URL}/dashboard`);
@@ -106,6 +104,17 @@ export const fetchProductById = async (productId) => {
     }
 };
 
+// Fetch trending products
+export const fetchTrendingProducts = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/products/trending`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching trending products:', error);
+        throw error;
+    }
+};
+
 // User login API
 export const loginAPI = async (credentials) => {
     try {
@@ -185,4 +194,3 @@ const fetchFilteredProducts = async ({ queryKey }) => {
 export const useFilteredProducts = (filters) => {
     return useQuery(['products', filters], fetchFilteredProducts);
 };
-
