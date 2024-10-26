@@ -1,4 +1,4 @@
-// src/server.js
+// backend/server.js
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -24,18 +24,18 @@ const io = socketIo(server);
 
 // Socket.io connection handling
 io.on('connection', (socket) => {
-  console.log('Admin connected');
-
-  socket.on('disconnect', () => {
-    console.log('Admin disconnected');
-  });
+  console.log('New client connected');
 
   // Listen for product updates and broadcast to all clients
   socket.on('productUpdate', (data) => {
     io.emit('productUpdate', data);
   });
-  
-  console.log('New client connected');
+
+  // Listen for new orders and broadcast to all clients
+  socket.on('newOrder', (order) => {
+    io.emit('newOrder', order);
+  });
+
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });
@@ -46,3 +46,5 @@ const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = server;
