@@ -1,33 +1,56 @@
-// backend/controllers/adminController.js
 const Product = require('../models/Product');
+const Order = require('../models/Order');
+const User = require('../models/User');
 
-exports.addProduct = async (req, res) => {
-  const { name, price, description, category, images } = req.body;
-
-  const newProduct = new Product({ name, price, description, category, images });
-  await newProduct.save();
-
-  res.status(201).json(newProduct);
+exports.getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
-exports.updateProduct = async (req, res) => {
-  const { productId } = req.params;
-  const { name, price, description, category, images } = req.body;
+// Similar CRUD functions for addProduct, updateProduct, deleteProduct...
 
-  const updatedProduct = await Product.findByIdAndUpdate(productId, {
-    name,
-    price,
-    description,
-    category,
-    images,
-  }, { new: true });
-
-  res.json(updatedProduct);
+exports.getAllOrders = async (req, res) => {
+    try {
+        const orders = await Order.find();
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
-exports.deleteProduct = async (req, res) => {
-  const { productId } = req.params;
+// Update order status
+exports.updateOrderStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+        res.json(order);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
-  await Product.findByIdAndDelete(productId);
-  res.status(204).send();
+// Get all users
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Delete a user
+exports.deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await User.findByIdAndDelete(id);
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
