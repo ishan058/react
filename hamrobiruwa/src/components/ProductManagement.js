@@ -1,58 +1,51 @@
-import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { fetchProducts, addProduct, deleteProduct } from '../api/api';
+// src/components/ProductManagement.js
+
+import React, { useState, useEffect } from 'react';
+import { fetchProducts } from '../api/api';
+import ProductCard from './ProductCard';
 
 const ProductManagement = () => {
-  const queryClient = useQueryClient();
-  const { data: products, isLoading, error } = useQuery('products', fetchProducts);
-  
-  const addProductMutation = useMutation(addProduct, {
-    onSuccess: () => queryClient.invalidateQueries('products'),
-  });
-  
-  const deleteProductMutation = useMutation(deleteProduct, {
-    onSuccess: () => queryClient.invalidateQueries('products'),
-  });
+  const [products, setProducts] = useState([]);
+  const [filters, setFilters] = useState({ category: '', priceRange: '', sort: '' });
 
-  const [newProduct, setNewProduct] = useState({ name: '', price: '' });
+  useEffect(() => {
+    const loadProducts = async () => {
+      const fetchedProducts = await fetchProducts(filters);
+      setProducts(fetchedProducts);
+    };
+    loadProducts();
+  }, [filters]);
 
-  const handleAddProduct = (e) => {
-    e.preventDefault();
-    addProductMutation.mutate(newProduct);
-    setNewProduct({ name: '', price: '' });
+  const handleFilterChange = (e) => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value,
+    });
   };
-
-  if (isLoading) return <p>Loading products...</p>;
-  if (error) return <p>Error loading products</p>;
 
   return (
     <div>
       <h2>Product Management</h2>
-      <form onSubmit={handleAddProduct}>
-        <input
-          type="text"
-          placeholder="Product Name"
-          value={newProduct.name}
-          onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-          required
-        />
-        <input
-          type="number"
-          placeholder="Product Price"
-          value={newProduct.price}
-          onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-          required
-        />
-        <button type="submit">Add Product</button>
-      </form>
-
+      <div className="filters">
+        <select name="category" onChange={handleFilterChange}>
+          <option value="">All Categories</option>
+          <option value="electronics">Electronics</option>
+          <option value="fashion">Fashion</option>
+        </select>
+        <select name="priceRange" onChange={handleFilterChange}>
+          <option value="">All Prices</option>
+          <option value="0-50">$0 - $50</option>
+          <option value="50-100">$50 - $100</option>
+        </select>
+        <select name="sort" onChange={handleFilterChange}>
+          <option value="">Sort By</option>
+          <option value="popularity">Popularity</option>
+          <option value="rating">Rating</option>
+        </select>
+      </div>
       <div className="product-list">
-        {products.data.map(product => (
-          <div key={product.id} className="product-item">
-            <h3>{product.name}</h3>
-            <p>${product.price}</p>
-            <button onClick={() => deleteProductMutation.mutate(product.id)}>Delete</button>
-          </div>
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>
