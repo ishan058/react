@@ -1,6 +1,6 @@
 // src/components/AdminLogs.js
 import React, { useEffect, useState } from 'react';
-import { fetchAdminLogs } from '../api/api';
+import { fetchAdminLogs } from '../../api/api';
 
 const AdminLogs = () => {
   const [logs, setLogs] = useState([]);

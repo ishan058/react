@@ -10,8 +10,8 @@ import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import WishlistPage from './pages/WishlistPage'; 
-import AdminPanel from './components/AdminPanel';
-import AdminDashboard from './components/AdminDashboard';
+import AdminPanel from './components/Admin/AdminPanel';
+import AdminDashboard from './components/Admin/AdminDashboard';
 import './App.css';
 
 const App = () => {

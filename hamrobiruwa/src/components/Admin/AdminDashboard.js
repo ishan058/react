@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { fetchProducts, fetchOrders, fetchUsers } from '../api/adminApi';
-import ProductTable from './ProductTable';
-import OrderTable from './OrderTable';
-import UserTable from './UserTable';
-import useSocket from '../hooks/useSocket';
+import { fetchProducts, fetchOrders, fetchUsers } from '../../api/adminApi';
+import ProductTable from '../ProductTable';
+import OrderTable from '../OrderTable';
+import UserTable from '../UserTable';
+import useSocket from '../../hooks/useSocket';
 
 const AdminDashboard = () => {
   const [products, setProducts] = useState([]);

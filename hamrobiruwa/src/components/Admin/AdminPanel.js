@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProducts, addProduct, deleteProduct } from '../api/api';
+import { fetchProducts, addProduct, deleteProduct } from '../../api/api';
 
 const AdminPanel = () => {
   const [products, setProducts] = useState([]);
