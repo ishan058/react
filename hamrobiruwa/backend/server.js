@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const http = require('http');
-const socketIo = require('socket.io');
+const { Server } = require('socket.io');
 
 // Load environment variables
 dotenv.config();
@@ -24,9 +24,9 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/yourDB', {
 const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
 
-// Create HTTP server and Socket.IO instance
+// Create HTTP server and initialize Socket.IO
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = new Server(server);
 
 // Socket.IO connection handling
 io.on('connection', (socket) => {
@@ -42,10 +42,20 @@ io.on('connection', (socket) => {
     io.emit('newOrder', order);
   });
 
+  // Emit updated order status to all clients
+  socket.on('updateOrderStatus', ({ orderId, status }) => {
+    io.emit('orderStatusUpdate', { orderId, status });
+  });
+
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });
 });
+
+// Function to update order status and notify clients
+const updateOrderStatus = (orderId, status) => {
+  io.emit('orderStatusUpdate', { orderId, status });
+};
 
 // Set the port and start the server
 const PORT = process.env.PORT || 5000;
@@ -53,4 +63,4 @@ server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-module.exports = server;
+module.exports = { server, updateOrderStatus };
