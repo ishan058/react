@@ -194,3 +194,16 @@ const fetchFilteredProducts = async ({ queryKey }) => {
 export const useFilteredProducts = (filters) => {
     return useQuery(['products', filters], fetchFilteredProducts);
 };
+
+// Update order status
+export const updateOrderStatus = async (orderId, newStatus) => {
+    try {
+        const response = await axios.patch(`${API_URL}/orders/${orderId}`, {
+            status: newStatus,
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Failed to update order status:', error);
+        throw error;
+    }
+};

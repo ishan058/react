@@ -1,5 +1,3 @@
-// backend/server.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -14,15 +12,23 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/yourDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('MongoDB connection error:', err));
+
 // Import routes
 const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
 
-// Create HTTP server and Socket.io instance
+// Create HTTP server and Socket.IO instance
 const server = http.createServer(app);
 const io = socketIo(server);
 
-// Socket.io connection handling
+// Socket.IO connection handling
 io.on('connection', (socket) => {
   console.log('New client connected');
 
